@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 7 — The Reality Entity | Luminae</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Cinzel+Decorative:wght@400;700&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0d0a1a; --parchment: #fdf8f0; --cream: #f5ede0;
+    --gold: #c9933a; --gold-light: #e8c97a; --gold-glow: #f0d898;
+    --violet: #6b3fa0; --violet-dark: #3d1f6e; --violet-light: #a67dd0;
+    --rose: #c45a7a; --midnight: #0f0820; --mist: #c8bfe0; --star: #f8f0e3;
+    --accent: #0ea5e9; --accent-glow: rgba(14,165,233,0.4);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--midnight); color: var(--star); font-family: 'Raleway', sans-serif; font-weight: 300; overflow-x: hidden; min-height: 100vh; }
+  .starfield { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .star-dot { position: absolute; border-radius: 50%; background: white; animation: twinkle var(--d, 3s) ease-in-out infinite; animation-delay: var(--delay, 0s); opacity: 0; }
+  @keyframes twinkle { 0%, 100% { opacity: 0; transform: scale(0.5); } 50% { opacity: var(--op, 0.7); transform: scale(1); } }
+  .top-nav { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; padding: 1rem 3rem; background: linear-gradient(to bottom, rgba(15,8,32,0.98), rgba(15,8,32,0.9)); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(124,58,237,0.2); }
+  .logo { font-family: 'Cinzel Decorative', cursive; font-size: 1.1rem; color: var(--accent); letter-spacing: 0.08em; text-shadow: 0 0 20px var(--accent-glow); text-decoration: none; }
+  .nav-chapter-info { font-size: 0.7rem; color: var(--mist); letter-spacing: 0.1em; text-transform: uppercase; }
+  .toc-link { color: var(--accent); text-decoration: none; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.3s; }
+  .toc-link:hover { color: #7c3aed; }
+  .reader-page { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; padding: 4rem 2rem 3rem; }
+  .ch-header { text-align: center; margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid rgba(124,58,237,0.2); }
+  .ch-number { font-size: 0.65rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.2rem; display: block; }
+  .ch-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 300; line-height: 1.15; color: var(--star); margin-bottom: 0.8rem; }
+  .ch-title em { font-style: italic; color: #7c3aed; text-shadow: 0 0 30px rgba(124,58,237,0.4); }
+  .ch-divider { display: flex; align-items: center; gap: 0.8rem; margin: 1.5rem auto 0; max-width: 160px; }
+  .ch-divider-line { flex: 1; height: 1px; background: linear-gradient(to right, transparent, rgba(124,58,237,0.5), transparent); }
+  .ch-divider-glyph { color: var(--accent); font-size: 0.8rem; }
+  .ch-content { font-family: 'Cormorant Garamond', serif; font-size: 1.18rem; color: var(--mist); line-height: 2; font-weight: 400; }
+  .ch-content p { margin-bottom: 1.5rem; }
+  .ch-content p.first::first-letter { font-family: 'Cinzel Decorative', cursive; font-size: 3.8rem; float: left; line-height: 1; margin: 0.05em 0.12em -0.1em 0; color: var(--accent); text-shadow: 0 0 20px var(--accent-glow); }
+  .ch-content em { color: #7c3aed; font-style: italic; }
+  .ch-content .dialogue { color: var(--star); }
+  .ch-content .thought { color: #0ea5e9; font-style: italic; }
+  .ch-content hr { border: none; text-align: center; margin: 2.5rem 0; }
+  .ch-content hr::after { content: '✦ ✦ ✦'; color: var(--accent); font-size: 0.7rem; letter-spacing: 0.5em; }
+  .author-note { background: rgba(0, 0, 0, 0.15); border: 1px solid rgba(124, 58, 237, 0.15); border-radius: 4px; padding: 2.5rem; margin-top: 4rem; }
+  .author-note .note-label { font-family: 'Raleway', sans-serif; font-size: 0.65rem; font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase; color: #a67dd0; margin-bottom: 1.5rem; }
+  .author-note p { font-size: 1.15rem; color: var(--mist); line-height: 2; margin-bottom: 1rem; }
+  .author-note p:last-child { margin-bottom: 0; }
+  .ch-end { text-align: center; padding: 3rem 0 0; margin-top: 3rem; border-top: 1px solid rgba(124,58,237,0.2); }
+  .ch-end-text { font-family: 'Cormorant Garamond', serif; font-size: 0.85rem; font-style: italic; color: rgba(200,191,224,0.4); letter-spacing: 0.1em; margin-bottom: 2rem; }
+  .ch-nav { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
+  .ch-nav-btn { display: inline-flex; align-items: center; gap: 0.6rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(124,58,237,0.3); color: var(--star); padding: 0.8rem 1.8rem; font-family: 'Raleway', sans-serif; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; transition: all 0.3s; border-radius: 2px; }
+  .ch-nav-btn:hover { background: rgba(124,58,237,0.15); border-color: rgba(14,165,233,0.5); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.4); }
+  .ch-nav-btn.disabled { opacity: 0.3; pointer-events: none; }
+  .ch-nav-toc { color: var(--accent); text-decoration: none; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.3s; }
+  .ch-nav-toc:hover { color: #7c3aed; }
+  .progress-wrap { position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 100; background: rgba(0,0,0,0.3); }
+  .progress-fill { height: 100%; width: 0; background: linear-gradient(to right, #7c3aed, #0ea5e9); transition: width 0.1s; }
+  .fade-in { opacity: 0; transform: translateY(20px); animation: fadeUp 0.8s ease forwards; }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+  .delay-1 { animation-delay: 0.15s; }
+  .delay-2 { animation-delay: 0.3s; }
+</style>
+</head>
+<body>
+
+<div class="progress-wrap"><div class="progress-fill" id="progressFill"></div></div>
+<div class="starfield" id="starfield"></div>
+
+<nav class="top-nav">
+  <a href="../index.html" class="logo">Luminae</a>
+  <span class="nav-chapter-info">Chapter 7 of 7</span>
+  <a href="index.html" class="toc-link">☰ Chapters</a>
+</nav>
+
+<div class="reader-page">
+
+  <header class="ch-header fade-in">
+    <span class="ch-number">✦ Chapter 7 ✦</span>
+    <h1 class="ch-title">Lines You Don’t <em>Cross</em></h1>
+    <div class="ch-divider">
+      <div class="ch-divider-line"></div>
+      <span class="ch-divider-glyph">✦</span>
+      <div class="ch-divider-line"></div>
+    </div>
+  </header>
+
+  <article class="ch-content fade-in delay-1">
+    <p class="first">The hallway outside the principal’s office smelled faintly of paper and old wood polish.</p>
+    <p>Alex sat alone on the bench near the door, lazily spinning a pen between his fingers while checking the time on his watch for what felt like the hundredth time.</p>
+    <p>Inside the office, Ethan was getting another lecture.</p>
+    <p>Raised voices occasionally slipped through the door.</p>
+    <p><span class="dialogue">“…your actions reflect on the entire school…”</span></p>
+    <p><span class="dialogue">“…violence will not be tolerated…”</span></p>
+    <p><span class="dialogue">“…under my supervision…”</span></p>
+    <p>Alex leaned his head back against the wall and sighed.</p>
+    <p>Some things never changed.</p>
+    <p>Ethan getting dragged into the principal’s office was practically a weekly event at this point.</p>
+    <p>The only difference now was that the principal actually had enough authority to make even Ethan listen.</p>
+    <p>At least a little.</p>
+    <p>Alex checked the time again.</p>
+    <p>Five minutes.</p>
+    <p>Ten.</p>
+    <p>Still not out.</p>
+    <hr>
+    <p><span class="dialogue">“You look bored.”</span></p>
+    <p>Alex glanced up instantly.</p>
+    <p>Lara stood a few feet away, one hand lightly gripping the strap of her bag.</p>
+    <p>For a second, he genuinely looked confused.</p>
+    <p>Then his eyes dropped to the black Riverview Academy ID card hanging around her neck.</p>
+    <p>He blinked.</p>
+    <p><span class="dialogue">“…What?”</span></p>
+    <p>Lara raised an eyebrow.</p>
+    <p><span class="dialogue">“That’s a very warm welcome.”</span></p>
+    <p><span class="dialogue">“No, wait—”</span></p>
+    <p>Alex sat up properly.</p>
+    <p><span class="dialogue">“You study here now?”</span></p>
+    <p><span class="dialogue">“Apparently.”</span></p>
+    <p><span class="dialogue">“Since when?”</span></p>
+    <p><span class="dialogue">“Since this morning.”</span></p>
+    <p>He stared at her another second like his brain still hadn’t caught up.</p>
+    <p><span class="dialogue">“You joined today?”</span></p>
+    <p><span class="dialogue">“Yeah.”</span></p>
+    <p><span class="dialogue">“And nobody told me?”</span></p>
+    <p><span class="dialogue">“I didn’t tell anyone,”</span> she admitted softly.</p>
+    <p>Alex frowned slightly.</p>
+    <p><span class="dialogue">“Why?”</span></p>
+    <p>Her fingers brushed against the edge of the ID card absentmindedly.</p>
+    <p><span class="dialogue">“Dad’s been busy ever since he became principal,”</span> she said quietly. <span class="dialogue">“I thought maybe if I joined here…”</span> she hesitated briefly, <span class="dialogue">“…I could spend more time with him.”</span></p>
+    <p>The sentence was simple.</p>
+    <p>Quiet.</p>
+    <p>But Alex understood immediately.</p>
+    <p>Ever since the principal arrived early, things in Lara’s life had changed too.</p>
+    <p>More meetings.</p>
+    <p>Longer hours.</p>
+    <p>Less time at home.</p>
+    <p>Small consequences.</p>
+    <p>The kind nobody notices at first.</p>
+    <p>Alex looked away briefly before muttering,</p>
+    <p><span class="dialogue">“You could’ve at least warned me.”</span></p>
+    <p>A faint smile appeared on Lara’s face.</p>
+    <p><span class="dialogue">“And ruin your reaction?”</span></p>
+    <p>Alex rolled his eyes slightly.</p>
+    <p><span class="dialogue">“That bad?”</span></p>
+    <p><span class="dialogue">“You looked traumatized.”</span></p>
+    <p><span class="dialogue">“I was.”</span></p>
+    <p>She laughed softly.</p>
+    <p>And somehow, the tension in the hallway eased.</p>
+    <p>They talked quietly while waiting outside the office.</p>
+    <p>Mostly random things.</p>
+    <p>Teachers.</p>
+    <p>Class timings.</p>
+    <p>How terrible the school coffee was.</p>
+    <p>Lara trusted him strangely fast.</p>
+    <p>Maybe because of the library night.</p>
+    <p>Maybe because Alex never tried too hard around her.</p>
+    <p>There was something calm about him when he wasn’t fighting someone.</p>
+    <p>Then—</p>
+    <hr>
+    <p>A crash echoed faintly from down the corridor.</p>
+    <p>Both of them paused.</p>
+    <p>Another sound followed.</p>
+    <p>A girl’s voice.</p>
+    <p><span class="dialogue">“Stop—!”</span></p>
+    <p>Alex’s expression changed instantly.</p>
+    <p>Not dramatically.</p>
+    <p>That was the terrifying part.</p>
+    <p>The softness simply vanished from his face.</p>
+    <p>His eyes shifted toward the storage room near the staircase.</p>
+    <p>Lara noticed it immediately.</p>
+    <p><span class="dialogue">“Alex…?”</span></p>
+    <p>But he was already walking.</p>
+    <p>Fast.</p>
+    <p>The storage room door was slightly open.</p>
+    <p>Alex pushed it wider.</p>
+    <p>Inside—</p>
+    <p>Two senior boys stood cornering a girl near the shelves.</p>
+    <p>One of them had her wrist tightly grabbed while the other laughed at something she clearly wanted no part in.</p>
+    <p>The moment Alex saw it—</p>
+    <p>something inside him snapped.</p>
+    <p><span class="dialogue">“What the hell are you doing?”</span> one of the boys asked sharply.</p>
+    <p>Alex didn’t answer.</p>
+    <p>He moved first.</p>
+    <p>The punch landed so hard the first boy slammed sideways into the metal shelf beside him.</p>
+    <p>Boxes crashed violently onto the floor.</p>
+    <p>The sound exploded through the cramped room.</p>
+    <p>The second boy cursed and rushed toward him—</p>
+    <p>Alex grabbed him by the collar and drove him straight into the wall.</p>
+    <p>The entire shelf rattled hard enough to shake loose stacks of old files.</p>
+    <p>Lara froze near the doorway.</p>
+    <p>This wasn’t like the cafeteria incident.</p>
+    <p>This wasn’t controlled.</p>
+    <p>Alex looked furious in a way that didn’t even seem human anymore.</p>
+    <p>The first boy tried getting back up.</p>
+    <p>Alex kicked him back down immediately.</p>
+    <p>No hesitation.</p>
+    <p>No warning.</p>
+    <p>The second student swung wildly in panic, but Alex barely reacted.</p>
+    <p>He blocked the hit and slammed his fist directly across the boy’s face hard enough to spray blood onto the floor.</p>
+    <p>Again.</p>
+    <p>Again.</p>
+    <p>Again.</p>
+    <p>Each impact echoed violently through the storage room.</p>
+    <p>The second boy’s voice finally cracked into genuine fear.</p>
+    <p><span class="dialogue">“STOP—!”</span></p>
+    <p>Boxes kept falling from the shelves every time Alex shoved him backward.</p>
+    <p>The terrified girl finally managed to pull herself free and hurried toward the exit.</p>
+    <p>But Alex didn’t stop.</p>
+    <p>The second boy scrambled backward desperately across the floor, knocking over loose papers and broken boxes as he tried to escape.</p>
+    <p><span class="dialogue">“You’re fucking insane—!”</span></p>
+    <p>Alex grabbed him by the collar again and slammed him against the shelf hard enough to bend the metal slightly inward.</p>
+    <p>Something burned violently inside him now.</p>
+    <p>A single thought pushed through the rage.</p>
+    <p>Bare hands didn’t feel enough anymore.</p>
+    <p>The thought lasted less than a second.</p>
+    <p>Instinctive.</p>
+    <p>Raw.</p>
+    <p>And silently—</p>
+    <p>the Reality Entity listened.</p>
+    <p>Not emotionally.</p>
+    <p>Not morally.</p>
+    <p>Only logically.</p>
+    <hr>
+    <p>Outside the hallway, another set of footsteps rapidly approached the principal’s office.</p>
+    <p>A student athlete carrying a sports bag slowed after hearing Lara scream earlier.</p>
+    <p>Confused, he instinctively followed Ethan and the principal toward the storage room.</p>
+    <p>The zipper on the bag had been left partly open after practice.</p>
+    <p>An aluminum baseball bat rested loosely inside.</p>
+    <p>Nothing unusual.</p>
+    <p>Nothing impossible.</p>
+    <p>Just timing.</p>
+    <p>Convenient timing.</p>
+    <p><span class="dialogue">“Alex STOP!”</span></p>
+    <p>Lara’s voice echoed through the room.</p>
+    <p>Nothing.</p>
+    <p>It was like he couldn’t even hear her.</p>
+    <p>Fear crawled up Lara’s spine.</p>
+    <hr>
+    <p>She stumbled backward before turning and running toward the principal’s office.</p>
+    <p><span class="dialogue">“ETHAN!”</span></p>
+    <p>The office door swung open instantly.</p>
+    <p>Ethan stepped out first, irritation already visible on his face—</p>
+    <p>until he saw Lara’s expression.</p>
+    <p>His face changed immediately.</p>
+    <p><span class="dialogue">“What happened?”</span></p>
+    <p><span class="dialogue">“Storage room— Alex—”</span></p>
+    <p>Ethan didn’t wait for the rest.</p>
+    <p>He ran.</p>
+    <p>The principal followed behind him.</p>
+    <p>The sports student followed instinctively behind them.</p>
+    <p>By the time they reached the room, one of the boys was curled beside the shelf coughing violently while the other struggled weakly beneath Alex’s grip.</p>
+    <p>The room itself barely looked recognizable anymore.</p>
+    <p>Broken boxes littered the floor.</p>
+    <p>Loose papers drifted everywhere.</p>
+    <p>One of the shelves leaned dangerously sideways from the repeated impacts.</p>
+    <p>Alex grabbed the student by the shirt and punched him again.</p>
+    <p>The boy cried out weakly this time.</p>
+    <p>Not angry anymore.</p>
+    <p>Terrified.</p>
+    <p><span class="dialogue">“Alex!”</span></p>
+    <p>Ethan caught his arm forcefully.</p>
+    <p>Alex shoved him away without even looking.</p>
+    <p>Ethan stumbled back a step in surprise.</p>
+    <p>The principal stopped cold near the doorway.</p>
+    <p>And for the first time since arriving at Riverview—</p>
+    <p>he looked genuinely afraid of a student.</p>
+    <p><span class="dialogue">“Alex,”</span> Ethan said again, firmer this time.</p>
+    <p>No response.</p>
+    <p>It genuinely looked like Alex couldn’t hear anything around him anymore.</p>
+    <p>Then—</p>
+    <p>As the sports student hurried into the room behind Ethan, the half-open bag hanging from his shoulder slipped.</p>
+    <p>The aluminum baseball bat slid free.</p>
+    <p>CLANG.</p>
+    <hr>
+    <p>The metallic sound echoed sharply across the storage room floor.</p>
+    <p>Everyone’s eyes shifted instinctively.</p>
+    <p>Even Alex’s.</p>
+    <p>For half a second—</p>
+    <p>silence.</p>
+    <p>The Reality Entity observed.</p>
+    <p>Probability aligned.</p>
+    <p>Alex slowly let go of the student’s collar.</p>
+    <p>Then bent down and picked up the bat.</p>
+    <p>Lara’s face lost color instantly.</p>
+    <p><span class="dialogue">“Alex…”</span></p>
+    <p>The terrified student on the floor tried scrambling backward.</p>
+    <p>His hands shook so badly he could barely move.</p>
+    <p>Alex stared at him silently.</p>
+    <p>And somehow—</p>
+    <p>that silence felt worse than the violence.</p>
+    <p>The rage inside him wanted damage now.</p>
+    <p>Real damage.</p>
+    <p>The bat swung.</p>
+    <p>CRACK.</p>
+    <p>The sound echoed violently through the room.</p>
+    <p>The boy screamed.</p>
+    <p><span class="dialogue">“ENOUGH!”</span></p>
+    <p>Ethan lunged forward immediately.</p>
+    <p>Alex raised the bat again—</p>
+    <p>but Ethan caught it mid-swing with both hands.</p>
+    <p>The force alone pushed him backward slightly.</p>
+    <p>Even Ethan struggled to hold him there.</p>
+    <p>Alex’s expression didn’t even look angry anymore.</p>
+    <p>That was the frightening part.</p>
+    <p>It looked empty.</p>
+    <p>Focused.</p>
+    <p>Like violence had become the only thing left inside him.</p>
+    <p><span class="dialogue">“Alex!”</span> Ethan shouted.</p>
+    <p>Still nothing.</p>
+    <p>The principal stood frozen near the doorway in horror.</p>
+    <p>The sports student stared at his own bat in Alex’s hands like he couldn’t process what was happening.</p>
+    <p>Then—</p>
+    <p><span class="dialogue">“Alex!”</span></p>
+    <p>Lara’s voice cut through the room.</p>
+    <p>Silence.</p>
+    <hr>
+    <p>Alex stopped instantly.</p>
+    <p>His grip loosened slightly.</p>
+    <p>His breathing remained rough.</p>
+    <p>Uneven.</p>
+    <p>Slowly, he turned his head toward the doorway.</p>
+    <p>Toward her.</p>
+    <p>And little by little…</p>
+    <p>the rage faded from his eyes.</p>
+    <p>Not completely.</p>
+    <p>But enough.</p>
+    <p>Enough for Ethan to finally rip the bat from his hands.</p>
+    <p>The metal weapon clattered loudly across the floor.</p>
+    <p>Nobody moved.</p>
+    <p>Nobody spoke.</p>
+    <p>The room was a disaster.</p>
+    <p>Broken boxes scattered everywhere.</p>
+    <p>Blood near the shelves.</p>
+    <p>Bent metal.</p>
+    <p>Terrified silence hanging in the air.</p>
+    <p>Alex stared at the two boys one last time with pure disgust before pulling his arm free from Ethan’s grip.</p>
+    <p>Then he walked out.</p>
+    <p>Without a single word.</p>
+    <p>Lara stood frozen near the doorway.</p>
+    <p>The principal still looked shaken.</p>
+    <p>Like he had just witnessed something he couldn’t fully process.</p>
+    <p>Ethan exhaled slowly while rubbing the back of his neck.</p>
+    <p><span class="dialogue">“…I’ll handle this,”</span> he muttered.</p>
+    <p>The principal looked at him sharply.</p>
+    <p><span class="dialogue">“Handle this? He could’ve seriously injured them!”</span></p>
+    <p>Ethan didn’t argue.</p>
+    <p>Because honestly—</p>
+    <p>he wasn’t wrong.</p>
+    <p>After a few moments, the principal left to call medical staff and security.</p>
+    <p>That left Ethan and Lara standing alone near the destroyed storage room.</p>
+    <hr>
+    <p>Lara looked down the hallway Alex disappeared into.</p>
+    <p>Then quietly asked,</p>
+    <p><span class="dialogue">“…Does he always do that?”</span></p>
+    <p>Ethan stayed silent for a moment.</p>
+    <p>Then he leaned against the wall beside the doorway.</p>
+    <p><span class="dialogue">“No,”</span> he said honestly. <span class="dialogue">“Usually he’s calm.”</span></p>
+    <p>His eyes shifted toward the frightened girl sitting near the shelves.</p>
+    <p><span class="dialogue">“But Alex has one line he absolutely cannot tolerate.”</span></p>
+    <p>Lara frowned slightly.</p>
+    <p>Ethan folded his arms.</p>
+    <p><span class="dialogue">“You can insult him.”</span></p>
+    <p><span class="dialogue">“You can hit him.”</span></p>
+    <p><span class="dialogue">“You can spread rumors about him.”</span></p>
+    <p>His expression darkened slightly.</p>
+    <p><span class="dialogue">“But the second he sees a girl getting harassed…”</span></p>
+    <p>He glanced at the blood on the floor.</p>
+    <p><span class="dialogue">“…he loses control.”</span></p>
+    <p>Lara stayed quiet.</p>
+    <p><span class="dialogue">“That’s why I usually stay close to him during fights,”</span> Ethan continued. <span class="dialogue">“Most of the time, I’m the only person who can stop him.”</span></p>
+    <p>Then he looked at her properly.</p>
+    <p><span class="dialogue">“But today was different.”</span></p>
+    <p>Lara blinked.</p>
+    <p><span class="dialogue">“When you shouted his name…”</span> Ethan said slowly, <span class="dialogue">“…he calmed down.”</span></p>
+    <p>A thoughtful crease formed between his brows.</p>
+    <p><span class="dialogue">“That almost never happens.”</span></p>
+    <p>Lara looked down the hallway again.</p>
+    <p>Toward the direction Alex had walked away.</p>
+    <p>The image of the quiet boy who walked her home beneath streetlights…</p>
+    <p>and the boy holding a bloodstained baseball bat…</p>
+    <p>didn’t feel like the same person.</p>
+    <p>And for the first time since meeting him—</p>
+    <p>she realized there were parts of Alex she still didn’t understand at all.</p>
+    <p>Somewhere behind the lenses resting quietly on Alex’s face—</p>
+    <p>the Reality Entity continued learning.</p>
+    <p>Not how to create.</p>
+    <p>Not how to destroy.</p>
+    <p>But how easily human desire could reshape reality itself.</p>
+
+  </article>
+
+  <div class="ch-end fade-in delay-2">
+    <p class="ch-end-text">— End of Chapter 7 —</p>
+    <div class="ch-nav">
+      <a href="chapter6.html" class="ch-nav-btn ">← Previous</a>
+      <a href="index.html" class="ch-nav-toc">All Chapters</a>
+      <a href="#" class="ch-nav-btn disabled">Next →</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const starfield = document.getElementById('starfield');
+for (let i = 0; i < 60; i++) {
+  const s = document.createElement('div');
+  s.className = 'star-dot';
+  const size = Math.random() < 0.7 ? 1 : 2;
+  s.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*4}s;--delay:${Math.random()*5}s;--op:${0.2+Math.random()*0.5};`;
+  starfield.appendChild(s);
+}
+const progressFill = document.getElementById('progressFill');
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  progressFill.style.width = Math.min(pct, 100) + '%';
+});
+</script>
+</body>
+</html>

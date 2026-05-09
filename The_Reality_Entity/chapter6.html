@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 6 — The Reality Entity | Luminae</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Cinzel+Decorative:wght@400;700&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0d0a1a; --parchment: #fdf8f0; --cream: #f5ede0;
+    --gold: #c9933a; --gold-light: #e8c97a; --gold-glow: #f0d898;
+    --violet: #6b3fa0; --violet-dark: #3d1f6e; --violet-light: #a67dd0;
+    --rose: #c45a7a; --midnight: #0f0820; --mist: #c8bfe0; --star: #f8f0e3;
+    --accent: #0ea5e9; --accent-glow: rgba(14,165,233,0.4);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--midnight); color: var(--star); font-family: 'Raleway', sans-serif; font-weight: 300; overflow-x: hidden; min-height: 100vh; }
+  .starfield { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .star-dot { position: absolute; border-radius: 50%; background: white; animation: twinkle var(--d, 3s) ease-in-out infinite; animation-delay: var(--delay, 0s); opacity: 0; }
+  @keyframes twinkle { 0%, 100% { opacity: 0; transform: scale(0.5); } 50% { opacity: var(--op, 0.7); transform: scale(1); } }
+  .top-nav { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; padding: 1rem 3rem; background: linear-gradient(to bottom, rgba(15,8,32,0.98), rgba(15,8,32,0.9)); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(124,58,237,0.2); }
+  .logo { font-family: 'Cinzel Decorative', cursive; font-size: 1.1rem; color: var(--accent); letter-spacing: 0.08em; text-shadow: 0 0 20px var(--accent-glow); text-decoration: none; }
+  .nav-chapter-info { font-size: 0.7rem; color: var(--mist); letter-spacing: 0.1em; text-transform: uppercase; }
+  .toc-link { color: var(--accent); text-decoration: none; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.3s; }
+  .toc-link:hover { color: #7c3aed; }
+  .reader-page { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; padding: 4rem 2rem 3rem; }
+  .ch-header { text-align: center; margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid rgba(124,58,237,0.2); }
+  .ch-number { font-size: 0.65rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.2rem; display: block; }
+  .ch-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 300; line-height: 1.15; color: var(--star); margin-bottom: 0.8rem; }
+  .ch-title em { font-style: italic; color: #7c3aed; text-shadow: 0 0 30px rgba(124,58,237,0.4); }
+  .ch-divider { display: flex; align-items: center; gap: 0.8rem; margin: 1.5rem auto 0; max-width: 160px; }
+  .ch-divider-line { flex: 1; height: 1px; background: linear-gradient(to right, transparent, rgba(124,58,237,0.5), transparent); }
+  .ch-divider-glyph { color: var(--accent); font-size: 0.8rem; }
+  .ch-content { font-family: 'Cormorant Garamond', serif; font-size: 1.18rem; color: var(--mist); line-height: 2; font-weight: 400; }
+  .ch-content p { margin-bottom: 1.5rem; }
+  .ch-content p.first::first-letter { font-family: 'Cinzel Decorative', cursive; font-size: 3.8rem; float: left; line-height: 1; margin: 0.05em 0.12em -0.1em 0; color: var(--accent); text-shadow: 0 0 20px var(--accent-glow); }
+  .ch-content em { color: #7c3aed; font-style: italic; }
+  .ch-content .dialogue { color: var(--star); }
+  .ch-content .thought { color: #0ea5e9; font-style: italic; }
+  .ch-content hr { border: none; text-align: center; margin: 2.5rem 0; }
+  .ch-content hr::after { content: '✦ ✦ ✦'; color: var(--accent); font-size: 0.7rem; letter-spacing: 0.5em; }
+  .author-note { background: rgba(0, 0, 0, 0.15); border: 1px solid rgba(124, 58, 237, 0.15); border-radius: 4px; padding: 2.5rem; margin-top: 4rem; }
+  .author-note .note-label { font-family: 'Raleway', sans-serif; font-size: 0.65rem; font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase; color: #a67dd0; margin-bottom: 1.5rem; }
+  .author-note p { font-size: 1.15rem; color: var(--mist); line-height: 2; margin-bottom: 1rem; }
+  .author-note p:last-child { margin-bottom: 0; }
+  .ch-end { text-align: center; padding: 3rem 0 0; margin-top: 3rem; border-top: 1px solid rgba(124,58,237,0.2); }
+  .ch-end-text { font-family: 'Cormorant Garamond', serif; font-size: 0.85rem; font-style: italic; color: rgba(200,191,224,0.4); letter-spacing: 0.1em; margin-bottom: 2rem; }
+  .ch-nav { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
+  .ch-nav-btn { display: inline-flex; align-items: center; gap: 0.6rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(124,58,237,0.3); color: var(--star); padding: 0.8rem 1.8rem; font-family: 'Raleway', sans-serif; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; transition: all 0.3s; border-radius: 2px; }
+  .ch-nav-btn:hover { background: rgba(124,58,237,0.15); border-color: rgba(14,165,233,0.5); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.4); }
+  .ch-nav-btn.disabled { opacity: 0.3; pointer-events: none; }
+  .ch-nav-toc { color: var(--accent); text-decoration: none; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.3s; }
+  .ch-nav-toc:hover { color: #7c3aed; }
+  .progress-wrap { position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 100; background: rgba(0,0,0,0.3); }
+  .progress-fill { height: 100%; width: 0; background: linear-gradient(to right, #7c3aed, #0ea5e9); transition: width 0.1s; }
+  .fade-in { opacity: 0; transform: translateY(20px); animation: fadeUp 0.8s ease forwards; }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+  .delay-1 { animation-delay: 0.15s; }
+  .delay-2 { animation-delay: 0.3s; }
+</style>
+</head>
+<body>
+
+<div class="progress-wrap"><div class="progress-fill" id="progressFill"></div></div>
+<div class="starfield" id="starfield"></div>
+
+<nav class="top-nav">
+  <a href="../index.html" class="logo">Luminae</a>
+  <span class="nav-chapter-info">Chapter 6 of 7</span>
+  <a href="index.html" class="toc-link">☰ Chapters</a>
+</nav>
+
+<div class="reader-page">
+
+  <header class="ch-header fade-in">
+    <span class="ch-number">✦ Chapter 6 ✦</span>
+    <h1 class="ch-title">When Three Became <em>Six</em></h1>
+    <div class="ch-divider">
+      <div class="ch-divider-line"></div>
+      <span class="ch-divider-glyph">✦</span>
+      <div class="ch-divider-line"></div>
+    </div>
+  </header>
+
+  <article class="ch-content fade-in delay-1">
+    <p class="first">Time stopped.</p>
+    <p><span class="thought">It wasn't suddent violent. It wasn't sudden</span>. It was precise — like someone had pressed pause on the world with practiced control.</p>
+    <p>The bunker froze mid-motion. The generator's hum cut cleanly in half, dust hanging suspended in the air. The digital clock locked at 02:17:43.</p>
+    <p>No one panicked.</p>
+    <p>They never did.</p>
+    <p>Three seconds.</p>
+    <p>That was the rule.</p>
+    <p>The watches around their wrists glowed faintly, synchronized and active. They were calibrated for this. Programmed for it. The pause wasn't dangerous — not to them.</p>
+    <p>Across the room, Kyros stood still.</p>
+    <p>Except he wasn't frozen.</p>
+    <p>He could move.</p>
+    <p>He always could.</p>
+    <p>He glanced at the clock, counting quietly in his head.</p>
+    <p>One.</p>
+    <p>Two.</p>
+    <p>Three.</p>
+    <p>This was when acceleration should begin. The world should lurch forward into its brief surge. Gravity should tilt. The rhythm should resume.</p>
+    <p>But nothing happened.</p>
+    <p>Four.</p>
+    <p>A faint flicker ran across Jax's watch.</p>
+    <p>Five.</p>
+    <p>Kai's glow dimmed, then pulsed uncertainly.</p>
+    <p>Six.</p>
+    <hr>
+    <p>The air changed.</p>
+    <p>It thickened — not physically, but perceptibly. The silence deepened into something heavier than absence. Something that pressed against the skin.</p>
+    <p>This wasn't part of the cycle.</p>
+    <p><span class="thought">The watches had been programmed for three seconds of stillness. Not six.</span></p>
+    <p>The strain began to show.</p>
+    <p>Ron's jaw tightened unnaturally, muscles resisting something unseen. Liora's breath hitched and locked. Kai's fingers twitched but didn't drop.</p>
+    <p>The pause was no longer stable.</p>
+    <p>It was stretching.</p>
+    <p>Warping.</p>
+    <p>Kyros took a slow step forward, confusion tightening in his chest.</p>
+    <p><span class="dialogue">"Why hasn't it shifted?"</span> he muttered under his breath.</p>
+    <p>The watches sparked.</p>
+    <p>A thin thread of static cracked through the stillness.</p>
+    <p>And then time didn't resume.</p>
+    <hr>
+    <p>It ruptured.</p>
+    <p>Acceleration slammed into the bunker without warning.</p>
+    <p>Not the controlled 2× surge they were used to.</p>
+    <p>Something unstable. Violent.</p>
+    <p>The watches shrieked with a piercing frequency as numbers flashed beyond readable limits. Lights burst overhead, raining shards of glass across the floor. Metal shelving tore free from the walls.</p>
+    <p>Time convulsed.</p>
+    <p>For a fraction of a second everything moved at triple speed — they surged forward again at a different rate entirely. The rhythm was gone. The system had no pattern to anchor to.</p>
+    <p>Ron was thrown sideways into a steel table. It buckled beneath the impact.</p>
+    <p>Kai slammed into a concrete pillar as the floor seemed to outrun his balance.</p>
+    <p>Soren tried to steady himself, but gravity shifted unpredictably, dragging him off course.</p>
+    <p>Jax's watch sparked violently before its display went dark.</p>
+    <p>Liora collapsed, clutching her head as the sudden acceleration tore through her nervous system.</p>
+    <p>Tarek reached for the table — the floor shuddered beneath him, and he lost his footing.</p>
+    <p>This wasn't a cycle.</p>
+    <p>It was collapse.</p>
+    <p>Time wasn't stretching anymore.</p>
+    <p>It was tearing at its own structure.</p>
+    <hr>
+    <p>Kyros felt it differently.</p>
+    <p>For the first time, there was resistance.</p>
+    <p>The distortion pushed against him as he moved, like thick water resisting motion. A wrench slipped from a shelf in slow motion — then, without warning, slammed into the concrete at triple velocity, cracking the floor.</p>
+    <p>Jagged fractures spread across the ceiling.</p>
+    <p>Six seconds of pause.</p>
+    <p>Six seconds of acceleration.</p>
+    <p>And only Two of the Six seconds is over.</p>
+    <p>The pattern had doubled.</p>
+    <p>And if it doubled again—</p>
+    <p>The bunker wouldn't survive.</p>
+    <p>He moved.</p>
+    <p>Not cautiously. Not strategically.</p>
+    <p>Instinctively.</p>
+    <p>Debris collapsed toward Kai; Kyros intercepted it mid-fall and shoved it aside before it crushed him. A ceiling beam snapped above Ron; Kyros dragged him clear as concrete pulverized the table behind them.</p>
+    <p>Sparks erupted from a ruptured console near Liora. He pulled her away seconds before metal fragments tore through the air where she'd been kneeling.</p>
+    <p>Soren stumbled against a splitting wall. Kyros caught him and forced him upright as the structure groaned under the strain.</p>
+    <p>He wasn't thinking about it.</p>
+    <p>He was moving through the distortion as if it were something he understood on a cellular level.</p>
+    <p>And then he saw Iris.</p>
+    <p>She was reaching for Tarek when another acceleration spike hit — harder, faster. A primary support beam fractured above her. The room lurched violently out of sync.</p>
+    <p>She lost her balance.</p>
+    <p>Kyros didn't hesitate.</p>
+    <p>He lunged.</p>
+    <p>He caught her wrist mid-fall.</p>
+    <p>Pulled her into him just as the beam crashed down where she'd been standing.</p>
+    <p>Metal fragments exploded outward. He turned instinctively, shielding her head with his shoulder as debris struck his back.</p>
+    <p>For a fraction of a second, time staggered around them — not fully accelerated, not fully stable. Something uneven. Something strained.</p>
+    <p>Her eyes met his.</p>
+    <p><span class="dialogue">"You're still moving,"</span> she breathed.</p>
+    <p>Not accusing.</p>
+    <p>Not awed.</p>
+    <p>Just recognizing the difference.</p>
+    <p>Kyros didn't answer.</p>
+    <p>Because he felt it too.</p>
+    <p>The distortion wasn't reacting to him.</p>
+    <p>It wasn't bending for him.</p>
+    <p>It was escalating on its own.</p>
+    <hr>
+    <p>Then, as abruptly as it began—</p>
+    <p>Silence.</p>
+    <p>The violent acceleration collapsed. The screaming frequency died. Gravity stabilized.</p>
+    <p>The generator coughed back to life.</p>
+    <p>Dust drifted downward naturally.</p>
+    <p>The digital clock flickered, then continued forward.</p>
+    <p><b>02:17:55</b></p>
+    <p>Six seconds of pause.</p>
+    <p>Six seconds of acceleration.</p>
+    <p>Twelve seconds total.</p>
+    <p>The bunker looked like it had survived a bombing.</p>
+    <p>Cracks ran across the ceiling. Metal beams bent at unnatural angles. Half the watches were dark; the rest flickered weakly, attempting to recalibrate to a system that no longer matched their programming.</p>
+    <p>Ron pushed himself upright with a grimace. Kai leaned heavily against the pillar. Liora stared at her watch as if it had betrayed her.</p>
+    <p><span class="dialogue">"It exceeded the threshold,"</span> she said quietly.</p>
+    <p>Jax swallowed. <span class="dialogue">"The programming held for three seconds. After that... there was nothing to sync to."</span></p>
+    <p>Tarek's gaze moved from the clock to the damaged bunker.</p>
+    <p><span class="dialogue">"It's expanding,"</span> he said.</p>
+    <p>No blame.</p>
+    <p>No accusation.</p>
+    <p>Just fact.</p>
+    <p>Soren's voice was low. <span class="dialogue">"It's getting stronger."</span></span></p>
+    <p>Kyros slowly released Iris. She stepped back, still watching him — not with suspicion, but with understanding.</p>
+    <p>Across the far wall, a thin fracture spread through the air itself.</p>
+    <p>Not in the concrete.</p>
+    <p>Not in the steel.</p>
+    <p>In space.</p>
+    <p>Faint. Veined. Temporal.</p>
+    <p>Liora noticed it first.</p>
+    <p><span class="dialogue">"That wasn't there before."</span></p>
+    <p>No one disagreed.</p>
+    <p>Because they all knew.</p>
+    <p>The cycle hadn't malfunctioned.</p>
+    <p>It had grown.</p>
+    <p>And if three seconds had become six—</p>
+    <p>There was no reason it couldn't become more.</p>
+    <p>Next time, it might not stretch.</p>
+    <p>It might tear.</p>
+    <hr>
+    <p>Liora's eyes were still locked on her watch, fingers trembling as it struggled to recalibrate.</p>
+    <p><span class="dialogue">"It's not just expanding,"</span> she said, voice tight. <span class="dialogue">"The pattern changed. Completely."</span></p>
+    <p>Kai wiped blood from his lip, forcing himself upright. <span class="dialogue">"Then we update it. We resync the watches to the new cycle."</span></p>
+    <p><span class="dialogue">"No,"</span> Liora snapped — sharper than intended. <span class="dialogue">"It's not that simple."</span></p>
+    <p>She turned the display toward them. The numbers weren't stabilizing. They were shifting. Rewriting themselves faster than the system could lock them in.</p>
+    <p><span class="dialogue">"It's not one pattern anymore,"</span> she said. <span class="dialogue">"It's changing while we're measuring it."</span></p>
+    <p>Silence hit harder than the distortion had.</p>
+    <p>Ron exhaled slowly. <span class="dialogue">"How long before it happens again?"</span></p>
+    <p>No one answered.</p>
+    <p>Jax checked the central clock, then his dead watch, then back again. <span class="dialogue">"We had five minutes between cycles before."</span></p>
+    <p>A pause.</p>
+    <p>Liora didn't look up.</p>
+    <p><span class="dialogue">"I don't know if that still applies."</span></p>
+    <p>That landed.</p>
+    <p>Hard.</p>
+    <p>Tarek stepped forward, voice steady — but quieter now.</p>
+    <p><span class="dialogue">"Then we assume it's less."</span></p>
+    <p>Kai let out a dry, humorless breath. <span class="dialogue">"Of course it is."</span></p>
+    <hr>
+    <p><span class="dialogue">"We have to upgrade the watches,"</span> Kai said, faster now, urgency breaking through. <span class="dialogue">"If they can't sync, they won't stabilize us during the next surge—"</span></p>
+    <p><span class="dialogue">"They won't protect us,"</span> Liora corrected.</p>
+    <p>A beat.</p>
+    <p><span class="dialogue">"Which means,"</span> Soren muttered, <span class="dialogue">"next time... we're not getting thrown."</span></p>
+    <p>Jax swallowed.</p>
+    <p><span class="dialogue">"We're getting torn apart."</span></p>
+
+  </article>
+
+  <div class="ch-end fade-in delay-2">
+    <p class="ch-end-text">— End of Chapter 6 —</p>
+    <div class="ch-nav">
+      <a href="chapter5.html" class="ch-nav-btn ">← Previous</a>
+      <a href="index.html" class="ch-nav-toc">All Chapters</a>
+      <a href="chapter7.html" class="ch-nav-btn ">Next →</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const starfield = document.getElementById('starfield');
+for (let i = 0; i < 60; i++) {
+  const s = document.createElement('div');
+  s.className = 'star-dot';
+  const size = Math.random() < 0.7 ? 1 : 2;
+  s.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*4}s;--delay:${Math.random()*5}s;--op:${0.2+Math.random()*0.5};`;
+  starfield.appendChild(s);
+}
+const progressFill = document.getElementById('progressFill');
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  progressFill.style.width = Math.min(pct, 100) + '%';
+});
+</script>
+</body>
+</html>

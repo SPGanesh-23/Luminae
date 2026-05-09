@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 4 — Door To The Heart | Luminae</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Cinzel+Decorative:wght@400;700&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0d0a1a; --parchment: #fdf8f0; --cream: #f5ede0;
+    --gold: #c9933a; --gold-light: #e8c97a; --gold-glow: #f0d898;
+    --violet: #6b3fa0; --violet-dark: #3d1f6e; --violet-light: #a67dd0;
+    --rose: #c45a7a; --midnight: #0f0820; --mist: #c8bfe0; --star: #f8f0e3;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--midnight); color: var(--star); font-family: 'Raleway', sans-serif; font-weight: 300; overflow-x: hidden; min-height: 100vh; }
+  .starfield { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .star-dot { position: absolute; border-radius: 50%; background: white; animation: twinkle var(--d, 3s) ease-in-out infinite; animation-delay: var(--delay, 0s); opacity: 0; }
+  @keyframes twinkle { 0%, 100% { opacity: 0; transform: scale(0.5); } 50% { opacity: var(--op, 0.7); transform: scale(1); } }
+  .top-nav { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; padding: 1rem 3rem; background: linear-gradient(to bottom, rgba(15,8,32,0.98), rgba(15,8,32,0.9)); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(201,147,58,0.1); }
+  .logo { font-family: 'Cinzel Decorative', cursive; font-size: 1.1rem; color: var(--gold); letter-spacing: 0.08em; text-shadow: 0 0 20px rgba(201,147,58,0.6); text-decoration: none; }
+  .nav-chapter-info { font-size: 0.7rem; color: var(--mist); letter-spacing: 0.1em; text-transform: uppercase; }
+  .toc-link { color: var(--gold-light); text-decoration: none; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.3s; }
+  .toc-link:hover { color: var(--gold); }
+  .reader-page { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; padding: 4rem 2rem 3rem; }
+  .ch-header { text-align: center; margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid rgba(201,147,58,0.12); }
+  .ch-number { font-size: 0.65rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.2rem; display: block; }
+  .ch-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 300; line-height: 1.15; color: var(--star); margin-bottom: 0.8rem; }
+  .ch-title em { font-style: italic; color: var(--gold-light); text-shadow: 0 0 30px rgba(232,201,122,0.3); }
+  .ch-divider { display: flex; align-items: center; gap: 0.8rem; margin: 1.5rem auto 0; max-width: 160px; }
+  .ch-divider-line { flex: 1; height: 1px; background: linear-gradient(to right, transparent, rgba(201,147,58,0.3), transparent); }
+  .ch-divider-glyph { color: var(--gold); font-size: 0.8rem; }
+  .ch-content { font-family: 'Cormorant Garamond', serif; font-size: 1.18rem; color: var(--mist); line-height: 2; font-weight: 400; }
+  .ch-content p { margin-bottom: 1.5rem; }
+  .ch-content p.first::first-letter { font-family: 'Cinzel Decorative', cursive; font-size: 3.8rem; float: left; line-height: 1; margin: 0.05em 0.12em -0.1em 0; color: var(--gold); text-shadow: 0 0 20px rgba(201,147,58,0.4); }
+  .ch-content em { color: var(--gold-light); font-style: italic; }
+  .ch-content .dialogue { color: var(--star); }
+  .ch-content hr { border: none; text-align: center; margin: 2.5rem 0; }
+  .ch-content hr::after { content: '\2726 \2726 \2726'; color: var(--gold); font-size: 0.7rem; letter-spacing: 0.5em; }
+  .ch-end { text-align: center; padding: 3rem 0 0; margin-top: 3rem; border-top: 1px solid rgba(201,147,58,0.12); }
+  .ch-end-text { font-family: 'Cormorant Garamond', serif; font-size: 0.85rem; font-style: italic; color: rgba(200,191,224,0.4); letter-spacing: 0.1em; margin-bottom: 2rem; }
+  .ch-nav { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
+  .ch-nav-btn { display: inline-flex; align-items: center; gap: 0.6rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(201,147,58,0.15); color: var(--star); padding: 0.8rem 1.8rem; font-family: 'Raleway', sans-serif; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; transition: all 0.3s; border-radius: 2px; }
+  .ch-nav-btn:hover { background: rgba(107,63,160,0.1); border-color: rgba(201,147,58,0.35); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.3); }
+  .ch-nav-btn.disabled { opacity: 0.3; pointer-events: none; }
+  .ch-nav-toc { color: var(--gold-light); text-decoration: none; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.3s; }
+  .ch-nav-toc:hover { color: var(--gold); }
+  .progress-wrap { position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 100; background: rgba(0,0,0,0.3); }
+  .progress-fill { height: 100%; width: 0; background: linear-gradient(to right, var(--violet), var(--gold)); transition: width 0.1s; }
+  .fade-in { opacity: 0; transform: translateY(20px); animation: fadeUp 0.8s ease forwards; }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+  .delay-1 { animation-delay: 0.15s; }
+  .delay-2 { animation-delay: 0.3s; }
+</style>
+</head>
+<body>
+<div class="progress-wrap"><div class="progress-fill" id="progressFill"></div></div>
+<div class="starfield" id="starfield"></div>
+<nav class="top-nav">
+  <a href="../index.html" class="logo">Luminae</a>
+  <span class="nav-chapter-info">Chapter 4 of 10</span>
+  <a href="index.html" class="toc-link">☰ Chapters</a>
+</nav>
+<div class="reader-page">
+  <header class="ch-header fade-in">
+    <span class="ch-number">✦ Chapter Four ✦</span>
+    <h1 class="ch-title">The Morning That Felt <em>Wrong</em></h1>
+    <div class="ch-divider">
+      <div class="ch-divider-line"></div>
+      <span class="ch-divider-glyph">✦</span>
+      <div class="ch-divider-line"></div>
+    </div>
+  </header>
+  <article class="ch-content fade-in delay-1">
+
+    <p class="first">Luna woke up with a sharp breath. Her eyes flew open.</p>
+
+    <p>The ceiling. Her room. Everything was normal again. <em>Too normal.</em></p>
+
+    <p>She sat up suddenly, her heart racing.</p>
+
+    <p><span class="dialogue">"No… no, no…"</span></p>
+
+    <p>Her eyes moved around the room desperately. The walls. The window. The silence.</p>
+
+    <p><em>No door.</em></p>
+
+    <p>Her chest tightened. Her breathing became uneven.</p>
+
+    <p><span class="dialogue">"It was real…"</span> she whispered. <span class="dialogue">"It felt real…"</span></p>
+
+    <p>She held her head, trying to calm herself down. But something was wrong. Very wrong.</p>
+
+    <p>The happiness she felt last night… was gone. Replaced by something heavy. Uncomfortable. A strange emptiness that hurt more than before.</p>
+
+    <p><span class="dialogue">"Kyros…"</span></p>
+
+    <p>His name slipped out of her lips without thinking. Her eyes filled with tears.</p>
+
+    <p>Why did it hurt this much? It was just a dream… right?</p>
+
+    <hr>
+
+    <p>She got out of bed and started pacing around the room. Back and forth. Restless. Frustrated.</p>
+
+    <p><span class="dialogue">"Why did I come back…?"</span> she muttered.</p>
+
+    <p>Her mind replayed everything. The field. His voice. The way he looked at her.</p>
+
+    <p><span class="dialogue">"I could have stayed…"</span> she whispered.</p>
+
+    <p>Her chest tightened again. <span class="dialogue">"What if I made a mistake?"</span></p>
+
+    <p>That thought didn't leave her. It stayed. Growing stronger. Louder.</p>
+
+    <p>The whole morning felt wrong. Even the sunlight felt dull. The sounds around her irritated her. Her mother's voice. Her phone notifications. Everything felt… <em>too much.</em></p>
+
+    <p>She sat on her bed again, pulling her knees closer.</p>
+
+    <p><span class="dialogue">"What if I didn't come back…?"</span> she whispered. <span class="dialogue">"Would I still be there… with him?"</span></p>
+
+    <p>Her heart ached at the thought.</p>
+
+    <hr>
+
+    <p>Time passed slowly. Too slowly. She kept thinking. Overthinking. Regretting.</p>
+
+    <p><span class="dialogue">"Should I go back tonight…?"</span></p>
+
+    <p>The question slipped into her mind. And it stayed.</p>
+
+    <p>Her fingers tightened around the bedsheet.</p>
+
+    <p><span class="dialogue">"What if the door appears again…?"</span></p>
+
+    <p>Her heartbeat increased.</p>
+
+    <p><span class="dialogue">"And what if it doesn't…?"</span></p>
+
+    <p>That scared her even more.</p>
+
+    <p><span class="dialogue">"I have to try…"</span></p>
+
+    <hr>
+
+    <p>Night came. Faster than she expected. But not fast enough.</p>
+
+    <p>Luna lay on her bed, staring at the ceiling. Her heart was beating faster with every second.</p>
+
+    <p><span class="dialogue">"What if he's there…?"</span></p>
+
+    <p><span class="dialogue">"What if he's waiting…?"</span></p>
+
+    <p><span class="dialogue">"What if he's not…?"</span></p>
+
+    <p>Her eyes slowly closed. Not because she was sleepy. But because she wanted to go back. <em>Needed</em> to go back.</p>
+
+    <p>And then… that sound.</p>
+
+    <p><em>Thummm…</em></p>
+
+    <p>Her eyes snapped open. Her breath hitched.</p>
+
+    <p>The golden light. The door.</p>
+
+    <p><span class="dialogue">"It's back…"</span></p>
+
+    <p>She didn't hesitate this time. She ran toward it. Opened it. And stepped through.</p>
+
+    <hr>
+
+    <p>The field. The same peaceful air. The same golden sky.</p>
+
+    <p><span class="dialogue">"Kyros!"</span> she called out. Her voice echoed slightly.</p>
+
+    <p>For a second… there was no answer. Her heart dropped.</p>
+
+    <p>Then —</p>
+
+    <p><span class="dialogue">"Luna."</span></p>
+
+    <p>She turned instantly. He was there. Walking toward her.</p>
+
+    <p>Relief flooded through her. Without thinking, she ran toward him. And stopped just inches away. Breathing heavily.</p>
+
+    <p><span class="dialogue">"I thought… you wouldn't be here,"</span> she said, her voice shaking.</p>
+
+    <p>Kyros looked at her quietly. Then softly —</p>
+
+    <p><span class="dialogue">"I told you I'd be waiting."</span></p>
+
+    <p>Her eyes filled again.</p>
+
+    <p><span class="dialogue">"I shouldn't have left,"</span> she whispered.</p>
+
+    <p>A small silence fell between them. Then he stepped closer.</p>
+
+    <p><span class="dialogue">"Then don't leave this time."</span></p>
+
+    <p>Her heart skipped.</p>
+
+    <p><span class="dialogue">"I…"</span> she hesitated. <span class="dialogue">"What if I have to?"</span></p>
+
+    <p>Kyros's expression changed slightly. Something deeper. Something intense.</p>
+
+    <p><span class="dialogue">"Then come back again,"</span> he said softly. <span class="dialogue">"I'll still be here."</span></p>
+
+    <hr>
+
+    <p>They stood there, close. Closer than before.</p>
+
+    <p>Time passed. They talked again. Walked again. Laughed again.</p>
+
+    <p>But this time… Luna felt something else. <em>Fear.</em></p>
+
+    <p>Because she knew… morning would come.</p>
+
+    <p>And just like before… the light appeared. The door.</p>
+
+    <p>Her smile faded instantly.</p>
+
+    <p><span class="dialogue">"No…"</span></p>
+
+    <p>Kyros looked at it… then back at her.</p>
+
+    <p><span class="dialogue">"Time's up,"</span> she whispered. Her heart started racing again. <span class="dialogue">"I don't want to go…"</span></p>
+
+    <p>Kyros stepped closer. Very close.</p>
+
+    <p><span class="dialogue">"Then don't think about it,"</span> he said quietly.</p>
+
+    <p>But the light grew stronger. Pulling her back.</p>
+
+    <p>Her fingers tightened around his hand.</p>
+
+    <p><span class="dialogue">"Kyros…"</span></p>
+
+    <p>He didn't let go immediately. But slowly… very slowly… his grip loosened.</p>
+
+    <p><span class="dialogue">"Come back,"</span> he said.</p>
+
+    <p>And just like that — she was gone.</p>
+
+    <hr>
+
+    <p>Luna woke up. Back in her room. Again.</p>
+
+    <p>Her chest felt heavy. Her heart felt worse than before.</p>
+
+    <p>Because now… she knew exactly what she was missing.</p>
+
+  </article>
+  <div class="ch-end fade-in delay-2">
+    <p class="ch-end-text">&mdash; End of Chapter 4 &mdash;</p>
+    <div class="ch-nav">
+      <a href="chapter3.html" class="ch-nav-btn">&larr; Previous</a>
+      <a href="index.html" class="ch-nav-toc">All Chapters</a>
+      <a href="chapter5.html" class="ch-nav-btn">Next &rarr;</a>
+    </div>
+  </div>
+</div>
+<script>
+const sf=document.getElementById('starfield');for(let i=0;i<60;i++){const s=document.createElement('div');s.className='star-dot';const z=Math.random()<0.7?1:2;s.style.cssText='width:'+z+'px;height:'+z+'px;left:'+Math.random()*100+'%;top:'+Math.random()*100+'%;--d:'+(2+Math.random()*4)+'s;--delay:'+Math.random()*5+'s;--op:'+(0.2+Math.random()*0.5)+';';sf.appendChild(s);}
+const pf=document.getElementById('progressFill');window.addEventListener('scroll',()=>{const h=document.documentElement;pf.style.width=Math.min((h.scrollTop/(h.scrollHeight-h.clientHeight))*100,100)+'%';});
+</script>
+</body>
+</html>

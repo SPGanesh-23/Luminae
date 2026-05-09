@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 8 — Door To The Heart | Luminae</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Cinzel+Decorative:wght@400;700&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0d0a1a; --parchment: #fdf8f0; --cream: #f5ede0;
+    --gold: #c9933a; --gold-light: #e8c97a; --gold-glow: #f0d898;
+    --violet: #6b3fa0; --violet-dark: #3d1f6e; --violet-light: #a67dd0;
+    --rose: #c45a7a; --midnight: #0f0820; --mist: #c8bfe0; --star: #f8f0e3;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--midnight); color: var(--star); font-family: 'Raleway', sans-serif; font-weight: 300; overflow-x: hidden; min-height: 100vh; }
+  .starfield { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .star-dot { position: absolute; border-radius: 50%; background: white; animation: twinkle var(--d, 3s) ease-in-out infinite; animation-delay: var(--delay, 0s); opacity: 0; }
+  @keyframes twinkle { 0%, 100% { opacity: 0; transform: scale(0.5); } 50% { opacity: var(--op, 0.7); transform: scale(1); } }
+  .top-nav { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; padding: 1rem 3rem; background: linear-gradient(to bottom, rgba(15,8,32,0.98), rgba(15,8,32,0.9)); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(201,147,58,0.1); }
+  .logo { font-family: 'Cinzel Decorative', cursive; font-size: 1.1rem; color: var(--gold); letter-spacing: 0.08em; text-shadow: 0 0 20px rgba(201,147,58,0.6); text-decoration: none; }
+  .nav-chapter-info { font-size: 0.7rem; color: var(--mist); letter-spacing: 0.1em; text-transform: uppercase; }
+  .toc-link { color: var(--gold-light); text-decoration: none; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.3s; }
+  .toc-link:hover { color: var(--gold); }
+  .reader-page { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; padding: 4rem 2rem 3rem; }
+  .ch-header { text-align: center; margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid rgba(201,147,58,0.12); }
+  .ch-number { font-size: 0.65rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.2rem; display: block; }
+  .ch-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 300; line-height: 1.15; color: var(--star); margin-bottom: 0.8rem; }
+  .ch-title em { font-style: italic; color: var(--gold-light); text-shadow: 0 0 30px rgba(232,201,122,0.3); }
+  .ch-divider { display: flex; align-items: center; gap: 0.8rem; margin: 1.5rem auto 0; max-width: 160px; }
+  .ch-divider-line { flex: 1; height: 1px; background: linear-gradient(to right, transparent, rgba(201,147,58,0.3), transparent); }
+  .ch-divider-glyph { color: var(--gold); font-size: 0.8rem; }
+  .ch-content { font-family: 'Cormorant Garamond', serif; font-size: 1.18rem; color: var(--mist); line-height: 2; font-weight: 400; }
+  .ch-content p { margin-bottom: 1.5rem; }
+  .ch-content p.first::first-letter { font-family: 'Cinzel Decorative', cursive; font-size: 3.8rem; float: left; line-height: 1; margin: 0.05em 0.12em -0.1em 0; color: var(--gold); text-shadow: 0 0 20px rgba(201,147,58,0.4); }
+  .ch-content em { color: var(--gold-light); font-style: italic; }
+  .ch-content .dialogue { color: var(--star); }
+  .ch-content hr { border: none; text-align: center; margin: 2.5rem 0; }
+  .ch-content hr::after { content: '\2726 \2726 \2726'; color: var(--gold); font-size: 0.7rem; letter-spacing: 0.5em; }
+  .ch-end { text-align: center; padding: 3rem 0 0; margin-top: 3rem; border-top: 1px solid rgba(201,147,58,0.12); }
+  .ch-end-text { font-family: 'Cormorant Garamond', serif; font-size: 0.85rem; font-style: italic; color: rgba(200,191,224,0.4); letter-spacing: 0.1em; margin-bottom: 2rem; }
+  .ch-nav { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
+  .ch-nav-btn { display: inline-flex; align-items: center; gap: 0.6rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(201,147,58,0.15); color: var(--star); padding: 0.8rem 1.8rem; font-family: 'Raleway', sans-serif; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; transition: all 0.3s; border-radius: 2px; }
+  .ch-nav-btn:hover { background: rgba(107,63,160,0.1); border-color: rgba(201,147,58,0.35); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.3); }
+  .ch-nav-btn.disabled { opacity: 0.3; pointer-events: none; }
+  .ch-nav-toc { color: var(--gold-light); text-decoration: none; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.3s; }
+  .ch-nav-toc:hover { color: var(--gold); }
+  .progress-wrap { position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 100; background: rgba(0,0,0,0.3); }
+  .progress-fill { height: 100%; width: 0; background: linear-gradient(to right, var(--violet), var(--gold)); transition: width 0.1s; }
+  .fade-in { opacity: 0; transform: translateY(20px); animation: fadeUp 0.8s ease forwards; }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+  .delay-1 { animation-delay: 0.15s; }
+  .delay-2 { animation-delay: 0.3s; }
+</style>
+</head>
+<body>
+<div class="progress-wrap"><div class="progress-fill" id="progressFill"></div></div>
+<div class="starfield" id="starfield"></div>
+<nav class="top-nav">
+  <a href="../index.html" class="logo">Luminae</a>
+  <span class="nav-chapter-info">Chapter 8 of 10</span>
+  <a href="index.html" class="toc-link">&#9776; Chapters</a>
+</nav>
+<div class="reader-page">
+  <header class="ch-header fade-in">
+    <span class="ch-number">&#10022; Chapter Eight &#10022;</span>
+    <h1 class="ch-title">The Silence She <em>Chose</em></h1>
+    <div class="ch-divider">
+      <div class="ch-divider-line"></div>
+      <span class="ch-divider-glyph">&#10022;</span>
+      <div class="ch-divider-line"></div>
+    </div>
+  </header>
+  <article class="ch-content fade-in delay-1">
+    <p class="first">The next morning didn’t feel like morning.</p>
+
+    <p>It felt like something had ended.</p>
+
+    <hr>
+
+    <p>Luna opened her eyes slowly.</p>
+
+    <p>The ceiling stared back at her.</p>
+
+    <p>Same room. Same walls. Same life.</p>
+
+    <p>But something was missing.</p>
+
+    <p>Something… that made everything else feel pointless.</p>
+
+    <hr>
+
+    <p>Her hand moved slightly across the bed.</p>
+
+    <p>Empty.</p>
+
+    <p>Of course it was empty.</p>
+
+    <p>Still—</p>
+
+    <p>Her fingers stayed there for a moment longer.</p>
+
+    <p>Like they were hoping to find something that wasn’t there.</p>
+
+    <hr>
+
+    <p>“Kyros…”</p>
+
+    <p>His name escaped before she could stop it.</p>
+
+    <p>Her voice sounded unfamiliar.</p>
+
+    <p>Weak.</p>
+
+    <hr>
+
+    <p>She turned to her side.</p>
+
+    <p>Curled into herself.</p>
+
+    <p>Pulling the blanket closer.</p>
+
+    <p>As if that could replace warmth.</p>
+
+    <p>As if that could replace him.</p>
+
+    <hr>
+
+    <p>“I’m okay…” she whispered.</p>
+
+    <p>But the words felt wrong.</p>
+
+    <p>Heavy.</p>
+
+    <p>Like a lie she couldn’t believe.</p>
+
+    <hr>
+
+    <p>The day passed.</p>
+
+    <p>Or maybe it didn’t.</p>
+
+    <p>Time didn’t feel real anymore.</p>
+
+    <hr>
+
+    <p>Her mother called her.</p>
+
+    <p>She didn’t respond.</p>
+
+    <p>Her phone kept buzzing.</p>
+
+    <p>She didn’t check.</p>
+
+    <p>Food was placed near her.</p>
+
+    <p>Untouched.</p>
+
+    <hr>
+
+    <p>Everything felt distant.</p>
+
+    <p>Muted.</p>
+
+    <p>Like she was watching her own life from far away.</p>
+
+    <hr>
+
+    <p>Because her mind—</p>
+
+    <p>Her heart—</p>
+
+    <p>Was still there.</p>
+
+    <hr>
+
+    <p>In that golden field.</p>
+
+    <p>With him.</p>
+
+    <hr>
+
+    <p>“You’re mine…”</p>
+
+    <p>His voice echoed softly in her head.</p>
+
+    <p>Her chest tightened instantly.</p>
+
+    <p>Her fingers curled into the bedsheet.</p>
+
+    <p>“Don’t…” she whispered.</p>
+
+    <p>But the memories didn’t stop.</p>
+
+    <hr>
+
+    <p>His hand holding hers.</p>
+
+    <p>The way he looked at her.</p>
+
+    <p>The way he said <em>“I’ll wait.”</em></p>
+
+    <hr>
+
+    <p>Her breathing became uneven.</p>
+
+    <p>Tears slipped silently into her pillow.</p>
+
+    <hr>
+
+    <p>“I told you not to wait…” she whispered, her voice breaking.</p>
+
+    <p>“Why didn’t you listen…?”</p>
+
+    <hr>
+
+    <p>Silence answered her.</p>
+
+    <p>And that silence—</p>
+
+    <p>Hurt more than anything.</p>
+
+    <hr>
+
+    <p>She sat up suddenly.</p>
+
+    <p>Her head spinning slightly.</p>
+
+    <p>“I made the right choice…”</p>
+
+    <p>She repeated it.</p>
+
+    <p>Again.</p>
+
+    <p>And again.</p>
+
+    <hr>
+
+    <p>“I had to leave…” “I had to…” “I had to…”</p>
+
+    <hr>
+
+    <p>But every time she said it—</p>
+
+    <p>Her heart disagreed.</p>
+
+    <hr>
+
+    <p>Her chest tightened painfully.</p>
+
+    <p>Like something inside was tearing slowly.</p>
+
+    <hr>
+
+    <p>“What if he’s still there…?” she whispered.</p>
+
+    <p>Her eyes filled again.</p>
+
+    <p>“Standing in the same place…”</p>
+
+    <p>“Waiting…”</p>
+
+    <hr>
+
+    <p>The image hit her hard.</p>
+
+    <p>Too hard.</p>
+
+    <hr>
+
+    <p>“Stop…” she pressed her hand against her chest.</p>
+
+    <p>“It’s not real…”</p>
+
+    <hr>
+
+    <p>But it felt real.</p>
+
+    <p>More real than this.</p>
+
+    <hr>
+
+    <p>Her breathing became heavier.</p>
+
+    <p>“I can’t go back…”</p>
+
+    <p>She shook her head slowly.</p>
+
+    <p>“I won’t go back…”</p>
+
+    <hr>
+
+    <p>Because if she did—</p>
+
+    <p>She knew.</p>
+
+    <p>She wouldn’t leave again.</p>
+
+    <hr>
+
+    <p>And that scared her.</p>
+
+    <hr>
+
+    <p>But staying away…</p>
+
+    <p>That was hurting her too.</p>
+
+    <hr>
+
+    <p>Her legs felt weak as she stood up.</p>
+
+    <p>The room slightly spinning.</p>
+
+    <p>Her body felt heavier than before.</p>
+
+    <hr>
+
+    <p>She walked to the mirror.</p>
+
+    <p>Stopped.</p>
+
+    <p>Looked at herself.</p>
+
+    <hr>
+
+    <p>Her eyes were dull.</p>
+
+    <p>Red.</p>
+
+    <p>Tired.</p>
+
+    <hr>
+
+    <p>“Who are you…?” she whispered.</p>
+
+    <p>Because she didn’t recognize herself anymore.</p>
+
+    <hr>
+
+    <p>The girl who smiled.</p>
+
+    <p>The girl who laughed.</p>
+
+    <p>The girl who felt light—</p>
+
+    <p>She wasn’t there.</p>
+
+    <hr>
+
+    <p>Only this version remained.</p>
+
+    <p>Broken.</p>
+
+    <p>Empty.</p>
+
+    <hr>
+
+    <p>Her hand slowly touched her reflection.</p>
+
+    <p>“I lost him…”</p>
+
+    <p>Her voice cracked completely.</p>
+
+    <hr>
+
+    <p>“No…” she shook her head.</p>
+
+    <p>“I left him.”</p>
+
+    <hr>
+
+    <p>That truth—</p>
+
+    <p>It hurt more.</p>
+
+    <hr>
+
+    <p>Her knees gave in slowly.</p>
+
+    <p>She slid down to the floor.</p>
+
+    <p>Back against the wall.</p>
+
+    <hr>
+
+    <p>Tears fell uncontrollably now.</p>
+
+    <hr>
+
+    <p>“I miss you…”</p>
+
+    <p>The words came out louder this time.</p>
+
+    <p>Desperate.</p>
+
+    <hr>
+
+    <p>“I miss you so much…”</p>
+
+    <hr>
+
+    <p>Her shoulders trembled.</p>
+
+    <p>Her hands shaking.</p>
+
+    <hr>
+
+    <p>“I want to come back…”</p>
+
+    <hr>
+
+    <p>Silence.</p>
+
+    <hr>
+
+    <p>“I want to come back… but I can’t…”</p>
+
+    <hr>
+
+    <p>Her voice broke into sobs.</p>
+
+    <hr>
+
+    <p>“I’m sorry…”</p>
+
+    <p>“I’m so sorry…”</p>
+
+    <hr>
+
+    <p>Over and over again.</p>
+
+    <p>Like he could hear her.</p>
+
+    <p>Like he was still there.</p>
+
+    <hr>
+
+    <p>But he wasn’t.</p>
+
+    <hr>
+
+    <p>And that was the hardest part.</p>
+
+    <hr>
+
+    <p>The day faded into evening.</p>
+
+    <p>Evening into night.</p>
+
+    <hr>
+
+    <p>Luna lay back on her bed.</p>
+
+    <p>Exhausted.</p>
+
+    <p>Emotionally drained.</p>
+
+    <hr>
+
+    <p>Her eyes stared at the ceiling again.</p>
+
+    <p>But this time—</p>
+
+    <p>She wasn’t waiting.</p>
+
+    <hr>
+
+    <p>Her fingers tightened slightly.</p>
+
+    <hr>
+
+    <p>“Don’t appear…”</p>
+
+    <p>She whispered to the empty room.</p>
+
+    <hr>
+
+    <p>“Please…”</p>
+
+    <p>Tears slipped again.</p>
+
+    <hr>
+
+    <p>“Don’t make me choose again…”</p>
+
+    <hr>
+
+    <p>Because she already knew—</p>
+
+    <p>If the door appeared—</p>
+
+    <p>She would break.</p>
+
+    <hr>
+
+    <p>And this time—</p>
+
+    <p>She wouldn’t be strong enough to walk away.</p>
+
+    <hr>
+
+    <p>Her eyes slowly closed.</p>
+
+    <p>Not in peace.</p>
+
+    <p>But in pain.</p>
+
+    <hr>
+
+    <p>And somewhere—</p>
+
+    <p>In a place she refused to return to—</p>
+
+    <p>A boy she loved…</p>
+
+    <p>Still existed in her memories.</p>
+
+    <hr>
+
+    <p>Waiting.</p>
+
+    <p>Even if she never went back.</p>
+  </article>
+  <div class="ch-end fade-in delay-2">
+    <p class="ch-end-text">&mdash; End of Chapter 8 &mdash;</p>
+    <div class="ch-nav">
+      <a href="chapter7.html" class="ch-nav-btn">&larr; Previous</a>
+      <a href="index.html" class="ch-nav-toc">All Chapters</a>
+      <a href="chapter9.html" class="ch-nav-btn">Next &rarr;</a>
+    </div>
+  </div>
+</div>
+<script>
+const sf=document.getElementById('starfield');for(let i=0;i<60;i++){const s=document.createElement('div');s.className='star-dot';const z=Math.random()<0.7?1:2;s.style.cssText='width:'+z+'px;height:'+z+'px;left:'+Math.random()*100+'%;top:'+Math.random()*100+'%;--d:'+(2+Math.random()*4)+'s;--delay:'+Math.random()*5+'s;--op:'+(0.2+Math.random()*0.5)+';';sf.appendChild(s);}
+const pf=document.getElementById('progressFill');window.addEventListener('scroll',()=>{const h=document.documentElement;pf.style.width=Math.min((h.scrollTop/(h.scrollHeight-h.clientHeight))*100,100)+'%';});
+</script>
+</body>
+</html>

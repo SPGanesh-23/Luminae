@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Door To The Heart — Chapters | Luminae</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Cinzel+Decorative:wght@400;700&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0d0a1a;
+    --parchment: #fdf8f0;
+    --cream: #f5ede0;
+    --gold: #c9933a;
+    --gold-light: #e8c97a;
+    --gold-glow: #f0d898;
+    --violet: #6b3fa0;
+    --violet-dark: #3d1f6e;
+    --violet-light: #a67dd0;
+    --rose: #c45a7a;
+    --midnight: #0f0820;
+    --mist: #c8bfe0;
+    --star: #f8f0e3;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--midnight);
+    color: var(--star);
+    font-family: 'Raleway', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  /* Starfield */
+  .starfield { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .star-dot {
+    position: absolute; border-radius: 50%; background: white;
+    animation: twinkle var(--d, 3s) ease-in-out infinite;
+    animation-delay: var(--delay, 0s); opacity: 0;
+  }
+  @keyframes twinkle {
+    0%, 100% { opacity: 0; transform: scale(0.5); }
+    50% { opacity: var(--op, 0.7); transform: scale(1); }
+  }
+
+  /* Orbs */
+  .orb { position: fixed; border-radius: 50%; filter: blur(80px); pointer-events: none; z-index: 0; animation: drift var(--orb-d, 20s) ease-in-out infinite alternate; }
+  .orb-1 { width: 400px; height: 400px; background: rgba(107,63,160,0.25); top: -10%; left: -10%; --orb-d: 18s; }
+  .orb-2 { width: 300px; height: 300px; background: rgba(196,90,122,0.2); bottom: 20%; right: -5%; --orb-d: 23s; }
+  @keyframes drift { from { transform: translate(0,0) scale(1); } to { transform: translate(30px,-20px) scale(1.1); } }
+
+  /* Nav */
+  .top-nav {
+    position: relative; z-index: 10;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.5rem 3rem;
+    border-bottom: 1px solid rgba(201,147,58,0.12);
+  }
+  .logo {
+    font-family: 'Cinzel Decorative', cursive; font-size: 1.3rem;
+    color: var(--gold); letter-spacing: 0.08em;
+    text-shadow: 0 0 20px rgba(201,147,58,0.6);
+    text-decoration: none;
+  }
+  .back-link {
+    color: var(--mist); text-decoration: none; font-size: 0.75rem;
+    letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.3s;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .back-link:hover { color: var(--gold-light); }
+
+  /* Page content */
+  .page { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; padding: 0 2rem 5rem; }
+
+  /* Hero header */
+  .book-hero {
+    text-align: center; padding: 5rem 0 3rem;
+  }
+  .book-hero-tag {
+    font-size: 0.65rem; letter-spacing: 0.4em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1.5rem; display: block;
+  }
+  .book-hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 300;
+    line-height: 1.1; color: var(--star); margin-bottom: 0.8rem;
+  }
+  .book-hero-title em {
+    font-style: italic; color: var(--gold-light);
+    text-shadow: 0 0 40px rgba(232,201,122,0.4);
+  }
+  .book-hero-author {
+    font-size: 0.82rem; letter-spacing: 0.15em; color: var(--mist);
+    text-transform: uppercase; margin-bottom: 1rem;
+  }
+  .book-hero-genre {
+    font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--violet-light);
+  }
+  .hero-divider {
+    display: flex; align-items: center; gap: 1rem;
+    margin: 2.5rem auto; max-width: 240px;
+  }
+  .hero-divider-line {
+    flex: 1; height: 1px;
+    background: linear-gradient(to right, transparent, rgba(201,147,58,0.4), transparent);
+  }
+  .hero-divider-glyph {
+    font-family: 'Cormorant Garamond', serif; color: var(--gold); font-size: 1.1rem;
+  }
+
+  /* Chapter list */
+  .chapters-label {
+    font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 2rem; font-weight: 500;
+  }
+  .chapter-list { list-style: none; }
+  .chapter-item {
+    border-bottom: 1px solid rgba(201,147,58,0.1);
+  }
+  .chapter-item:first-child {
+    border-top: 1px solid rgba(201,147,58,0.1);
+  }
+  .chapter-link {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.4rem 1.2rem;
+    text-decoration: none; color: var(--star);
+    transition: all 0.3s;
+    position: relative;
+  }
+  .chapter-link::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(107,63,160,0.08), transparent);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .chapter-link:hover {
+    background: rgba(255,255,255,0.02);
+  }
+  .chapter-link:hover::before { opacity: 1; }
+  .chapter-link:hover .chapter-arrow { transform: translateX(4px); color: var(--gold); }
+  .chapter-left { display: flex; align-items: center; gap: 1.2rem; position: relative; z-index: 1; }
+  .chapter-num {
+    font-family: 'Cormorant Garamond', serif; font-size: 1.5rem;
+    font-weight: 300; color: var(--gold-light); min-width: 32px;
+  }
+  .chapter-info {}
+  .chapter-name {
+    font-family: 'Cormorant Garamond', serif; font-size: 1.1rem;
+    font-weight: 400; margin-bottom: 0.2rem;
+  }
+  .chapter-meta {
+    font-size: 0.7rem; color: var(--mist); letter-spacing: 0.05em;
+  }
+  .chapter-arrow {
+    font-size: 0.9rem; color: var(--mist); transition: all 0.3s;
+    position: relative; z-index: 1;
+  }
+  .chapter-badge {
+    display: inline-block; background: rgba(201,147,58,0.9); color: var(--midnight);
+    font-size: 0.55rem; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; padding: 2px 6px; border-radius: 2px;
+    margin-left: 0.6rem; vertical-align: middle;
+  }
+  .chapter-locked {
+    opacity: 0.4; pointer-events: none;
+  }
+  .chapter-locked .chapter-arrow::after {
+    content: '🔒'; font-size: 0.75rem;
+  }
+
+  /* Footer */
+  .toc-footer {
+    border-top: 1px solid rgba(201,147,58,0.1);
+    padding: 2rem 0; margin-top: 3rem; text-align: center;
+  }
+  .toc-footer-text {
+    font-size: 0.7rem; color: rgba(200,191,224,0.35); letter-spacing: 0.1em;
+  }
+
+  /* Animations */
+  .fade-in { opacity: 0; transform: translateY(20px); animation: fadeUp 0.8s ease forwards; }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+  .delay-1 { animation-delay: 0.1s; }
+  .delay-2 { animation-delay: 0.2s; }
+  .delay-3 { animation-delay: 0.3s; }
+</style>
+</head>
+<body>
+
+<div class="starfield" id="starfield"></div>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+
+<!-- Nav -->
+<nav class="top-nav">
+  <a href="../index.html" class="logo">Luminae</a>
+  <a href="../index.html" class="back-link">&larr; Back to Home</a>
+</nav>
+
+<div class="page">
+
+  <!-- Book hero -->
+  <section class="book-hero fade-in">
+    <span class="book-hero-tag">✦ Now Reading ✦</span>
+    <h1 class="book-hero-title">Door To <em>The Heart</em></h1>
+    <p class="book-hero-author">by Luna Elaris</p>
+    <p class="book-hero-genre">Romance · Fantasy · Drama</p>
+    <div class="hero-divider">
+      <div class="hero-divider-line"></div>
+      <span class="hero-divider-glyph">✦</span>
+      <div class="hero-divider-line"></div>
+    </div>
+  </section>
+
+  <!-- Chapter list -->
+  <section class="fade-in delay-2">
+    <p class="chapters-label">Chapters</p>
+    <ol class="chapter-list" id="chapterList">
+      <!-- Chapters will be listed here. Add new chapters by copying the template below. -->
+
+      <li class="chapter-item">
+        <a href="chapter1.html" class="chapter-link">
+          <div class="chapter-left">
+            <span class="chapter-num">1</span>
+            <div class="chapter-info">
+              <div class="chapter-name">The Girl Who Hated Mornings</div>
+              <div class="chapter-meta">~2 min read</div>
+            </div>
+          </div>
+          <span class="chapter-arrow">→</span>
+        </a>
+      </li>
+
+      <li class="chapter-item">
+        <a href="chapter2.html" class="chapter-link">
+          <div class="chapter-left">
+            <span class="chapter-num">2</span>
+            <div class="chapter-info">
+              <div class="chapter-name">The Door</div>
+              <div class="chapter-meta">~2 min read</div>
+            </div>
+          </div>
+          <span class="chapter-arrow">→</span>
+        </a>
+      </li>
+
+      <li class="chapter-item">
+        <a href="chapter3.html" class="chapter-link">
+          <div class="chapter-left">
+            <span class="chapter-num">3</span>
+            <div class="chapter-info">
+              <div class="chapter-name">The Way He Looked at Her</div>
+              <div class="chapter-meta">~5 min read</div>
+            </div>
+          </div>
+          <span class="chapter-arrow">→</span>
+        </a>
+      </li>
+
+      <li class="chapter-item">
+        <a href="chapter4.html" class="chapter-link">
+          <div class="chapter-left">
+            <span class="chapter-num">4</span>
+            <div class="chapter-info">
+              <div class="chapter-name">The Morning That Felt Wrong</div>
+              <div class="chapter-meta">~5 min read</div>
+            </div>
+          </div>
+          <span class="chapter-arrow">→</span>
+        </a>
+      </li>
+
+      <li class="chapter-item">
+        <a href="chapter5.html" class="chapter-link">
+          <div class="chapter-left">
+            <span class="chapter-num">5</span>
+            <div class="chapter-info">
+              <div class="chapter-name">The Moment Between Us</div>
+              <div class="chapter-meta">~3 min read</div>
+            </div>
+          </div>
+          <span class="chapter-arrow">→</span>
+        </a>
+      </li>
+
+      <li class="chapter-item">
+        <a href="chapter6.html" class="chapter-link">
+          <div class="chapter-left">
+            <span class="chapter-num">6</span>
+            <div class="chapter-info">
+              <div class="chapter-name">The Way He Held On</div>
+              <div class="chapter-meta">~6 min read</div>
+            </div>
+          </div>
+          <span class="chapter-arrow">→</span>
+        </a>
+      </li>
+
+      <li class="chapter-item">
+        <a href="chapter7.html" class="chapter-link">
+          <div class="chapter-left">
+            <span class="chapter-num">7</span>
+            <div class="chapter-info">
+              <div class="chapter-name">The Choice That Broke Them</div>
+              <div class="chapter-meta">~8 min read</div>
+            </div>
+          </div>
+          <span class="chapter-arrow">→</span>
+        </a>
+      </li>
+
+      <li class="chapter-item">
+        <a href="chapter8.html" class="chapter-link">
+          <div class="chapter-left">
+            <span class="chapter-num">8</span>
+            <div class="chapter-info">
+              <div class="chapter-name">The Silence She Chose</div>
+              <div class="chapter-meta">~7 min read</div>
+            </div>
+          </div>
+          <span class="chapter-arrow">→</span>
+        </a>
+      </li>
+
+      <li class="chapter-item">
+        <a href="chapter9.html" class="chapter-link">
+          <div class="chapter-left">
+            <span class="chapter-num">9</span>
+            <div class="chapter-info">
+              <div class="chapter-name">Learning to Breathe Again</div>
+              <div class="chapter-meta">~6 min read</div>
+            </div>
+          </div>
+          <span class="chapter-arrow">→</span>
+        </a>
+      </li>
+
+      <li class="chapter-item">
+        <a href="chapter10.html" class="chapter-link">
+          <div class="chapter-left">
+            <span class="chapter-num">10</span>
+            <div class="chapter-info">
+              <div class="chapter-name">Maybe None of It Was Real</div>
+              <div class="chapter-meta">~8 min read</div>
+            </div>
+          </div>
+          <span class="chapter-arrow">→</span>
+        </a>
+      </li>
+
+      <li class="chapter-item">
+        <a href="chapter11.html" class="chapter-link">
+          <div class="chapter-left">
+            <span class="chapter-num">11</span>
+            <div class="chapter-info">
+              <div class="chapter-name">The Eyes Filled With Pain</div>
+              <div class="chapter-meta">~5 min read</div>
+            </div>
+          </div>
+          <span class="chapter-arrow">→</span>
+        </a>
+      </li>
+
+    </ol>
+  </section>
+
+  <div class="toc-footer">
+    <p class="toc-footer-text">✦ More chapters coming soon ✦</p>
+  </div>
+
+</div>
+
+<script>
+// Stars
+const starfield = document.getElementById('starfield');
+for (let i = 0; i < 80; i++) {
+  const s = document.createElement('div');
+  s.className = 'star-dot';
+  const size = Math.random() < 0.7 ? 1 : Math.random() < 0.5 ? 2 : 3;
+  s.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*4}s;--delay:${Math.random()*5}s;--op:${0.3+Math.random()*0.7};`;
+  starfield.appendChild(s);
+}
+</script>
+</body>
+</html>

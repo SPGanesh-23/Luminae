@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — Luminae</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Cinzel+Decorative:wght@400;700&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #0d0a1a;
+    --ink-soft: #c8bfe0;
+    --ink-muted: #a67dd0;
+    --parchment: #0f0820;
+    --parchment-warm: rgba(107, 63, 160, 0.08);
+    --gold: #c9933a;
+    --gold-light: #e8c97a;
+    --ember: #a67dd0;
+    --cream: #f8f0e3;
+    --midnight: #0f0820;
+    --star: #f8f0e3;
+    --violet: #6b3fa0;
+    --violet-light: #a67dd0;
+    --mist: #c8bfe0;
+  }
+
+  body {
+    background: var(--midnight);
+    color: var(--star);
+    font-family: 'Raleway', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .noise-overlay {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity: 0.3;
+  }
+
+  .page {
+    position: relative;
+    z-index: 1;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 2rem 5rem;
+  }
+
+  /* NAV */
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2rem 0 1.5rem;
+    border-bottom: 1px solid rgba(201,147,58,0.15);
+  }
+
+  .logo {
+    font-family: 'Cinzel Decorative', cursive;
+    font-size: 1.5rem;
+    letter-spacing: 0.08em;
+    color: var(--gold);
+    text-shadow: 0 0 20px rgba(201, 147, 58, 0.6);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .logo-glyph {
+    display: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+  .nav-links a {
+    color: var(--mist);
+    text-decoration: none;
+    font-size: 0.78rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--gold-light); }
+
+  /* HERO */
+  .hero {
+    padding: 6rem 0 4rem;
+    text-align: center;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+  }
+
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    font-weight: 300;
+    line-height: 1.05;
+    color: var(--star);
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--gold-light);
+    text-shadow: 0 0 40px rgba(232, 201, 122, 0.4);
+  }
+
+  .hero-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    margin-top: 1.5rem;
+    line-height: 1.7;
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-divider {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 2.5rem auto;
+    max-width: 240px;
+  }
+
+  .hero-divider-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(201,151,58,0.4), transparent);
+  }
+
+  .hero-divider-glyph {
+    font-family: 'Cormorant Garamond', serif;
+    color: var(--gold);
+    font-size: 1.1rem;
+  }
+
+  /* SCROLL BAND */
+  .scroll-band {
+    background: rgba(107, 63, 160, 0.08);
+    border-top: 1px solid rgba(201, 147, 58, 0.15);
+    border-bottom: 1px solid rgba(201, 147, 58, 0.15);
+    padding: 1.2rem 0;
+    overflow: hidden;
+  }
+
+  .scroll-text {
+    display: inline-flex;
+    gap: 4rem;
+    white-space: nowrap;
+    animation: scroll-left 22s linear infinite;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
+    color: var(--gold-light);
+    font-style: italic;
+  }
+
+  @keyframes scroll-left {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* SECTIONS */
+  .section { padding: 5rem 0; }
+
+  .section-label {
+    font-size: 0.68rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+  }
+
+  .mission-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .mission-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.2rem;
+    font-weight: 300;
+    line-height: 1.2;
+    color: var(--star);
+    border-left: 2px solid var(--gold);
+    padding-left: 1.5rem;
+  }
+
+  .mission-text p {
+    font-size: 0.95rem;
+    line-height: 1.9;
+    color: var(--mist);
+    margin-bottom: 1.2rem;
+  }
+
+  /* VALUES */
+  .values-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(201, 147, 58, 0.12);
+    border: 1px solid rgba(201, 147, 58, 0.12);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .value-card {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 2rem 1.6rem;
+    transition: all 0.35s;
+  }
+
+  .value-card:hover {
+    background: rgba(107, 63, 160, 0.1);
+    transform: translateY(-2px);
+  }
+
+  .value-icon { width: 36px; height: 36px; margin-bottom: 1.2rem; color: var(--gold); }
+
+  .value-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: var(--star);
+    margin-bottom: 0.6rem;
+  }
+
+  .value-desc { font-size: 0.82rem; line-height: 1.7; color: var(--mist); }
+
+  /* STATS */
+  .stats-band {
+    background: rgba(107, 63, 160, 0.12);
+    color: var(--star);
+    padding: 4rem 2rem;
+    text-align: center;
+    border-top: 1px solid rgba(201, 147, 58, 0.15);
+    border-bottom: 1px solid rgba(201, 147, 58, 0.15);
+  }
+
+  .stats-inner { max-width: 860px; margin: 0 auto; }
+
+  .stats-label {
+    font-size: 0.68rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 3rem;
+    font-weight: 500;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: rgba(201, 147, 58, 0.1);
+    border: 1px solid rgba(201, 147, 58, 0.12);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .stat-item { padding: 2rem 1rem; background: rgba(255,255,255,0.03); }
+
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem;
+    font-weight: 300;
+    color: var(--gold-light);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+
+  .stat-desc { font-size: 0.78rem; letter-spacing: 0.06em; color: var(--mist); }
+
+  /* CTA */
+  .cta-section {
+    text-align: center;
+    padding: 5rem 0;
+    border-top: 1px solid rgba(201, 147, 58, 0.15);
+  }
+
+  .cta-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.8rem;
+    font-weight: 300;
+    color: var(--star);
+    margin-bottom: 1rem;
+  }
+
+  .cta-sub {
+    font-size: 0.9rem;
+    color: var(--mist);
+    margin-bottom: 2.5rem;
+    line-height: 1.7;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .btn-group { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--violet), #2a0f50);
+    color: var(--star);
+    border: 1px solid var(--violet-light);
+    padding: 0.85rem 2.2rem;
+    font-family: 'Raleway', sans-serif;
+    font-size: 0.82rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.3s;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .btn-primary:hover { box-shadow: 0 0 40px rgba(107, 63, 160, 0.5); transform: translateY(-2px); }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--gold-light);
+    border: 1px solid rgba(201, 147, 58, 0.4);
+    padding: 0.85rem 2.2rem;
+    font-family: 'Raleway', sans-serif;
+    font-size: 0.82rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.3s;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .btn-outline:hover { background: rgba(201, 147, 58, 0.15); border-color: var(--gold); box-shadow: 0 0 20px rgba(201, 147, 58, 0.2); }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid rgba(201, 147, 58, 0.1);
+    padding: 2rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-logo { font-family: 'Cinzel Decorative', cursive; font-size: 1.1rem; color: var(--gold); text-shadow: 0 0 15px rgba(201, 147, 58, 0.4); }
+  .footer-text { font-size: 0.75rem; color: rgba(200, 191, 224, 0.4); }
+
+  /* ANIMATIONS */
+  .fade-in { opacity: 0; transform: translateY(20px); animation: fade-in-up 0.8s ease forwards; }
+  @keyframes fade-in-up { to { opacity: 1; transform: translateY(0); } }
+  .delay-1 { animation-delay: 0.1s; }
+  .delay-2 { animation-delay: 0.25s; }
+  .delay-3 { animation-delay: 0.4s; }
+
+  @media (max-width: 640px) {
+    .mission-layout { grid-template-columns: 1fr; gap: 2rem; }
+    .values-grid { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<div class="noise-overlay"></div>
+
+<div class="page">
+  <nav>
+    <a href="index.html" class="logo">Luminae</a>
+    <ul class="nav-links">
+      <li><a href="index.html#stories">Browse</a></li>
+      <li><a href="index.html#genres">Genres</a></li>
+      <li><a href="index.html#reading">Reading</a></li>
+      <li><a href="about.html" style="color:var(--gold-light)">About</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <p class="hero-eyebrow fade-in">Where stories find their light</p>
+    <h1 class="fade-in delay-1">Stories that<br><em>illuminate</em></h1>
+    <div class="hero-divider fade-in delay-2">
+      <div class="hero-divider-line"></div>
+      <span class="hero-divider-glyph">✦</span>
+      <div class="hero-divider-line"></div>
+    </div>
+    <p class="hero-sub fade-in delay-3">
+      Luminae is a sanctuary for readers and writers alike — a place where every story carries the warmth of a lantern in the dark.
+    </p>
+  </section>
+</div>
+
+<!-- SCROLL BAND -->
+<div class="scroll-band">
+  <div class="scroll-text">
+    <span>Fiction &nbsp;✦&nbsp; Poetry &nbsp;✦&nbsp; Fantasy &nbsp;✦&nbsp; Romance &nbsp;✦&nbsp; Mystery &nbsp;✦&nbsp; Thriller &nbsp;✦&nbsp; Historical &nbsp;✦&nbsp; Literary Fiction &nbsp;✦&nbsp; Short Stories &nbsp;✦&nbsp; Serialised Novels</span>
+    <span>Fiction &nbsp;✦&nbsp; Poetry &nbsp;✦&nbsp; Fantasy &nbsp;✦&nbsp; Romance &nbsp;✦&nbsp; Mystery &nbsp;✦&nbsp; Thriller &nbsp;✦&nbsp; Historical &nbsp;✦&nbsp; Literary Fiction &nbsp;✦&nbsp; Short Stories &nbsp;✦&nbsp; Serialised Novels</span>
+  </div>
+</div>
+
+<div class="page">
+
+  <!-- MISSION -->
+  <section class="section">
+    <p class="section-label">Our mission</p>
+    <div class="mission-layout">
+      <blockquote class="mission-quote">Every story deserves to be found.</blockquote>
+      <div class="mission-text">
+        <p>Luminae was born from a simple belief: the right story, at the right moment, can change a life. We built this platform to give voices a home — from debut writers sharing their first chapter to seasoned authors building devoted readerships.</p>
+        <p>We are not a marketplace. We are not an algorithm. We are a community shaped by craft, curiosity, and the enduring power of the written word. Here, discovery is intentional, and every recommendation comes from human hearts.</p>
+        <p>Our name means light — and that is what we hope every story brings to its reader.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- VALUES -->
+  <section class="section" style="padding-top: 0;">
+    <p class="section-label">What we stand for</p>
+    <div class="values-grid">
+      <div class="value-card">
+        <svg class="value-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18 4L21.5 13.5H32L23.5 19.5L27 29L18 23L9 29L12.5 19.5L4 13.5H14.5L18 4Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+        </svg>
+        <p class="value-title">Craft first</p>
+        <p class="value-desc">We celebrate writing that is thoughtful, intentional, and alive. Quality over volume, always.</p>
+      </div>
+      <div class="value-card">
+        <svg class="value-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="18" cy="18" r="13" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M18 5C18 5 12 12 12 18C12 24 18 31 18 31" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M5 18H31" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+        <p class="value-title">Every voice</p>
+        <p class="value-desc">Stories from every culture, background, and experience deserve space and readership.</p>
+      </div>
+      <div class="value-card">
+        <svg class="value-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 28V12L18 6L28 12V28" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+          <rect x="13" y="18" width="10" height="10" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+        <p class="value-title">A safe home</p>
+        <p class="value-desc">Readers trust us with their most private hours. Writers trust us with their most vulnerable work.</p>
+      </div>
+      <div class="value-card">
+        <svg class="value-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18 8C13 8 8 12 8 18C8 22 10 25 14 27L14 31L18 29L22 31L22 27C26 25 28 22 28 18C28 12 23 8 18 8Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+        </svg>
+        <p class="value-title">Human curation</p>
+        <p class="value-desc">Our editorial team reads everything. No black-box ranking — only honest, considered recommendations.</p>
+      </div>
+      <div class="value-card">
+        <svg class="value-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M6 18L12 8L18 14L24 6L30 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M6 26H30" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <p class="value-title">Fair for writers</p>
+        <p class="value-desc">Transparent earnings, direct reader support, and tools that help writers build sustainable careers.</p>
+      </div>
+      <div class="value-card">
+        <svg class="value-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M10 14C10 14 10 8 18 8C26 8 26 14 26 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <rect x="6" y="14" width="24" height="16" rx="2" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M18 20V26" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="18" cy="20" r="1.5" fill="currentColor"/>
+        </svg>
+        <p class="value-title">Privacy respected</p>
+        <p class="value-desc">Your reading life is yours. We never sell data or build profiles to manipulate your choices.</p>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- STATS BAND -->
+<div class="stats-band">
+  <div class="stats-inner">
+    <p class="stats-label">Luminae in numbers</p>
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-num">2.4M</div>
+        <div class="stat-desc">Readers worldwide</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">84K</div>
+        <div class="stat-desc">Published stories</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">190+</div>
+        <div class="stat-desc">Countries reached</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">12K</div>
+        <div class="stat-desc">Writers supported</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page">
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <h2 class="cta-title">Your next favourite story<br>is waiting</h2>
+    <p class="cta-sub">Join millions of readers and thousands of writers who call Luminae home.</p>
+    <div class="btn-group">
+      <a href="#" class="btn-primary">Start Reading</a>
+      <a href="#" class="btn-outline">Become a Writer</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span class="footer-logo">Luminae ✦</span>
+    <span class="footer-text">© 2026 Luminae. All rights reserved.</span>
+  </footer>
+
+</div>
+
+</body>
+</html>

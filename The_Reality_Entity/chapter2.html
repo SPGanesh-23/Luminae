@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CHAPTER  2 — The Reality Entity | Luminae</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Cinzel+Decorative:wght@400;700&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0d0a1a; --parchment: #fdf8f0; --cream: #f5ede0;
+    --gold: #c9933a; --gold-light: #e8c97a; --gold-glow: #f0d898;
+    --violet: #6b3fa0; --violet-dark: #3d1f6e; --violet-light: #a67dd0;
+    --rose: #c45a7a; --midnight: #0f0820; --mist: #c8bfe0; --star: #f8f0e3;
+    --accent: #0ea5e9; --accent-glow: rgba(14,165,233,0.4);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--midnight); color: var(--star); font-family: 'Raleway', sans-serif; font-weight: 300; overflow-x: hidden; min-height: 100vh; }
+  .starfield { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .star-dot { position: absolute; border-radius: 50%; background: white; animation: twinkle var(--d, 3s) ease-in-out infinite; animation-delay: var(--delay, 0s); opacity: 0; }
+  @keyframes twinkle { 0%, 100% { opacity: 0; transform: scale(0.5); } 50% { opacity: var(--op, 0.7); transform: scale(1); } }
+  .top-nav { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; padding: 1rem 3rem; background: linear-gradient(to bottom, rgba(15,8,32,0.98), rgba(15,8,32,0.9)); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(124,58,237,0.2); }
+  .logo { font-family: 'Cinzel Decorative', cursive; font-size: 1.1rem; color: var(--accent); letter-spacing: 0.08em; text-shadow: 0 0 20px var(--accent-glow); text-decoration: none; }
+  .nav-chapter-info { font-size: 0.7rem; color: var(--mist); letter-spacing: 0.1em; text-transform: uppercase; }
+  .toc-link { color: var(--accent); text-decoration: none; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.3s; }
+  .toc-link:hover { color: #7c3aed; }
+  .reader-page { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; padding: 4rem 2rem 3rem; }
+  .ch-header { text-align: center; margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid rgba(124,58,237,0.2); }
+  .ch-number { font-size: 0.65rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.2rem; display: block; }
+  .ch-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 300; line-height: 1.15; color: var(--star); margin-bottom: 0.8rem; }
+  .ch-title em { font-style: italic; color: #7c3aed; text-shadow: 0 0 30px rgba(124,58,237,0.4); }
+  .ch-divider { display: flex; align-items: center; gap: 0.8rem; margin: 1.5rem auto 0; max-width: 160px; }
+  .ch-divider-line { flex: 1; height: 1px; background: linear-gradient(to right, transparent, rgba(124,58,237,0.5), transparent); }
+  .ch-divider-glyph { color: var(--accent); font-size: 0.8rem; }
+  .ch-content { font-family: 'Cormorant Garamond', serif; font-size: 1.18rem; color: var(--mist); line-height: 2; font-weight: 400; }
+  .ch-content p { margin-bottom: 1.5rem; }
+  .ch-content p.first::first-letter { font-family: 'Cinzel Decorative', cursive; font-size: 3.8rem; float: left; line-height: 1; margin: 0.05em 0.12em -0.1em 0; color: var(--accent); text-shadow: 0 0 20px var(--accent-glow); }
+  .ch-content em { color: #7c3aed; font-style: italic; }
+  .ch-content .dialogue { color: var(--star); }
+  .ch-content .thought { color: #0ea5e9; font-style: italic; }
+  .ch-content hr { border: none; text-align: center; margin: 2.5rem 0; }
+  .ch-content hr::after { content: '✦ ✦ ✦'; color: var(--accent); font-size: 0.7rem; letter-spacing: 0.5em; }
+  .author-note { background: rgba(0, 0, 0, 0.15); border: 1px solid rgba(124, 58, 237, 0.15); border-radius: 4px; padding: 2.5rem; margin-top: 4rem; }
+  .author-note .note-label { font-family: 'Raleway', sans-serif; font-size: 0.65rem; font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase; color: #a67dd0; margin-bottom: 1.5rem; }
+  .author-note p { font-size: 1.15rem; color: var(--mist); line-height: 2; margin-bottom: 1rem; }
+  .author-note p:last-child { margin-bottom: 0; }
+  .ch-end { text-align: center; padding: 3rem 0 0; margin-top: 3rem; border-top: 1px solid rgba(124,58,237,0.2); }
+  .ch-end-text { font-family: 'Cormorant Garamond', serif; font-size: 0.85rem; font-style: italic; color: rgba(200,191,224,0.4); letter-spacing: 0.1em; margin-bottom: 2rem; }
+  .ch-nav { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
+  .ch-nav-btn { display: inline-flex; align-items: center; gap: 0.6rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(124,58,237,0.3); color: var(--star); padding: 0.8rem 1.8rem; font-family: 'Raleway', sans-serif; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; transition: all 0.3s; border-radius: 2px; }
+  .ch-nav-btn:hover { background: rgba(124,58,237,0.15); border-color: rgba(14,165,233,0.5); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.4); }
+  .ch-nav-btn.disabled { opacity: 0.3; pointer-events: none; }
+  .ch-nav-toc { color: var(--accent); text-decoration: none; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.3s; }
+  .ch-nav-toc:hover { color: #7c3aed; }
+  .progress-wrap { position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 100; background: rgba(0,0,0,0.3); }
+  .progress-fill { height: 100%; width: 0; background: linear-gradient(to right, #7c3aed, #0ea5e9); transition: width 0.1s; }
+  .fade-in { opacity: 0; transform: translateY(20px); animation: fadeUp 0.8s ease forwards; }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+  .delay-1 { animation-delay: 0.15s; }
+  .delay-2 { animation-delay: 0.3s; }
+</style>
+</head>
+<body>
+
+<div class="progress-wrap"><div class="progress-fill" id="progressFill"></div></div>
+<div class="starfield" id="starfield"></div>
+
+<nav class="top-nav">
+  <a href="../index.html" class="logo">Luminae</a>
+  <span class="nav-chapter-info">Chapter 2 of 7</span>
+  <a href="index.html" class="toc-link">☰ Chapters</a>
+</nav>
+
+<div class="reader-page">
+
+  <header class="ch-header fade-in">
+    <span class="ch-number">✦ CHAPTER  2 ✦</span>
+    <h1 class="ch-title">CAUSE AND <em>EFFECT</em></h1>
+    <div class="ch-divider">
+      <div class="ch-divider-line"></div>
+      <span class="ch-divider-glyph">✦</span>
+      <div class="ch-divider-line"></div>
+    </div>
+  </header>
+
+  <article class="ch-content fade-in delay-1">
+    <p class="first">The change had started early that morning.</p>
+    <p>Before the first bell.Before anyone noticed.</p>
+    <p>A man stood in a small stationery shop across the road from the school, flipping through a notebook he didn’t really need. He wore a simple shirt, sleeves rolled up, hair slightly messy—nothing about him screamed authority.</p>
+    <p>He checked his watch.</p>
+    <p>Three more days, he thought.That’s when he was supposed to officially take charge.</p>
+    <p>The new principal.</p>
+    <p>Through the glass window, he glanced at the school building. Students were already entering. Teachers stood near the gate, arguing about something. Chaos, even from a distance.</p>
+    <p>He hesitated.</p>
+    <p>Then, for no clear reason at all, a thought crossed his mind.</p>
+    <p>I’m already here. I have the appointment letter. Why wait?</p>
+    <p>It felt… reasonable.</p>
+    <p>Almost obvious.</p>
+    <p>He paid for the notebook and crossed the road.</p>
+    <p>By 9:30 a.m., the office was buzzing.</p>
+    <p>Files stacked high on the desk—unfinished, unsigned, delayed. The previous principal had been strict, slow, and meticulous to a fault. Everything waited.</p>
+    <p>The new principal wasn’t.</p>
+    <p>He flipped through suspension records, attendance disputes, permission letters.</p>
+    <p>One file caught his eye.</p>
+    <p>Ethan Walker — Suspension (Expired)</p>
+    <p>He frowned.Why is this still pending?</p>
+    <p>The suspension period had ended. No reason for delay.</p>
+    <p>Without a second thought, he signed.</p>
+    <p>Stamp.Signature.Done.</p>
+    <p>One among dozens.</p>
+    <p>Nothing special.</p>
+    <p>And yet—somewhere else—something had planned this to happen.</p>
+    <p>Lunch hour.</p>
+    <p>Then a voice—calm, low, unmistakable.</p>
+    <p><span class="dialogue">“That enough?”</span></p>
+    <p>The cafeteria didn’t go silent all at once. It happened in layers. Laughter died first. Then the scraping of shoes. Even the hum of conversation seemed to hesitate.</p>
+    <p>Alex turned.</p>
+    <p>Ethan stood there like he’d never left. Same posture. Same weight in the room. Hands in his pockets, shoulders relaxed—too relaxed for someone who shouldn’t even be here.</p>
+    <p>For a second, no one moved.</p>
+    <p>One of the boys near the corner laughed nervously, glancing around like he expected backup. <span class="dialogue">“Bro, you’re not even supposed to be—”</span></p>
+    <p>Ethan took a step forward.</p>
+    <p>It wasn’t threatening. That was the problem.</p>
+    <p><span class="dialogue">“Walk away,”</span> he said.</p>
+    <p>No anger. No volume. Just certainty.</p>
+    <p>The boy hesitated. Pride kicked in faster than sense.</p>
+    <p>He shoved Ethan in the chest.</p>
+    <p>The sound wasn’t loud—but it echoed.</p>
+    <p>That was the mistake.</p>
+    <p>Ethan’s hand shot out, catching the boy’s wrist mid-motion. A sharp twist—clean, practiced. The boy gasped, his knees buckling before he even understood why his arm no longer obeyed him.</p>
+    <p>Ethan shoved him into the table.</p>
+    <p>Metal legs screeched. Trays slid. Milk spilled across the floor.</p>
+    <p>Another boy lunged forward, swinging wild.</p>
+    <p>Ethan ducked, stepped inside the punch, and drove his shoulder into the boy’s ribs. Not hard—precise. The boy stumbled back, crashing into a chair, breath gone in a silent wheeze.</p>
+    <p>A third froze.</p>
+    <p>Phones that had been raised earlier were slowly lowered.</p>
+    <p>No one was cheering.</p>
+    <p>No one was filming.</p>
+    <p>Ethan straightened, eyes sweeping the group. Calm. Focused.</p>
+    <p><span class="dialogue">“Anyone else?”</span></p>
+    <p>They backed away.</p>
+    <p>Not ran. Backed away—like animals testing the edge of danger and deciding they’d gone far enough.</p>
+    <p>Teachers burst in moments later, voices loud, footsteps frantic. Too late to see how it started. Only the end.</p>
+    <p>Ethan stood still, breathing evenly. Hands back in his pockets.</p>
+    <p>Alex realized his heart was pounding so hard it hurt.</p>
+    <p>He’s really here.</p>
+    <p>And somehow… he shouldn’t be.</p>
+    <p>Later, the three of them sat outside near the old science block, backs against the warm concrete wall. The noise of the cafeteria felt distant now, like it belonged to another day.</p>
+    <p>Ryan let out a low laugh, dragging a hand through his hair.<span class="dialogue">“Okay. Someone explain this to me,”</span> he said. <span class="dialogue">“Because last week you were suspended, yesterday the school was falling apart, and today—”</span> he gestured at Ethan, <span class="dialogue">“—you’re back like some final boss.”</span></p>
+    <p>Ethan smirked. <span class="dialogue">“What, you didn’t miss me?”</span></p>
+    <p><span class="dialogue">“Oh, I missed the peace,”</span> Ryan shot back. <span class="dialogue">“You’re a bonus.”</span></p>
+    <p>Alex smiled faintly but said nothing.</p>
+    <p>Ethan noticed.</p>
+    <p>He nudged Alex lightly with his foot. <span class="dialogue">“You’ve been quiet since lunch. That’s not like you.”</span></p>
+    <p>Alex blinked. <span class="dialogue">“Huh? No, I’m fine. Just… processing.”</span></p>
+    <p><span class="dialogue">“Processing what?”</span> Ryan asked. <span class="dialogue">“The fact that the school magically fixed itself overnight?”</span></p>
+    <p>Ethan frowned. <span class="dialogue">“It wasn’t magic.”</span>He paused. <span class="dialogue">“At least, I don’t think so.”</span></p>
+    <p>Alex stiffened.</p>
+    <p>Ethan leaned back, eyes on the sky. <span class="dialogue">“I got the call this morning. New principal. Said he cleared a bunch of pending stuff. Suspension included.”</span> He shrugged. <span class="dialogue">“Still feels off, though.”</span></p>
+    <p><span class="dialogue">“Off how?”</span> Ryan asked.</p>
+    <p>Ethan’s jaw tightened slightly. <span class="dialogue">“Like things lined up too perfectly.”</span></p>
+    <p>For a moment, none of them spoke.</p>
+    <p>Alex adjusted his glasses.</p>
+    <p>Ryan broke the silence. <span class="dialogue">“Well, whatever it was, don’t disappear again. School without you is basically survival mode.”</span></p>
+    <p>Ethan chuckled. <span class="dialogue">“Not planning to.”</span></p>
+    <p>Then he looked at Alex again—longer this time.<span class="dialogue">“You sure you’re okay?”</span></p>
+    <p>Alex met his eyes.</p>
+    <p><span class="dialogue">“…Yeah,”</span> he said.But the word didn’t feel as solid as it should have.</p>
+    <p>Somewhere behind that calm moment, something unseen was listening.</p>
+    <p>Learning how humans talked.Learning how they felt.</p>
+    <p>End of Chapter 2</p>
+    <div class="author-note">
+      <div class="note-label">AUTHOR'S NOTE</div>
+    <p>What happened here wasn’t a miracle.</p>
+    <p>Alex’s thought didn’t summon Ethan out of nowhere, and nothing broke reality’s rules. Instead, the Reality Entity subtly adjusted cause and effect—a new principal arrived earlier than planned, signed long-pending papers, and Ethan was allowed back into school.</p>
+    <p>Every event still had a logical reason.</p>
+    <p>Reality wasn’t rewritten through magic.It was gently nudged into choosing the most convenient path.</p>
+    </div>
+
+  </article>
+
+  <div class="ch-end fade-in delay-2">
+    <p class="ch-end-text">— End of CHAPTER  2 —</p>
+    <div class="ch-nav">
+      <a href="chapter1.html" class="ch-nav-btn ">← Previous</a>
+      <a href="index.html" class="ch-nav-toc">All Chapters</a>
+      <a href="chapter3.html" class="ch-nav-btn ">Next →</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const starfield = document.getElementById('starfield');
+for (let i = 0; i < 60; i++) {
+  const s = document.createElement('div');
+  s.className = 'star-dot';
+  const size = Math.random() < 0.7 ? 1 : 2;
+  s.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*4}s;--delay:${Math.random()*5}s;--op:${0.2+Math.random()*0.5};`;
+  starfield.appendChild(s);
+}
+const progressFill = document.getElementById('progressFill');
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  progressFill.style.width = Math.min(pct, 100) + '%';
+});
+</script>
+</body>
+</html>
