@@ -379,6 +379,10 @@
     .values-grid { grid-template-columns: 1fr; }
     .stats-grid { grid-template-columns: repeat(2, 1fr); }
   }
+  @media (pointer: coarse) {
+    body { cursor: auto; }
+    .cursor, .cursor-ring { display: none !important; }
+  }
   /* Custom cursor */
   body { cursor: none; }
   .cursor { position:fixed; width:8px; height:8px; background:#c9933a; border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:transform 0.1s, background 0.3s; box-shadow:0 0 12px #f0d898; }

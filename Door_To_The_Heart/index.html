@@ -184,7 +184,23 @@
   .delay-1 { animation-delay: 0.1s; }
   .delay-2 { animation-delay: 0.2s; }
   .delay-3 { animation-delay: 0.3s; }
+  @media (pointer: coarse) {
+    body { cursor: auto; }
+    .cursor, .cursor-ring { display: none !important; }
+  }
+
+  @media (max-width: 768px) {
+    .top-nav { padding: 1.2rem 1.5rem; }
+    .logo { font-size: 1.1rem; }
+    .page { padding: 0 1.2rem 3rem; }
+    .book-hero { padding: 3.5rem 0 2rem; }
+    .book-hero-title { font-size: 2.6rem; }
+    .chapter-link { padding: 1.1rem 0.8rem; }
+    .chapter-num { font-size: 1.2rem; min-width: 24px; }
+    .chapter-name { font-size: 1rem; }
+  }
   /* Custom cursor */
+
   body { cursor: none; }
   .cursor { position:fixed; width:8px; height:8px; background:#c9933a; border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:transform 0.1s, background 0.3s; box-shadow:0 0 12px #f0d898; }
   .cursor-ring { position:fixed; width:32px; height:32px; border:1px solid rgba(201,147,58,0.4); border-radius:50%; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:all 0.18s ease; }
