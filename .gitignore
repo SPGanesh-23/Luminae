@@ -1,0 +1,8 @@
+# Source chapter PDFs (already converted to HTML)
+*.pdf
+
+# Source chapter DOCX files
+*.docx
+
+# VS Code settings
+.vscode/

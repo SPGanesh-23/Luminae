@@ -946,7 +946,7 @@
       float: left;
       line-height: 1;
       margin: 0 0.15em -0.15em 0;
-      color: var(--violet);
+      color: var(--drop-color, var(--violet));
     }
 
     .reader-controls {
@@ -994,6 +994,85 @@
       width: 34%;
       height: 100%;
       background: linear-gradient(to right, var(--violet), var(--gold));
+      border-radius: 1px;
+    }
+
+    /* ── Carousel ── */
+    .reader-carousel {
+      position: relative;
+      max-width: 680px;
+      margin: 0 auto;
+      cursor: grab;
+      user-select: none;
+    }
+
+    .reader-slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      opacity: 0;
+      transform: scale(0.97);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .reader-slide.active {
+      position: relative;
+      opacity: 1;
+      transform: scale(1);
+      pointer-events: auto;
+      z-index: 1;
+    }
+
+    .reader-slide.exiting {
+      position: absolute;
+      opacity: 0;
+      transform: scale(1.03);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .carousel-dots {
+      display: flex;
+      justify-content: center;
+      gap: 0.6rem;
+      margin-top: 1.8rem;
+    }
+
+    .carousel-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      border: 1px solid rgba(201, 147, 58, 0.5);
+      background: transparent;
+      cursor: none;
+      transition: all 0.3s;
+      padding: 0;
+    }
+
+    .carousel-dot.active {
+      background: var(--gold);
+      border-color: var(--gold);
+      box-shadow: 0 0 8px rgba(201, 147, 58, 0.6);
+      width: 22px;
+      border-radius: 4px;
+    }
+
+    .carousel-timer-bar {
+      width: 100%;
+      height: 2px;
+      background: rgba(201, 147, 58, 0.1);
+      border-radius: 1px;
+      margin-top: 1rem;
+      overflow: hidden;
+    }
+
+    .carousel-timer-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(to right, var(--violet-light), var(--gold));
       border-radius: 1px;
     }
 
@@ -1246,11 +1325,9 @@
       <li><a href="#stories">Browse</a></li>
       <li><a href="#genres">Genres</a></li>
       <li><a href="#reading">Reading</a></li>
-      <li><a href="#write">Write</a></li>
       <li><a href="about.html">About</a></li>
     </ul>
     <div class="nav-actions">
-      <button class="btn-ghost">Sign In</button>
       <button class="btn-fill">Begin Reading</button>
     </div>
   </nav>
@@ -1263,8 +1340,8 @@
       <p class="hero-subtitle">Discover thousands of enchanting tales — from ancient fantasy kingdoms to whispered
         romances under moonlit skies. Your next obsession awaits.</p>
       <div class="hero-actions">
-        <button class="btn-hero">Explore Stories</button>
-        <button class="btn-ghost" style="padding:0.85rem 2.2rem; font-size:0.8rem;">Start Writing</button>
+        <button class="btn-hero" onclick="window.location.href='#stories'">Explore Stories</button>
+        <button class="btn-ghost" style="padding:0.85rem 2.2rem; font-size:0.8rem;" onclick="window.location.href='#featured'">Featured Tale</button>
       </div>
       <div class="hero-divider"></div>
     </div>
@@ -1273,33 +1350,30 @@
   <!-- Marquee -->
   <div class="marquee-section">
     <div class="marquee-track" id="marqueeTrack">
-      <span class="marquee-item">The Shattered Crown</span>
-      <span class="marquee-item">Moonveil Chronicles</span>
-      <span class="marquee-item">Echoes of Aether</span>
-      <span class="marquee-item">The Last Ember</span>
-      <span class="marquee-item">Starfall Requiem</span>
-      <span class="marquee-item">Veil of Forgotten Gods</span>
-      <span class="marquee-item">Glass and Shadow</span>
-      <span class="marquee-item">The Ivory Witch</span>
-      <span class="marquee-item">When Stars Remember</span>
-      <span class="marquee-item">Ashen Wings</span>
       <span class="marquee-item">Door To The Heart</span>
-      <span class="marquee-item">The Shattered Crown</span>
-      <span class="marquee-item">Moonveil Chronicles</span>
-      <span class="marquee-item">Echoes of Aether</span>
-      <span class="marquee-item">The Last Ember</span>
-      <span class="marquee-item">Starfall Requiem</span>
-      <span class="marquee-item">Veil of Forgotten Gods</span>
-      <span class="marquee-item">Glass and Shadow</span>
-      <span class="marquee-item">The Ivory Witch</span>
-      <span class="marquee-item">When Stars Remember</span>
-      <span class="marquee-item">Ashen Wings</span>
+      <span class="marquee-item">The Reality Entity</span>
       <span class="marquee-item">Door To The Heart</span>
-    </div>
+      <span class="marquee-item">The Reality Entity</span>
+      <span class="marquee-item">Door To The Heart</span>
+      <span class="marquee-item">The Reality Entity</span>
+      <span class="marquee-item">Door To The Heart</span>
+      <span class="marquee-item">The Reality Entity</span>
+      <span class="marquee-item">Door To The Heart</span>
+      <span class="marquee-item">The Reality Entity</span>     
+      <span class="marquee-item">Door To The Heart</span>
+      <span class="marquee-item">The Reality Entity</span>
+      <span class="marquee-item">Door To The Heart</span>
+      <span class="marquee-item">The Reality Entity</span>
+      <span class="marquee-item">Door To The Heart</span>
+      <span class="marquee-item">The Reality Entity</span>
+      <span class="marquee-item">Door To The Heart</span>
+      <span class="marquee-item">The Reality Entity</span>
+      <span class="marquee-item">Door To The Heart</span>
+      <span class="marquee-item">The Reality Entity</span>                     
   </div>
 
   <!-- Featured story -->
-  <section class="featured-section" id="stories">
+  <section class="featured-section" id="featured">
     <div class="container">
       <div class="section-header reveal">
         <span class="section-tag">✦ Editor's Enchantment ✦</span>
@@ -1339,8 +1413,81 @@
     </div>
   </section>
 
+  <!-- Reader preview -->
+  <section class="reader-section" id="reading">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">✦ Story Preview ✦</span>
+        <h2 class="section-title">Immerse Yourself <em>Fully</em></h2>
+      </div>
+
+      <!-- Carousel wrapper -->
+      <div class="reader-carousel reveal">
+
+        <!-- Slide 1: Door To The Heart -->
+        <div class="reader-slide active" data-index="0">
+          <div class="reader-preview">
+            <div class="reader-chapter">Chapter I · Door To The Heart</div>
+            <div class="reader-title">The Girl Who Hated Mornings</div>
+            <div class="reader-text">
+              <p class="drop-cap">Luna hated mornings. Not because she was lazy. Not because she loved sleep. But because
+                waking up meant facing a world she no longer liked. Her room was always quiet. Too quiet. The kind of
+                silence that made your thoughts louder than they should be.</p>
+              <p>"Luna, breakfast is ready!" her mother called from downstairs.</p>
+              <p>"I'm not hungry!" she replied, her voice flat, practiced. She stared at the ceiling. Every day felt the
+                same. Same walls. Same people. Same <em>emptiness</em>...</p>
+            </div>
+            <div style="margin-top: 1.5rem;">
+              <div class="progress-bar-wrap">
+                <div class="progress-bar-fill" style="width:11%;"></div>
+              </div>
+            </div>
+            <div class="reader-controls">
+              <a href="Door_To_The_Heart/index.html" class="reader-btn" style="text-decoration:none;">☰ All Chapters</a>
+              <div class="reader-progress">Chapter 1 of 9 &nbsp;·&nbsp; 11% complete</div>
+              <a href="Door_To_The_Heart/chapter1.html" class="reader-btn" style="text-decoration:none;">Read Now &rarr;</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 2: The Reality Entity -->
+        <div class="reader-slide" data-index="1">
+          <div class="reader-preview">
+            <div class="reader-chapter" style="color: #7c3aed;">Chapter I · The Reality Entity</div>
+            <div class="reader-title">The Day Reality Blinked</div>
+            <div class="reader-text">
+              <p class="drop-cap" style="--drop-color: #7c3aed;">The fight was never meant to happen. Two figures clashed in the white void between timelines, where seconds had no meaning and history existed only as probability. Their weapons were not blades or guns, but equations — code-like symbols tearing through reality itself.</p>
+              <p>Between them hovered the <em>Reality Entity</em> — a consciousness born from science so advanced it no longer needed a body.</p>
+              <p>One mistake. One miscalculated strike. Reality <em>fractured</em>...</p>
+            </div>
+            <div style="margin-top: 1.5rem;">
+              <div class="progress-bar-wrap">
+                <div class="progress-bar-fill" style="width:14%; background: linear-gradient(to right, #7c3aed, #0ea5e9);"></div>
+              </div>
+            </div>
+            <div class="reader-controls">
+              <a href="The_Reality_Entity/index.html" class="reader-btn" style="text-decoration:none;">☰ All Chapters</a>
+              <div class="reader-progress">Chapter 1 of 7 &nbsp;·&nbsp; 14% complete</div>
+              <a href="The_Reality_Entity/chapter1.html" class="reader-btn" style="text-decoration:none;">Read Now &rarr;</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dot indicators -->
+        <div class="carousel-dots">
+          <button class="carousel-dot active" data-dot="0" aria-label="Story 1"></button>
+          <button class="carousel-dot" data-dot="1" aria-label="Story 2"></button>
+        </div>
+
+        <!-- Countdown bar -->
+        <div class="carousel-timer-bar"><div class="carousel-timer-fill"></div></div>
+
+      </div><!-- end .reader-carousel -->
+    </div>
+  </section>
+
   <!-- Story Cards -->
-  <section style="padding: 0 0 6rem;">
+  <section style="padding: 0 0 6rem;" id="stories">
     <div class="container">
       <div class="section-header reveal">
         <span class="section-tag">✦ Recently Enchanted ✦</span>
@@ -1385,6 +1532,18 @@
     </div>
   </section>
 
+  <!-- Quote -->
+  <section class="quote-section">
+    <div class="container">
+      <div class="reveal">
+        <span class="quote-marks">"</span>
+        <p class="quote-text">A reader lives a thousand lives before she dies. The person who never reads lives only
+          one.</p>
+        <p class="quote-attr">— George R.R. Martin</p>
+      </div>
+    </div>
+  </section>
+
   <!-- Genres -->
   <section class="genres-section" id="genres">
     <div class="container">
@@ -1422,67 +1581,6 @@
           <span class="genre-icon">👻</span>
           <div class="genre-name">Horror</div>
           <div class="genre-count">18,900 stories</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Quote -->
-  <section class="quote-section">
-    <div class="container">
-      <div class="reveal">
-        <span class="quote-marks">"</span>
-        <p class="quote-text">A reader lives a thousand lives before she dies. The person who never reads lives only
-          one.</p>
-        <p class="quote-attr">— George R.R. Martin</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Reader preview -->
-  <section class="reader-section" id="reading">
-    <div class="container">
-      <div class="section-header reveal">
-        <span class="section-tag">✦ The Reading Chamber ✦</span>
-        <h2 class="section-title">Immerse Yourself <em>Fully</em></h2>
-      </div>
-      <div class="reader-preview reveal">
-        <div class="reader-chapter">Chapter I · Door To The Heart</div>
-        <div class="reader-title">The Girl Who Hated Mornings</div>
-        <div class="reader-text">
-          <p class="drop-cap">Luna hated mornings. Not because she was lazy. Not because she loved sleep. But because
-            waking up meant facing a world she no longer liked. Her room was always quiet. Too quiet. The kind of
-            silence
-            that made your thoughts louder than they should be.</p>
-          <p>"Luna, breakfast is ready!" her mother called from downstairs.</p>
-          <p>"I'm not hungry!" she replied, her voice flat, practiced. She stared at the ceiling. Every day felt the
-            same. Same walls. Same people. Same <em>emptiness</em>...</p>
-        </div>
-        <div style="margin-top: 1.5rem;">
-          <div class="progress-bar-wrap">
-            <div class="progress-bar-fill"></div>
-          </div>
-        </div>
-        <div class="reader-controls">
-          <a href="chapters/index.html" class="reader-btn" style="text-decoration:none;">☰ All Chapters</a>
-          <div class="reader-progress">Chapter 1 of 9 &nbsp;·&nbsp; 11% complete</div>
-          <a href="chapters/chapter1.html" class="reader-btn" style="text-decoration:none;">Read Now &rarr;</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Writers CTA -->
-  <section class="writers-section" id="write">
-    <div class="writers-inner">
-      <div class="reveal">
-        <span class="section-tag">✦ For Those Who Dream in Words ✦</span>
-        <h2 class="writers-title">Your Story Deserves<br>to <em>Live Forever</em></h2>
-        <p class="writers-sub">Join thousands of writers sharing their worlds on Luminae. Craft chapters, connect with
-          devoted readers, and let your imagination take flight.</p>
-        <div class="writers-actions">
-          <button class="btn-hero">Start Writing Free</button>
-          <button class="btn-ghost" style="padding:0.85rem 2.2rem; font-size:0.8rem;">See How It Works</button>
         </div>
       </div>
     </div>
@@ -1577,6 +1675,148 @@
       });
     }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
     revealEls.forEach(el => observer.observe(el));
+
+    // ── Reader Carousel ──
+    (function () {
+      const slides = document.querySelectorAll('.reader-slide');
+      const dots   = document.querySelectorAll('.carousel-dot');
+      const fill   = document.querySelector('.carousel-timer-fill');
+      const DURATION = 6000; // ms per slide
+      let current = 0;
+      let timer, fillTimer, fillStart, fillFrame;
+
+      function goTo(next) {
+        if (next === current) return;
+        const prev = current;
+        current = next;
+
+        // crossfade
+        slides[prev].classList.add('exiting');
+        slides[prev].classList.remove('active');
+        slides[next].classList.add('active');
+        setTimeout(() => slides[prev].classList.remove('exiting'), 750);
+
+        // dots
+        dots[prev].classList.remove('active');
+        dots[next].classList.add('active');
+
+        resetTimer();
+      }
+
+      function resetTimer() {
+        clearTimeout(timer);
+        cancelAnimationFrame(fillFrame);
+
+        // animate fill bar
+        fill.style.transition = 'none';
+        fill.style.width = '0%';
+        fillStart = performance.now();
+
+        function animateFill(now) {
+          const elapsed = now - fillStart;
+          const pct = Math.min((elapsed / DURATION) * 100, 100);
+          fill.style.width = pct + '%';
+          if (pct < 100) {
+            fillFrame = requestAnimationFrame(animateFill);
+          }
+        }
+        requestAnimationFrame(animateFill);
+
+        timer = setTimeout(() => {
+          const next = (current + 1) % slides.length;
+          goTo(next);
+        }, DURATION);
+      }
+
+      // dot click
+      dots.forEach(dot => {
+        dot.addEventListener('click', () => {
+          goTo(parseInt(dot.dataset.dot));
+        });
+      });
+
+      // pause on hover
+      const carousel = document.querySelector('.reader-carousel');
+      carousel.addEventListener('mouseenter', () => {
+        if (!isDragging) {
+          clearTimeout(timer);
+          cancelAnimationFrame(fillFrame);
+        }
+      });
+      carousel.addEventListener('mouseleave', () => {
+        if (!isDragging) resumeTimer();
+      });
+
+      function resumeTimer() {
+        clearTimeout(timer);
+        cancelAnimationFrame(fillFrame);
+        const elapsed = parseFloat(fill.style.width) / 100 * DURATION;
+        const remaining = DURATION - elapsed;
+        fillStart = performance.now() - elapsed;
+        function animateFill(now) {
+          const e = now - fillStart;
+          const pct = Math.min((e / DURATION) * 100, 100);
+          fill.style.width = pct + '%';
+          if (pct < 100) fillFrame = requestAnimationFrame(animateFill);
+        }
+        requestAnimationFrame(animateFill);
+        timer = setTimeout(() => goTo((current + 1) % slides.length), remaining);
+      }
+
+      // ── Swipe / Drag ──
+      let dragStartX = 0, dragDelta = 0, isDragging = false;
+      const THRESHOLD = 60; // px needed to trigger a slide change
+
+      function onDragStart(x) {
+        isDragging = true;
+        dragStartX = x;
+        dragDelta = 0;
+        clearTimeout(timer);
+        cancelAnimationFrame(fillFrame);
+        carousel.style.cursor = 'grabbing';
+      }
+
+      function onDragMove(x) {
+        if (!isDragging) return;
+        dragDelta = x - dragStartX;
+        // Subtle visual nudge on the active slide
+        const activeSlide = slides[current].querySelector('.reader-preview');
+        const nudge = Math.max(-30, Math.min(30, dragDelta * 0.15));
+        activeSlide.style.transform = `translateX(${nudge}px)`;
+        activeSlide.style.transition = 'none';
+      }
+
+      function onDragEnd() {
+        if (!isDragging) return;
+        isDragging = false;
+        carousel.style.cursor = '';
+
+        // Snap the preview back
+        const activeSlide = slides[current].querySelector('.reader-preview');
+        activeSlide.style.transition = 'transform 0.35s ease';
+        activeSlide.style.transform = 'translateX(0)';
+
+        if (dragDelta < -THRESHOLD) {
+          goTo((current + 1) % slides.length);
+        } else if (dragDelta > THRESHOLD) {
+          goTo((current - 1 + slides.length) % slides.length);
+        } else {
+          resumeTimer();
+        }
+      }
+
+      // Mouse events
+      carousel.addEventListener('mousedown', e => onDragStart(e.clientX));
+      window.addEventListener('mousemove',   e => onDragMove(e.clientX));
+      window.addEventListener('mouseup',     ()  => onDragEnd());
+
+      // Touch events
+      carousel.addEventListener('touchstart', e => onDragStart(e.touches[0].clientX), { passive: true });
+      carousel.addEventListener('touchmove',  e => onDragMove(e.touches[0].clientX),  { passive: true });
+      carousel.addEventListener('touchend',   ()  => onDragEnd());
+
+      resetTimer();
+    })();
 
     // Smooth book tilt on mouse
     const book = document.querySelector('.book-3d');
