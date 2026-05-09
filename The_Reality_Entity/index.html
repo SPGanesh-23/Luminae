@@ -7,58 +7,146 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Cinzel+Decorative:wght@400;700&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --ink: #0d0a1a; --parchment: #fdf8f0; --cream: #f5ede0;
-    --gold: #c9933a; --gold-light: #e8c97a; --gold-glow: #f0d898;
-    --violet: #6b3fa0; --violet-dark: #3d1f6e; --violet-light: #a67dd0;
-    --rose: #c45a7a; --midnight: #0f0820; --mist: #c8bfe0; --star: #f8f0e3;
-    --accent: #0ea5e9; --accent-glow: rgba(14,165,233,0.4);
+    --void: #07040f; --midnight: #0f0820; --star: #f8f0e3; --mist: #c8bfe0;
+    --tl-a: #0ea5e9; --tl-a-deep: #0369a1; --tl-a-light: #38bdf8; --tl-a-glow: rgba(14,165,233,0.4);
+    --tl-b: #7c3aed; --tl-b-deep: #5b21b6; --tl-b-light: #a67dd0; --tl-b-glow: rgba(124,58,237,0.4);
+    --convergence: #e8c97a; --convergence-glow: rgba(232,201,122,0.5);
+    --accent: var(--tl-a); --accent-glow: var(--tl-a-glow);
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; }
-  body { background: var(--midnight); color: var(--star); font-family: 'Raleway', sans-serif; font-weight: 300; overflow-x: hidden; min-height: 100vh; }
+  body { background: var(--void); color: var(--star); font-family: 'Raleway', sans-serif; font-weight: 300; overflow-x: hidden; min-height: 100vh; }
+  body::before { content:''; position:fixed; inset:0; background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events:none; z-index:0; }
+
   .starfield { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
   .star-dot { position: absolute; border-radius: 50%; background: white; animation: twinkle var(--d, 3s) ease-in-out infinite; animation-delay: var(--delay, 0s); opacity: 0; }
   @keyframes twinkle { 0%, 100% { opacity: 0; transform: scale(0.5); } 50% { opacity: var(--op, 0.7); transform: scale(1); } }
+
   .orb { position: fixed; border-radius: 50%; filter: blur(80px); pointer-events: none; z-index: 0; animation: drift var(--orb-d, 20s) ease-in-out infinite alternate; }
-  .orb-1 { width: 400px; height: 400px; background: rgba(124,58,237,0.25); top: -10%; left: -10%; --orb-d: 18s; }
-  .orb-2 { width: 300px; height: 300px; background: rgba(14,165,233,0.2); bottom: 20%; right: -5%; --orb-d: 23s; }
+  .orb-1 { width: 500px; height: 500px; background: rgba(124,58,237,0.12); top: -10%; left: -10%; --orb-d: 22s; }
+  .orb-2 { width: 400px; height: 400px; background: rgba(14,165,233,0.1); bottom: 15%; right: -8%; --orb-d: 25s; }
   @keyframes drift { from { transform: translate(0,0) scale(1); } to { transform: translate(30px,-20px) scale(1.1); } }
-  .top-nav { position: relative; z-index: 10; display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 3rem; border-bottom: 1px solid rgba(124,58,237,0.2); }
-  .logo { font-family: 'Cinzel Decorative', cursive; font-size: 1.3rem; color: var(--accent); letter-spacing: 0.08em; text-shadow: 0 0 20px var(--accent-glow); text-decoration: none; }
+
+  .top-nav { position: relative; z-index: 10; display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 3rem; border-bottom: 1px solid rgba(124,58,237,0.15); }
+  .logo { font-family: 'Cinzel Decorative', cursive; font-size: 1.3rem; color: var(--tl-a); letter-spacing: 0.08em; text-shadow: 0 0 20px var(--tl-a-glow); text-decoration: none; }
   .back-link { color: var(--mist); text-decoration: none; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.3s; display: flex; align-items: center; gap: 0.5rem; }
-  .back-link:hover { color: var(--accent); }
-  .page { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; padding: 0 2rem 5rem; }
+  .back-link:hover { color: var(--tl-b-light); }
+  .timeline-state { font-size: 0.6rem; letter-spacing: 0.35em; color: rgba(200,191,224,0.4); text-transform: uppercase; font-weight: 300; }
+
+  .page { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 0 2rem 5rem; }
+
   .book-hero { text-align: center; padding: 5rem 0 3rem; }
-  .book-hero-tag { font-size: 0.65rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.5rem; display: block; }
+  .book-hero-tag { font-size: 0.6rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--convergence); margin-bottom: 1.5rem; display: block; }
   .book-hero-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 300; line-height: 1.1; color: var(--star); margin-bottom: 0.8rem; }
-  .book-hero-title em { font-style: italic; color: #7c3aed; text-shadow: 0 0 40px rgba(124,58,237,0.4); }
+  .book-hero-title .tl-a { color: var(--tl-a); text-shadow: 0 0 40px var(--tl-a-glow); }
+  .book-hero-title .tl-b { color: var(--tl-b-light); text-shadow: 0 0 40px var(--tl-b-glow); font-weight: 200; }
   .book-hero-author { font-size: 0.82rem; letter-spacing: 0.15em; color: var(--mist); text-transform: uppercase; margin-bottom: 1rem; }
-  .book-hero-genre { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: #0ea5e9; }
-  .hero-divider { display: flex; align-items: center; gap: 1rem; margin: 2.5rem auto; max-width: 240px; }
-  .hero-divider-line { flex: 1; height: 1px; background: linear-gradient(to right, transparent, rgba(124,58,237,0.5), transparent); }
-  .hero-divider-glyph { font-family: 'Cormorant Garamond', serif; color: var(--accent); font-size: 1.1rem; }
-  .chapters-label { font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); margin-bottom: 2rem; font-weight: 500; }
-  .chapter-list { list-style: none; }
-  .chapter-item { border-bottom: 1px solid rgba(124,58,237,0.15); }
-  .chapter-item:first-child { border-top: 1px solid rgba(124,58,237,0.15); }
-  .chapter-link { display: flex; align-items: center; justify-content: space-between; padding: 1.4rem 1.2rem; text-decoration: none; color: var(--star); transition: all 0.3s; position: relative; }
-  .chapter-link::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(124,58,237,0.08), transparent); opacity: 0; transition: opacity 0.3s; }
-  .chapter-link:hover { background: rgba(255,255,255,0.02); }
-  .chapter-link:hover::before { opacity: 1; }
-  .chapter-link:hover .chapter-arrow { transform: translateX(4px); color: var(--accent); }
-  .chapter-left { display: flex; align-items: center; gap: 1.2rem; position: relative; z-index: 1; }
-  .chapter-num { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 300; color: #7c3aed; min-width: 32px; }
-  .chapter-name { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 400; margin-bottom: 0.2rem; }
-  .chapter-meta { font-size: 0.7rem; color: var(--mist); letter-spacing: 0.05em; }
-  .chapter-arrow { font-size: 0.9rem; color: var(--mist); transition: all 0.3s; position: relative; z-index: 1; }
-  .toc-footer { border-top: 1px solid rgba(124,58,237,0.2); padding: 2rem 0; margin-top: 3rem; text-align: center; }
-  .toc-footer-text { font-size: 0.7rem; color: rgba(200,191,224,0.35); letter-spacing: 0.1em; }
+  .book-hero-genre { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; }
+  .book-hero-genre .g-a { color: var(--tl-a-light); }
+  .book-hero-genre .g-b { color: var(--tl-b-light); }
+  .book-hero-genre .g-sep { color: rgba(200,191,224,0.3); margin: 0 0.3em; }
+
+  .hero-divider { display: flex; align-items: center; gap: 1rem; margin: 2.5rem auto; max-width: 300px; }
+  .hero-divider-line-a { flex: 1; height: 1px; background: linear-gradient(to right, transparent, var(--tl-a), transparent); opacity: 0.4; }
+  .hero-divider-line-b { flex: 1; height: 1px; background: linear-gradient(to right, transparent, var(--tl-b), transparent); opacity: 0.4; }
+  .hero-divider-glyph { color: var(--convergence); font-size: 1.1rem; text-shadow: 0 0 15px var(--convergence-glow); }
+
+  .chapters-label { font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--convergence); margin-bottom: 2.5rem; font-weight: 400; text-align: center; }
+  .helix-legend { display:flex; justify-content:center; gap:2.5rem; margin-bottom:2rem; font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase; }
+  .legend-a { color: var(--tl-a-light); display:flex; align-items:center; gap:0.4rem; }
+  .legend-b { color: var(--tl-b-light); display:flex; align-items:center; gap:0.4rem; }
+  .legend-dot { width:6px; height:6px; border-radius:50%; }
+  .legend-dot.a { background: var(--tl-a); box-shadow: 0 0 8px var(--tl-a-glow); }
+  .legend-dot.b { background: var(--tl-b); box-shadow: 0 0 8px var(--tl-b-glow); }
+
+  /* Convergence node */
+  @keyframes convergence-ripple { 0%{r:8;opacity:0.6} 100%{r:22;opacity:0} }
+  .conv-ripple { animation: convergence-ripple 3s ease-out infinite; }
+  @keyframes conv-glow { 0%,100%{opacity:0.5} 50%{opacity:1} }
+  .conv-orb { animation: conv-glow 4s ease-in-out infinite; }
+
+  /* ── BRANCH TREE ── */
+  .branch-wrapper { position: relative; width: 100%; }
+
+  .branch-svg { width: 100%; display: block; overflow: visible; }
+
+  /* Chapter node cards */
+  .ch-node { cursor: pointer; }
+  .ch-card { transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); transform-origin: center; }
+  .ch-node:hover .ch-card { filter: drop-shadow(0 0 18px rgba(124,58,237,0.7)); }
+  .ch-node:hover .ch-rect { stroke-width: 1.5px; }
+  .ch-node:hover .ch-title { fill: #ffffff; }
+  .ch-node:hover .ch-arrow-g { opacity: 1; }
+  .ch-node[data-tl='A']:hover .ch-rect { stroke: var(--tl-a) !important; }
+  .ch-node[data-tl='A']:hover .ch-num { fill: var(--tl-a-light); }
+  .ch-node[data-tl='B']:hover .ch-rect { stroke: var(--tl-b) !important; }
+  .ch-node[data-tl='B']:hover .ch-num { fill: var(--tl-b-light); }
+
+  /* Timeline-specific star pulses */
+  @keyframes pulse-a { 0%,100%{opacity:0} 50%{opacity:0.8; box-shadow:0 0 6px var(--tl-a)} }
+  @keyframes pulse-b { 0%,100%{opacity:0} 40%{opacity:0.9; box-shadow:0 0 4px var(--tl-b)} 41%{opacity:0} }
+  .star-a { animation: pulse-a var(--pd,6s) ease-in-out infinite; background: var(--tl-a-light); }
+  .star-b { animation: pulse-b var(--pd,3s) ease-in-out infinite; background: var(--tl-b-light); }
+
+  /* Pulse ring on spine dot */
+  @keyframes pulse-ring {
+    0% { r: 5; opacity: 0.8; }
+    100% { r: 14; opacity: 0; }
+  }
+  .spine-pulse { animation: pulse-ring 2s ease-out infinite; transform-origin: center; }
+
+  /* Animated dash on branch lines */
+  @keyframes dash-flow {
+    from { stroke-dashoffset: 40; }
+    to { stroke-dashoffset: 0; }
+  }
+  .branch-line-anim { stroke-dasharray: 4 4; animation: dash-flow 1.2s linear infinite; }
+
+  /* Spine glow pulse */
+  @keyframes spine-glow {
+    0%, 100% { opacity: 0.35; }
+    50% { opacity: 0.7; }
+  }
+  .spine-main { animation: spine-glow 4s ease-in-out infinite; }
+
+  .toc-footer { border-top: 1px solid rgba(124,58,237,0.1); padding: 2rem 0; margin-top: 1rem; text-align: center; }
+  .toc-footer-text { font-size: 0.65rem; color: rgba(200,191,224,0.25); letter-spacing: 0.15em; }
+  ::selection { background: rgba(124,58,237,0.3); color: #fff; }
+
   .fade-in { opacity: 0; transform: translateY(20px); animation: fadeUp 0.8s ease forwards; }
   @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
   .delay-2 { animation-delay: 0.2s; }
+  .delay-3 { animation-delay: 0.4s; }
+
+  /* Tooltip */
+  .ch-tooltip {
+    position: absolute;
+    background: rgba(15,8,32,0.96);
+    border: 1px solid rgba(124,58,237,0.5);
+    border-radius: 8px;
+    padding: 0.7rem 1rem;
+    font-size: 0.72rem;
+    color: var(--mist);
+    letter-spacing: 0.04em;
+    pointer-events: none;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.2s, transform 0.2s;
+    transform: translateY(4px);
+    z-index: 20;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 24px rgba(124,58,237,0.3);
+  }
+  .ch-tooltip.visible { opacity: 1; transform: translateY(0); }
+  /* Custom cursor */
+  body { cursor: none; }
+  .cursor { position:fixed; width:8px; height:8px; background:#0ea5e9; border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:transform 0.1s, background 0.3s; box-shadow:0 0 12px rgba(14,165,233,0.6); }
+  .cursor-ring { position:fixed; width:32px; height:32px; border:1px solid rgba(14,165,233,0.4); border-radius:50%; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:all 0.18s ease; }
 </style>
 </head>
 <body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
 
 <div class="starfield" id="starfield"></div>
 <div class="orb orb-1"></div>
@@ -71,121 +159,304 @@
 
 <div class="page">
   <section class="book-hero fade-in">
-    <span class="book-hero-tag">✦ Now Reading ✦</span>
-    <h1 class="book-hero-title">The Reality <em>Entity</em></h1>
+    <span class="book-hero-tag">◈ Dual Timeline Architecture ◈</span>
+    <h1 class="book-hero-title">The <span class="tl-a">Reality</span> <span class="tl-b">Entity</span></h1>
     <p class="book-hero-author">by Lance Ames</p>
-    <p class="book-hero-genre">Sci-Fi · Parallel Timelines · Psychological</p>
+    <p class="book-hero-genre"><span class="g-a">Sci-Fi</span><span class="g-sep">·</span><span class="g-b">Parallel Timelines</span><span class="g-sep">·</span><span class="g-a">Psychological</span></p>
     <div class="hero-divider">
-      <div class="hero-divider-line"></div>
-      <span class="hero-divider-glyph">✦</span>
-      <div class="hero-divider-line"></div>
+      <div class="hero-divider-line-a"></div>
+      <span class="hero-divider-glyph">◈</span>
+      <div class="hero-divider-line-b"></div>
     </div>
   </section>
 
   <section class="fade-in delay-2">
-    <p class="chapters-label">Chapters</p>
-    <ol class="chapter-list">
-      <li class="chapter-item">
-        <a href="chapter1.html" class="chapter-link">
-          <div class="chapter-left">
-            <span class="chapter-num">1</span>
-            <div class="chapter-info">
-              <div class="chapter-name">The Day Reality Blinked</div>
-              <div class="chapter-meta">~5 min read</div>
-            </div>
-          </div>
-          <span class="chapter-arrow">→</span>
-        </a>
-      </li>
-      <li class="chapter-item">
-        <a href="chapter2.html" class="chapter-link">
-          <div class="chapter-left">
-            <span class="chapter-num">2</span>
-            <div class="chapter-info">
-              <div class="chapter-name">CAUSE AND EFFECT</div>
-              <div class="chapter-meta">~5 min read</div>
-            </div>
-          </div>
-          <span class="chapter-arrow">→</span>
-        </a>
-      </li>
-      <li class="chapter-item">
-        <a href="chapter3.html" class="chapter-link">
-          <div class="chapter-left">
-            <span class="chapter-num">3</span>
-            <div class="chapter-info">
-              <div class="chapter-name">Principal’s Daughter</div>
-              <div class="chapter-meta">~5 min read</div>
-            </div>
-          </div>
-          <span class="chapter-arrow">→</span>
-        </a>
-      </li>
-      <li class="chapter-item">
-        <a href="chapter4.html" class="chapter-link">
-          <div class="chapter-left">
-            <span class="chapter-num">4</span>
-            <div class="chapter-info">
-              <div class="chapter-name">The Lost Timeline</div>
-              <div class="chapter-meta">~5 min read</div>
-            </div>
-          </div>
-          <span class="chapter-arrow">→</span>
-        </a>
-      </li>
-      <li class="chapter-item">
-        <a href="chapter5.html" class="chapter-link">
-          <div class="chapter-left">
-            <span class="chapter-num">5</span>
-            <div class="chapter-info">
-              <div class="chapter-name">The Survivors</div>
-              <div class="chapter-meta">~5 min read</div>
-            </div>
-          </div>
-          <span class="chapter-arrow">→</span>
-        </a>
-      </li>
-      <li class="chapter-item">
-        <a href="chapter6.html" class="chapter-link">
-          <div class="chapter-left">
-            <span class="chapter-num">6</span>
-            <div class="chapter-info">
-              <div class="chapter-name">When Three Became Six</div>
-              <div class="chapter-meta">~5 min read</div>
-            </div>
-          </div>
-          <span class="chapter-arrow">→</span>
-        </a>
-      </li>
-      <li class="chapter-item">
-        <a href="chapter7.html" class="chapter-link">
-          <div class="chapter-left">
-            <span class="chapter-num">7</span>
-            <div class="chapter-info">
-              <div class="chapter-name">Lines You Don’t Cross</div>
-              <div class="chapter-meta">~5 min read</div>
-            </div>
-          </div>
-          <span class="chapter-arrow">→</span>
-        </a>
-      </li>
-    </ol>
+    <div class="helix-legend">
+      <span class="legend-a"><span class="legend-dot a"></span> Timeline A — 2026</span>
+      <span class="legend-b"><span class="legend-dot b"></span> Timeline B — Unknown</span>
+    </div>
+    <div class="branch-wrapper" id="branchWrapper"></div>
   </section>
 
-  <div class="toc-footer">
-    <p class="toc-footer-text">✦ More chapters coming soon ✦</p>
+  <div class="toc-footer fade-in delay-3">
+    <p class="toc-footer-text">◈ Reality continues to fracture ◈</p>
   </div>
 </div>
 
+<div class="ch-tooltip" id="tooltip"></div>
+
 <script>
-const starfield = document.getElementById('starfield');
-for (let i = 0; i < 80; i++) {
-  const s = document.createElement('div');
-  s.className = 'star-dot';
-  const size = Math.random() < 0.7 ? 1 : Math.random() < 0.5 ? 2 : 3;
-  s.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*4}s;--delay:${Math.random()*5}s;--op:${0.3+Math.random()*0.7};`;
-  starfield.appendChild(s);
+const chapters = [
+  { num:1, title:"The Day Reality Blinked", read:"~5 min", href:"chapter1.html", side:"right", tag:"Origin",      tl:"A" },
+  { num:2, title:"Cause and Effect",        read:"~5 min", href:"chapter2.html", side:"left",  tag:"Consequence", tl:"A" },
+  { num:3, title:"Principal's Daughter",    read:"~5 min", href:"chapter3.html", side:"right", tag:"Encounter",   tl:"A" },
+  { num:4, title:"The Lost Timeline",       read:"~5 min", href:"chapter4.html", side:"left",  tag:"Fracture",    tl:"B" },
+  { num:5, title:"The Survivors",           read:"~5 min", href:"chapter5.html", side:"right", tag:"Revelation",  tl:"B" },
+  { num:6, title:"When Three Became Six",   read:"~5 min", href:"chapter6.html", side:"left",  tag:"Convergence", tl:"B" },
+  { num:7, title:"Lines You Don't Cross",   read:"~5 min", href:"chapter7.html", side:"right", tag:"Threshold",   tl:"A" },
+];
+
+const CARD_W=240, CARD_H=68, ROW_H=110, SPINE_X_FRAC=0.5, BRANCH_LEN=90;
+const CONV_LABELS = ["◈ REALITY BLINKS — Ch 3 ↔ Ch 7","◈ TIMELINES INVERT — Ch 6 ↔ Ch 10"];
+const CONV_H = 60;
+// Calculate total height including convergence nodes after every 3 chapters
+function calcLayout(){
+  let h=50;const rows=[];
+  chapters.forEach((ch,i)=>{
+    rows.push({type:'ch',ch,y:h}); h+=ROW_H;
+    if((i+1)%3===0 && i<chapters.length-1){
+      rows.push({type:'conv',label:CONV_LABELS[Math.floor(i/3)]||'◈ CONVERGENCE',y:h}); h+=CONV_H;
+    }
+  });
+  return {rows,totalH:h+40};
 }
+
+function tlColor(tl,op){return tl==='A'?`rgba(14,165,233,${op})`:`rgba(124,58,237,${op})`;}
+function tlHex(tl){return tl==='A'?'#0ea5e9':'#7c3aed';}
+function tlLight(tl){return tl==='A'?'#38bdf8':'#a67dd0';}
+
+function buildSVG(){
+  const wrapper=document.getElementById('branchWrapper');
+  wrapper.innerHTML='';
+  const W=wrapper.clientWidth||800, spineX=W*SPINE_X_FRAC;
+  const {rows,totalH}=calcLayout();
+  const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+  svg.setAttribute('viewBox',`0 0 ${W} ${totalH}`);
+  svg.setAttribute('width','100%');svg.setAttribute('height',totalH);
+  svg.classList.add('branch-svg');
+
+  const defs=document.createElementNS('http://www.w3.org/2000/svg','defs');
+  defs.innerHTML=`
+    <linearGradient id="spineGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="rgba(124,58,237,0)"/>
+      <stop offset="15%" stop-color="rgba(124,58,237,0.6)"/>
+      <stop offset="50%" stop-color="rgba(232,201,122,0.4)"/>
+      <stop offset="85%" stop-color="rgba(14,165,233,0.6)"/>
+      <stop offset="100%" stop-color="rgba(14,165,233,0)"/>
+    </linearGradient>
+    <linearGradient id="cardGradA" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="rgba(91,33,182,0.2)"/><stop offset="100%" stop-color="rgba(124,58,237,0.05)"/>
+    </linearGradient>
+    <linearGradient id="cardGradB" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="rgba(3,105,161,0.2)"/><stop offset="100%" stop-color="rgba(14,165,233,0.05)"/>
+    </linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <filter id="glowConv"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>`;
+  svg.appendChild(defs);
+
+  // Spine
+  const spine=document.createElementNS('http://www.w3.org/2000/svg','line');
+  spine.setAttribute('x1',spineX);spine.setAttribute('y1',20);
+  spine.setAttribute('x2',spineX);spine.setAttribute('y2',totalH-20);
+  spine.setAttribute('stroke','url(#spineGrad)');spine.setAttribute('stroke-width','1.5');
+  spine.classList.add('spine-main');svg.appendChild(spine);
+
+  rows.forEach((row,ri)=>{
+    if(row.type==='conv'){
+      const cy=row.y+CONV_H/2;
+      // Ripple rings
+      for(let r=0;r<2;r++){
+        const rip=document.createElementNS('http://www.w3.org/2000/svg','circle');
+        rip.setAttribute('cx',spineX);rip.setAttribute('cy',cy);rip.setAttribute('r','8');
+        rip.setAttribute('fill','none');rip.setAttribute('stroke','#e8c97a');rip.setAttribute('stroke-width','0.8');
+        rip.classList.add('conv-ripple');rip.style.animationDelay=`${r*1.5}s`;svg.appendChild(rip);
+      }
+      const orb=document.createElementNS('http://www.w3.org/2000/svg','circle');
+      orb.setAttribute('cx',spineX);orb.setAttribute('cy',cy);orb.setAttribute('r','6');
+      orb.setAttribute('fill','#e8c97a');orb.setAttribute('filter','url(#glowConv)');
+      orb.classList.add('conv-orb');svg.appendChild(orb);
+      // Label
+      const lbl=document.createElementNS('http://www.w3.org/2000/svg','text');
+      lbl.setAttribute('x',spineX);lbl.setAttribute('y',cy+22);
+      lbl.setAttribute('text-anchor','middle');lbl.setAttribute('font-family','Raleway, sans-serif');
+      lbl.setAttribute('font-size','7.5');lbl.setAttribute('font-weight','400');
+      lbl.setAttribute('letter-spacing','0.18em');lbl.setAttribute('fill','#e8c97a');
+      lbl.style.opacity='0.55';lbl.textContent=row.label;svg.appendChild(lbl);
+      // Store convergence Y for arc drawing
+      row._cy = cy;
+      return;
+    }
+
+    const ch=row.ch, cy=row.y, isA=ch.tl==='A', isRight=ch.side==='right';
+    const cardX=isRight?spineX+BRANCH_LEN:spineX-BRANCH_LEN-CARD_W;
+    const juncX=isRight?spineX+12:spineX-12;
+
+    const g=document.createElementNS('http://www.w3.org/2000/svg','g');
+    g.classList.add('ch-node');g.setAttribute('data-tl',ch.tl);
+
+    // Pulse ring
+    const ring=document.createElementNS('http://www.w3.org/2000/svg','circle');
+    ring.setAttribute('cx',spineX);ring.setAttribute('cy',cy+CARD_H/2);ring.setAttribute('r','5');
+    ring.setAttribute('fill','none');ring.setAttribute('stroke',tlColor(ch.tl,0.5));ring.setAttribute('stroke-width','1');
+    ring.classList.add('spine-pulse');ring.style.animationDelay=`${ri*0.28}s`;svg.appendChild(ring);
+
+    // Spine dot
+    const dot=document.createElementNS('http://www.w3.org/2000/svg','circle');
+    dot.setAttribute('cx',spineX);dot.setAttribute('cy',cy+CARD_H/2);dot.setAttribute('r','5');
+    dot.setAttribute('fill',tlHex(ch.tl));dot.setAttribute('filter','url(#glow)');g.appendChild(dot);
+
+    // Branch line
+    const bl=document.createElementNS('http://www.w3.org/2000/svg','line');
+    bl.setAttribute('x1',juncX);bl.setAttribute('y1',cy+CARD_H/2);
+    bl.setAttribute('x2',isRight?cardX:cardX+CARD_W);bl.setAttribute('y2',cy+CARD_H/2);
+    bl.setAttribute('stroke',tlColor(ch.tl,0.4));bl.setAttribute('stroke-width','1');
+    bl.classList.add('branch-line-anim');bl.style.animationDelay=`${ri*0.15}s`;g.appendChild(bl);
+
+    // Card rect
+    const rect=document.createElementNS('http://www.w3.org/2000/svg','rect');
+    rect.setAttribute('x',cardX);rect.setAttribute('y',cy);rect.setAttribute('width',CARD_W);rect.setAttribute('height',CARD_H);
+    rect.setAttribute('rx','10');rect.setAttribute('fill',isA?'url(#cardGradA)':'url(#cardGradB)');
+    rect.setAttribute('stroke',tlColor(ch.tl,0.35));rect.setAttribute('stroke-width','0.8');
+    rect.classList.add('ch-rect');g.appendChild(rect);
+
+    // Chapter number
+    const num=document.createElementNS('http://www.w3.org/2000/svg','text');
+    num.setAttribute('x',cardX+18);num.setAttribute('y',cy+24);
+    num.setAttribute('font-family','Cormorant Garamond, serif');num.setAttribute('font-size','22');
+    num.setAttribute('font-weight','300');num.setAttribute('fill',tlHex(ch.tl));
+    num.classList.add('ch-num');num.textContent=String(ch.num).padStart(2,'0');g.appendChild(num);
+
+    // Tag badge
+    const tx=cardX+56;
+    const tr=document.createElementNS('http://www.w3.org/2000/svg','rect');
+    tr.setAttribute('x',tx);tr.setAttribute('y',cy+10);tr.setAttribute('width',ch.tag.length*6.2+12);
+    tr.setAttribute('height',16);tr.setAttribute('rx','4');tr.setAttribute('fill',tlColor(ch.tl,0.2));g.appendChild(tr);
+    const tt=document.createElementNS('http://www.w3.org/2000/svg','text');
+    tt.setAttribute('x',tx+6);tt.setAttribute('y',cy+21.5);tt.setAttribute('font-family','Raleway, sans-serif');
+    tt.setAttribute('font-size','8.5');tt.setAttribute('font-weight','500');tt.setAttribute('letter-spacing','0.08em');
+    tt.setAttribute('fill',tlLight(ch.tl));tt.textContent=ch.tag.toUpperCase();g.appendChild(tt);
+
+    // Title
+    const tit=document.createElementNS('http://www.w3.org/2000/svg','text');
+    const dt=ch.title.length>28?ch.title.slice(0,28)+'…':ch.title;
+    tit.setAttribute('x',cardX+18);tit.setAttribute('y',cy+44);tit.setAttribute('font-family','Cormorant Garamond, serif');
+    tit.setAttribute('font-size','15');tit.setAttribute('font-weight',isA?'400':'300');
+    tit.setAttribute('fill','#f0e8d8');tit.classList.add('ch-title');tit.textContent=dt;g.appendChild(tit);
+
+    // Read time + timeline label
+    const meta=document.createElementNS('http://www.w3.org/2000/svg','text');
+    meta.setAttribute('x',cardX+18);meta.setAttribute('y',cy+58);meta.setAttribute('font-family','Raleway, sans-serif');
+    meta.setAttribute('font-size','10');meta.setAttribute('font-weight','300');
+    meta.setAttribute('fill','rgba(200,191,224,0.55)');meta.setAttribute('letter-spacing','0.06em');
+    meta.textContent=`${ch.read} · Timeline ${ch.tl}`;g.appendChild(meta);
+
+    // Arrow
+    const ag=document.createElementNS('http://www.w3.org/2000/svg','g');
+    ag.classList.add('ch-arrow-g');ag.setAttribute('opacity','0');ag.style.transition='opacity 0.25s';
+    const ar=document.createElementNS('http://www.w3.org/2000/svg','text');
+    ar.setAttribute('x',cardX+CARD_W-18);ar.setAttribute('y',cy+CARD_H/2+5);
+    ar.setAttribute('font-family','Raleway');ar.setAttribute('font-size','14');
+    ar.setAttribute('fill',tlHex(ch.tl));ar.setAttribute('text-anchor','middle');ar.textContent='→';
+    ag.appendChild(ar);g.appendChild(ag);
+
+    // Events
+    g.addEventListener('mouseenter',()=>{ag.setAttribute('opacity','1');
+      const tip=document.getElementById('tooltip');
+      tip.textContent=`Chapter ${ch.num} · Timeline ${ch.tl} · ${ch.read}`;
+      tip.style.borderColor=tlColor(ch.tl,0.6);tip.classList.add('visible');});
+    g.addEventListener('mouseleave',()=>{ag.setAttribute('opacity','0');
+      document.getElementById('tooltip').classList.remove('visible');});
+    g.addEventListener('mousemove',(e)=>{const t=document.getElementById('tooltip');
+      t.style.left=(e.pageX+14)+'px';t.style.top=(e.pageY-32)+'px';});
+    g.addEventListener('click',()=>{window.location.href=ch.href;});
+
+    g.style.opacity='0';g.style.transition=`opacity 0.5s ease ${0.1+ri*0.08}s, transform 0.5s ease ${0.1+ri*0.08}s`;
+    g.style.transform='translateY(10px)';svg.appendChild(g);
+    requestAnimationFrame(()=>{setTimeout(()=>{g.style.opacity='1';g.style.transform='translateY(0)';},80+ri*90);});
+  });
+
+  // ── Timeline continuity arcs: connect same-timeline chapters across crossover ──
+  // Find Y positions of specific chapters
+  const chRows = rows.filter(r => r.type === 'ch');
+  function getChY(num) {
+    const r = chRows.find(r => r.ch.num === num);
+    return r ? r.y + CARD_H / 2 : null;
+  }
+
+  // Arc connections: [fromCh, toCh, timeline, side]
+  const arcs = [
+    { from: 3, to: 7, tl: 'A', side: 'right' },
+    { from: 6, to: 10, tl: 'B', side: 'left' },
+  ];
+
+  arcs.forEach(arc => {
+    const y1 = getChY(arc.from);
+    const y2 = getChY(arc.to);
+    if (!y1) return; // from chapter must exist
+
+    const actualY2 = y2 || (y1 + ROW_H * 7 + CONV_H * 2); // estimate for ch10 if not yet added
+    const isRight = arc.side === 'right';
+    // Arc curves outward from the card edge
+    const edgeX = isRight ? spineX + BRANCH_LEN + CARD_W + 15 : spineX - BRANCH_LEN - CARD_W - 15;
+    const peakX = isRight ? edgeX + 40 : edgeX - 40;
+
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    const d = `M ${edgeX} ${y1} C ${peakX} ${y1 + (actualY2 - y1) * 0.3}, ${peakX} ${y1 + (actualY2 - y1) * 0.7}, ${edgeX} ${actualY2}`;
+    path.setAttribute('d', d);
+    path.setAttribute('fill', 'none');
+    path.setAttribute('stroke', tlColor(arc.tl, 0.25));
+    path.setAttribute('stroke-width', '1');
+    path.setAttribute('stroke-dasharray', '6 4');
+    path.style.animation = 'dash-flow 2s linear infinite';
+    svg.appendChild(path);
+
+    // Glow version behind
+    const glow = path.cloneNode();
+    glow.setAttribute('stroke', tlColor(arc.tl, 0.08));
+    glow.setAttribute('stroke-width', '4');
+    glow.setAttribute('stroke-dasharray', '');
+    glow.setAttribute('filter', 'url(#glow)');
+    glow.style.animation = '';
+    svg.insertBefore(glow, svg.firstChild.nextSibling);
+
+    // Label on the arc midpoint
+    const midY = (y1 + actualY2) / 2;
+    const lbl = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    lbl.setAttribute('x', isRight ? peakX + 8 : peakX - 8);
+    lbl.setAttribute('y', midY);
+    lbl.setAttribute('text-anchor', isRight ? 'start' : 'end');
+    lbl.setAttribute('font-family', 'Raleway, sans-serif');
+    lbl.setAttribute('font-size', '7');
+    lbl.setAttribute('font-weight', '400');
+    lbl.setAttribute('letter-spacing', '0.15em');
+    lbl.setAttribute('fill', tlLight(arc.tl));
+    lbl.style.opacity = '0.4';
+    lbl.textContent = y2 ? `TL-${arc.tl} CONTINUES` : `TL-${arc.tl} → CH ${arc.to}`;
+    svg.appendChild(lbl);
+  });
+
+  wrapper.appendChild(svg);
+}
+
+buildSVG();
+let rt;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(buildSVG,200);});
+
+// Dual Starfield
+const sf=document.getElementById('starfield');
+// Timeline A stars: larger, slower, clustered, violet pulses
+for(let i=0;i<35;i++){
+  const s=document.createElement('div');s.className='star-dot star-a';
+  const sz=Math.random()<0.5?2:3;
+  s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${3+Math.random()*5}s;--delay:${Math.random()*6}s;--op:${0.3+Math.random()*0.5};--pd:${5+Math.random()*8}s;`;
+  sf.appendChild(s);
+}
+// Timeline B stars: smaller, faster, numerous, cyan flashes
+for(let i=0;i<55;i++){
+  const s=document.createElement('div');s.className='star-dot star-b';
+  const sz=1;
+  s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${1.5+Math.random()*3}s;--delay:${Math.random()*4}s;--op:${0.4+Math.random()*0.6};--pd:${2+Math.random()*4}s;`;
+  sf.appendChild(s);
+}
+// Custom cursor
+const cursor=document.getElementById('cursor'),cursorRing=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+function animRing(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;cursorRing.style.left=rx+'px';cursorRing.style.top=ry+'px';requestAnimationFrame(animRing);}
+animRing();
+document.querySelectorAll('a, button, .ch-node, .story-card').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cursor.style.transform='translate(-50%,-50%) scale(2)';cursorRing.style.transform='translate(-50%,-50%) scale(1.5)';cursorRing.style.borderColor='rgba(14,165,233,0.7)';});
+  el.addEventListener('mouseleave',()=>{cursor.style.transform='translate(-50%,-50%) scale(1)';cursorRing.style.transform='translate(-50%,-50%) scale(1)';cursorRing.style.borderColor='rgba(14,165,233,0.4)';});
+});
 </script>
 </body>
 </html>
