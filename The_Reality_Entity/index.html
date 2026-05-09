@@ -30,7 +30,6 @@
   .logo { font-family: 'Cinzel Decorative', cursive; font-size: 1.3rem; color: var(--tl-a); letter-spacing: 0.08em; text-shadow: 0 0 20px var(--tl-a-glow); text-decoration: none; }
   .back-link { color: var(--mist); text-decoration: none; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.3s; display: flex; align-items: center; gap: 0.5rem; }
   .back-link:hover { color: var(--tl-b-light); }
-  .timeline-state { font-size: 0.6rem; letter-spacing: 0.35em; color: rgba(200,191,224,0.4); text-transform: uppercase; font-weight: 300; }
 
   .page { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 0 2rem 5rem; }
 
@@ -50,7 +49,6 @@
   .hero-divider-line-b { flex: 1; height: 1px; background: linear-gradient(to right, transparent, var(--tl-b), transparent); opacity: 0.4; }
   .hero-divider-glyph { color: var(--convergence); font-size: 1.1rem; text-shadow: 0 0 15px var(--convergence-glow); }
 
-  .chapters-label { font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--convergence); margin-bottom: 2.5rem; font-weight: 400; text-align: center; }
   .helix-legend { display:flex; justify-content:center; gap:2.5rem; margin-bottom:2rem; font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase; }
   .legend-a { color: var(--tl-a-light); display:flex; align-items:center; gap:0.4rem; }
   .legend-b { color: var(--tl-b-light); display:flex; align-items:center; gap:0.4rem; }
@@ -169,7 +167,6 @@
     <p class="book-hero-genre"><span class="g-a">Psychological</span> <span class="g-sep">/</span> <span class="g-b">Sci-Fi</span></p>
   </section>
 
-  
   <div class="helix-legend fade-in delay-2">
     <div class="legend-a"><span class="legend-dot a"></span> Timeline A - Year 2026</div>
     <div class="legend-b"><span class="legend-dot b"></span> Timeline B - Unknown Timeline</div>
@@ -384,7 +381,7 @@ function buildSVG() {
 
     const lbl = document.createElementNS('http://www.w3.org/2000/svg', 'text');
     lbl.setAttribute('x', isRight ? peakX + 8 : peakX - 8); lbl.setAttribute('y', (y1 + actualY2) / 2);
-    lbl.setAttribute('text-anchor', isRight ? 'start' : 'end');
+    lbl.setAttribute('text-anchor', 'start');
     lbl.setAttribute('font-family', 'Raleway, sans-serif'); lbl.setAttribute('font-size', '7');
     lbl.setAttribute('fill', tlLight(arc.tl)); lbl.style.opacity = '0.4';
     lbl.textContent = y2 ? `TL-${arc.tl} CONTINUES` : `TL-${arc.tl} → CH ${arc.to}`;
