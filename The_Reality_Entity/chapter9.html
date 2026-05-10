@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 9 — The Reality Entity | Luminae</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Cinzel+Decorative:wght@400;700&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0d0a1a; --parchment: #fdf8f0; --cream: #f5ede0;
+    --gold: #c9933a; --gold-light: #e8c97a; --gold-glow: #f0d898;
+    --violet: #6b3fa0; --violet-dark: #3d1f6e; --violet-light: #a67dd0;
+    --rose: #c45a7a; --midnight: #0f0820; --mist: #c8bfe0; --star: #f8f0e3;
+    --accent: #0ea5e9; --accent-glow: rgba(14,165,233,0.4);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--midnight); color: var(--star); font-family: 'Raleway', sans-serif; font-weight: 300; overflow-x: hidden; min-height: 100vh; }
+  .starfield { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .star-dot { position: absolute; border-radius: 50%; background: white; animation: twinkle var(--d, 3s) ease-in-out infinite; animation-delay: var(--delay, 0s); opacity: 0; }
+  @keyframes twinkle { 0%, 100% { opacity: 0; transform: scale(0.5); } 50% { opacity: var(--op, 0.7); transform: scale(1); } }
+  .top-nav { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; padding: 1rem 3rem; background: linear-gradient(to bottom, rgba(15,8,32,0.98), rgba(15,8,32,0.9)); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(124,58,237,0.2); }
+  .logo { font-family: 'Cinzel Decorative', cursive; font-size: 1.1rem; color: var(--accent); letter-spacing: 0.08em; text-shadow: 0 0 20px var(--accent-glow); text-decoration: none; }
+  .nav-chapter-info { font-size: 0.7rem; color: var(--mist); letter-spacing: 0.1em; text-transform: uppercase; }
+  .toc-link { color: var(--accent); text-decoration: none; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.3s; }
+  .toc-link:hover { color: #7c3aed; }
+  .reader-page { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; padding: 4rem 2rem 3rem; }
+  .ch-header { text-align: center; margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid rgba(124,58,237,0.2); }
+  .ch-number { font-size: 0.65rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.2rem; display: block; }
+  .ch-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 300; line-height: 1.15; color: var(--star); margin-bottom: 0.8rem; }
+  .ch-title em { font-style: italic; color: #7c3aed; text-shadow: 0 0 30px rgba(124,58,237,0.4); }
+  .ch-divider { display: flex; align-items: center; gap: 0.8rem; margin: 1.5rem auto 0; max-width: 160px; }
+  .ch-divider-line { flex: 1; height: 1px; background: linear-gradient(to right, transparent, rgba(124,58,237,0.5), transparent); }
+  .ch-divider-glyph { color: var(--accent); font-size: 0.8rem; }
+  .ch-content { font-family: 'Cormorant Garamond', serif; font-size: 1.18rem; color: var(--mist); line-height: 2; font-weight: 400; }
+  .ch-content p { margin-bottom: 1.5rem; }
+  .ch-content p.first::first-letter { font-family: 'Cinzel Decorative', cursive; font-size: 3.8rem; float: left; line-height: 1; margin: 0.05em 0.12em -0.1em 0; color: var(--accent); text-shadow: 0 0 20px var(--accent-glow); }
+  .ch-content em { color: #7c3aed; font-style: italic; }
+  .ch-content .dialogue { color: var(--star); }
+  .ch-content .thought { color: #0ea5e9; font-style: italic; }
+  .ch-content hr { border: none; text-align: center; margin: 2.5rem 0; }
+  .ch-content hr::after { content: '✦ ✦ ✦'; color: var(--accent); font-size: 0.7rem; letter-spacing: 0.5em; }
+  .ch-end { text-align: center; padding: 3rem 0 0; margin-top: 3rem; border-top: 1px solid rgba(124,58,237,0.2); }
+  .ch-end-text { font-family: 'Cormorant Garamond', serif; font-size: 0.85rem; font-style: italic; color: rgba(200,191,224,0.4); letter-spacing: 0.1em; margin-bottom: 2rem; }
+  .ch-nav { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
+  .ch-nav-btn { display: inline-flex; align-items: center; gap: 0.6rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(124,58,237,0.3); color: var(--star); padding: 0.8rem 1.8rem; font-family: 'Raleway', sans-serif; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; transition: all 0.3s; border-radius: 2px; }
+  .ch-nav-btn:hover { background: rgba(124,58,237,0.15); border-color: rgba(14,165,233,0.5); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.4); }
+  .ch-nav-btn.disabled { opacity: 0.3; pointer-events: none; }
+  .ch-nav-toc { color: var(--accent); text-decoration: none; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.3s; }
+  .ch-nav-toc:hover { color: #7c3aed; }
+  .progress-wrap { position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 100; background: rgba(0,0,0,0.3); }
+  .progress-fill { height: 100%; width: 0; background: linear-gradient(to right, #7c3aed, #0ea5e9); transition: width 0.1s; }
+  .fade-in { opacity: 0; transform: translateY(20px); animation: fadeUp 0.8s ease forwards; }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+  .delay-1 { animation-delay: 0.15s; }
+  .delay-2 { animation-delay: 0.3s; }
+  /* Custom cursor */
+  body { cursor: none; }
+  .cursor { position:fixed; width:8px; height:8px; background:#0ea5e9; border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:transform 0.1s, background 0.3s; box-shadow:0 0 12px rgba(14,165,233,0.6); }
+  .cursor-ring { position:fixed; width:32px; height:32px; border:1px solid rgba(14,165,233,0.4); border-radius:50%; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:all 0.18s ease; }
+  @media (pointer: coarse) {
+    body { cursor: auto; }
+    .cursor, .cursor-ring { display: none !important; }
+  }
+  @media (max-width: 768px) {
+    .top-nav { padding: 1rem 1.5rem !important; }
+    .logo { font-size: 1.1rem !important; }
+    .reader-page { padding: 3rem 1.2rem 2rem !important; }
+    .ch-title { font-size: 2.2rem !important; }
+    .ch-nav { justify-content: center !important; }
+    .ch-nav-btn { padding: 0.7rem 1.2rem !important; font-size: 0.65rem !important; }
+  }
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<div class="progress-wrap"><div class="progress-fill" id="progressFill"></div></div>
+<div class="starfield" id="starfield"></div>
+
+<nav class="top-nav">
+  <a href="../index.html" class="logo">Luminae</a>
+  <span class="nav-chapter-info">Chapter 9 of 9</span>
+  <a href="index.html" class="toc-link">☰ Chapters</a>
+</nav>
+
+<div class="reader-page">
+
+  <header class="ch-header fade-in">
+    <span class="ch-number">✦ Chapter 9 ✦</span>
+    <h1 class="ch-title"><em>The</em> Detention</h1>
+    <div class="ch-divider">
+      <div class="ch-divider-line"></div>
+      <span class="ch-divider-glyph">✦</span>
+      <div class="ch-divider-line"></div>
+    </div>
+  </header>
+
+  <article class="ch-content fade-in delay-1">
+    <p class="first">The atmosphere after lunch felt… different.</p>
+    <p>Not normal.</p>
+    <p>But calmer.</p>
+    <p>The tension that had swallowed the classroom during the morning had faded little by little after Lara stayed beside Alex during lunch. Conversations slowly returned. Students laughed again. Chairs scraped across the floor. Teachers continued lessons like nothing had happened.</p>
+    <p>Still—</p>
+    <p>Every few minutes, someone glanced toward Alex.</p>
+    <p>Sometimes nervously.</p>
+    <p>Sometimes curiously.</p>
+    <p>Alex didn’t notice.</p>
+    <p>Or maybe he just didn’t care.</p>
+    <p>He sat near the window as usual, one hand resting against his cheek while staring absentmindedly at the cloudy sky outside. Sunlight flickered faintly through moving clouds, reflecting softly across his glasses.</p>
+    <p>The teacher continued explaining formulas across the board.</p>
+    <p><span class="dialogue">“...and if we substitute this value here—”</span></p>
+    <p>Alex wasn’t listening.</p>
+    <p>At all.</p>
+    <p>His notebook remained almost empty except for random pen marks near the corner of the page.</p>
+    <p>Ryan leaned slightly toward Ethan from behind.</p>
+    <p><span class="dialogue">“Bro’s spiritually somewhere else.”</span></p>
+    <p>Ethan snorted quietly.</p>
+    <p>Lara glanced toward Alex for a moment.</p>
+    <p>Even now, after everything earlier…</p>
+    <p>He looked tired more than dangerous.</p>
+    <p>Like his body was present in class while his mind was somewhere far away.</p>
+    <p>The teacher suddenly stopped writing.</p>
+    <p>Then slowly turned around.</p>
+    <p><span class="dialogue">“Alex.”</span></p>
+    <p>No response.</p>
+    <p>Ryan immediately whispered,</p>
+    <p><span class="dialogue">“You’re dead.”</span></p>
+    <p><span class="dialogue">“Alex.”</span>, the teacher barely shouted</p>
+    <p>This time, Alex blinked and looked away from the window.</p>
+    <p>The teacher pointed toward the board filled with equations.</p>
+    <p><span class="dialogue">“Since the sky seems more interesting than my class… would you like to solve question six?”</span></p>
+    <p>A few students laughed quietly.</p>
+    <p>Ryan leaned back dramatically.</p>
+    <p><span class="dialogue">“Yep. Funeral confirmed.”</span></p>
+    <hr>
+    <p>Alex stared at the board for about two seconds.</p>
+    <p>Then stood up calmly.</p>
+    <p>No notebook.</p>
+    <p>No hesitation.</p>
+    <p>He walked toward the board while the classroom watched silently.</p>
+    <p>Even Lara looked curious now.</p>
+    <p>Alex grabbed the marker and spinned it in his fingers like he used to do with pen, then he glanced once at the equation—</p>
+    <p>—and immediately started solving.</p>
+    <p>Step after step.</p>
+    <p>Clean.</p>
+    <p>Fast.</p>
+    <p>Accurate.</p>
+    <p>The marker moved smoothly across the board without pause like he already knew the answer before reading the full question.</p>
+    <p>Within less than a minute—</p>
+    <p>He placed the marker down.</p>
+    <p>The entire problem was solved perfectly.</p>
+    <p>Silence.</p>
+    <p>The teacher blinked twice while checking the board.</p>
+    <p><span class="dialogue">“…correct.”</span></p>
+    <p>Ryan looked offended.</p>
+    <p><span class="dialogue">“Why does this idiot act like he failed every subject when he’s secretly a genius?”</span></p>
+    <p>Ethan smirked slightly.</p>
+    <p>Alex had already returned to his seat beside the window before the reactions even finished.</p>
+    <p>Like solving it meant absolutely nothing to him.</p>
+    <p>But Lara noticed something.</p>
+    <p>For a brief moment while writing—</p>
+    <p>his expression changed.</p>
+    <p>Focused.</p>
+    <p>Sharp.</p>
+    <p>Almost cold in a completely different way.</p>
+    <p>Not violent.</p>
+    <p>Just intelligent enough to feel dangerous.</p>
+    <p>And somehow…</p>
+    <p>that was equally intimidating.</p>
+    <p>The classes continued quietly afterward.</p>
+    <p>Then finally—</p>
+    <p>The last bell rang.</p>
+    <p>Instant chaos erupted across the classroom.</p>
+    <p>Students immediately packed their bags while conversations exploded around the room.</p>
+    <p>Ryan stretched dramatically.</p>
+    <p><span class="dialogue">“Freedom.”</span></p>
+    <p>Ethan grabbed his bag.</p>
+    <p><span class="dialogue">“You say that every single day.”</span></p>
+    <p><span class="dialogue">“Because it’s true every single day.”</span></p>
+    <p>Lara laughed softly while standing up from her seat.</p>
+    <p>Alex remained seated.</p>
+    <p>Still looking outside.</p>
+    <p>Then—</p>
+    <p>The classroom door opened again.</p>
+    <p>The principal’s secretary stepped inside holding a folder against her.</p>
+    <p>The room gradually quieted.</p>
+    <p>Her eyes scanned the classroom.</p>
+    <p>Then landed on him.</p>
+    <p><span class="dialogue">“Alex.”</span></p>
+    <p>He looked over lazily.</p>
+    <p><span class="dialogue">“You have detention after school hours.”</span></p>
+    <p>Silence.</p>
+    <p>Complete silence.</p>
+    <p>Several students genuinely looked shocked.</p>
+    <p>Even Ryan blinked.</p>
+    <p><span class="dialogue">“…detention?”</span></p>
+    <p>One of the students near the back whispered quietly,</p>
+    <p><span class="dialogue">“Bro even Ethan never got detention…”</span></p>
+    <p>Ethan looked mildly offended.</p>
+    <p><span class="dialogue">“Why’s everyone using me as the school crime standard?”</span></p>
+    <p>Nobody answered him.</p>
+    <p>Because honestly—</p>
+    <p>they weren’t wrong.</p>
+    <p>Ethan had been suspended before.</p>
+    <p>Dragged into the office countless times.</p>
+    <p>But detention?</p>
+    <p>Never.</p>
+    <p>And now Alex had somehow become the first.</p>
+    <p>The secretary adjusted her glasses slightly.</p>
+    <p><span class="dialogue">“You’re expected in the disciplinary room immediately.”</span></p>
+    <p>Then she left.</p>
+    <p>The classroom exploded into whispers instantly.</p>
+    <p>Ryan stared at Alex dramatically.</p>
+    <p><span class="dialogue">“You’re cooked.”</span></p>
+    <p><span class="dialogue">“I’m aware.”</span></p>
+    <p>Ethan crossed his arms.</p>
+    <p><span class="dialogue">“Honestly? Could’ve been worse.”</span></p>
+    <p>Ryan looked at him.</p>
+    <p><span class="dialogue">“He literally almost killed someone.”</span></p>
+    <p><span class="dialogue">“…exactly,”</span> Ethan replied.</p>
+    <p>Fair point.</p>
+    <p>Alex finally stood up and grabbed his bag casually.</p>
+    <p>Lara watched him carefully.</p>
+    <p><span class="dialogue">“You okay?”</span></p>
+    <p>Alex shrugged lightly.</p>
+    <p><span class="dialogue">“It’s detention. Not execution.”</span></p>
+    <p>Ryan pointed toward him immediately.</p>
+    <p><span class="dialogue">“See? This is why horror movie characters die first. Too calm.”</span></p>
+    <p>Alex ignored him and walked toward the door.</p>
+    <hr>
+    <p>The disciplinary room near the administration block felt strangely quiet after school hours.</p>
+    <p>Most students had already gone home.</p>
+    <p>The orange evening sunlight stretched faintly across the hallway floors through the windows.</p>
+    <p>Alex sat alone near the desk inside the room, lazily holding his Nintendo Switch while waiting.</p>
+    <p>The secretary stood near a cabinet organizing files quietly.</p>
+    <p>Soft clicking sounds from the console filled the silence.</p>
+    <p>Ten minutes passed.</p>
+    <p>Then another five.</p>
+    <p>Alex didn’t seem bothered at all.</p>
+    <p>Until—</p>
+    <p>The door opened.</p>
+    <p>Alex looked up automatically.</p>
+    <p><span class="dialogue">“…Lara?”</span></p>
+    <p>She stepped inside holding her bag against her shoulder.</p>
+    <p><span class="dialogue">“You sound disappointed.”</span> Lara said with slight amusement.</p>
+    <p><span class="dialogue">“I was expecting the principal,”</span> Alex replied calmly.</p>
+    <p><span class="dialogue">“So was I,”</span> Lara admitted with a small sigh.</p>
+    <p>Alex blinked.</p>
+    <p><span class="dialogue">“Wait—you got detention too?”</span> Alex asked, slightly caught off guard.</p>
+    <p><span class="dialogue">“Amazing detective skills,”</span> Lara replied dryly.</p>
+    <p>Alex stared at her another second before lowering the Switch slowly.</p>
+    <p><span class="dialogue">“…why?”</span></p>
+    <p>Lara walked over and sat beside him.</p>
+    <p><span class="dialogue">“Apparently being present during violent incidents counts,”</span> Lara said while leaning back in her chair.</p>
+    <p><span class="dialogue">“That’s stupid,”</span> Alex muttered immediately.</p>
+    <p><span class="dialogue">“Probably,”</span> Lara agreed with a faint smile.</p>
+    <p>Alex frowned slightly.</p>
+    <p><span class="dialogue">“You didn’t do anything wrong.”</span></p>
+    <p>Lara looked at him quietly for a second.</p>
+    <p><span class="dialogue">“Neither did you, technically.”</span></p>
+    <p>But she didn’t say it aloud.</p>
+    <p>Instead she glanced toward the game screen.</p>
+    <p><span class="dialogue">“You’ve been playing the same boss for fifteen minutes,”</span> Lara pointed out casually.</p>
+    <p><span class="dialogue">“It’s annoying,”</span> Alex replied while staring at the screen.</p>
+    <p><span class="dialogue">“You lost three times,”</span> Lara added with visible amusement.</p>
+    <p><span class="dialogue">“…you were watching?”</span> Alex asked, finally looking over at her.</p>
+    <p><span class="dialogue">“You sigh very loudly,”</span> Lara answered with a small grin.</p>
+    <p>Alex looked mildly betrayed.</p>
+    <p>A small smile appeared on Lara’s face.</p>
+    <p>For a moment—</p>
+    <p>everything felt strangely peaceful again.</p>
+    <p>No whispers.</p>
+    <p>No blood.</p>
+    <p>No terrified faces.</p>
+    <p>Just quiet conversation beneath evening sunlight.</p>
+    <p>Then the door opened once more.</p>
+    <p>The principal finally entered carrying several folders under one arm.</p>
+    <p>He looked exhausted already.</p>
+    <p><span class="dialogue">“Sorry for the delay.”</span></p>
+    <p>Alex immediately put the Switch away.</p>
+    <p>The principal sat down across from them and adjusted his glasses.</p>
+    <p><span class="dialogue">“I considered suspension.”</span></p>
+    <p>Ryan’s voice echoed somewhere in Alex’s memory:</p>
+    <p>You’re cooked.</p>
+    <p><span class="dialogue">“But,”</span> the principal continued calmly, <span class="dialogue">“after hearing the full situation… I decided against it.”</span></p>
+    <p>Alex stayed silent.</p>
+    <p>The principal opened one of the folders.</p>
+    <p><span class="dialogue">“Instead, both of you will be handling disciplinary service duties.”</span></p>
+    <p>Lara blinked slightly.</p>
+    <p>Alex raised an eyebrow.</p>
+    <p><span class="dialogue">“…meaning?”</span></p>
+    <p>The principal leaned back slightly.</p>
+    <p><span class="dialogue">“You both know the old library building near the east wing?”</span></p>
+    <p>Alex immediately frowned.</p>
+    <p><span class="dialogue">“The abandoned one?”</span></p>
+    <p><span class="dialogue">“Unused,”</span> the principal corrected tiredly. <span class="dialogue">“Not abandoned.”</span></p>
+    <p><span class="dialogue">“It literally has plants growing through the windows,”</span> Alex pointed out flatly.</p>
+    <p><span class="dialogue">“That is exactly the problem,”</span> the principal replied.</p>
+    <p>Lara tried not to laugh.</p>
+    <p>The principal sighed.</p>
+    <p><span class="dialogue">“The school will be receiving more students next academic year. We may need that building operational again.”</span></p>
+    <p>He slid a paper across the table.</p>
+    <p><span class="dialogue">“For the next month, your responsibility will be restoring the library to usable condition after school hours.”</span></p>
+    <p>Alex stared at the paper.</p>
+    <p>Then the principal continued.</p>
+    <p><span class="dialogue">“After the new students arrive, you’ll both manage the library together for another month.”</span></p>
+    <p>Silence.</p>
+    <p>Then Alex looked up.</p>
+    <p><span class="dialogue">“…I understand my punishment.”</span></p>
+    <p>His eyes shifted toward Lara.</p>
+    <p><span class="dialogue">“But why her?”</span></p>
+    <p>Lara looked slightly surprised.</p>
+    <p>Alex continued calmly,</p>
+    <p><span class="dialogue">“I’m the reason the incident happened. She wasn’t involved.”</span></p>
+    <p>The principal’s expression softened slightly.</p>
+    <p><span class="dialogue">“She was present during the situation”</span>, he said firmly.</p>
+    <p><span class="dialogue">“That’s not the same thing.”</span>, Alex tries to save Lara from here</p>
+    <p><span class="dialogue">“Alex,”</span> Lara started quietly—</p>
+    <p>but he ignored her.</p>
+    <p><span class="dialogue">“She doesn’t deserve punishment for my actions.”</span></p>
+    <p>For a brief second—</p>
+    <p>the principal studied him carefully.</p>
+    <p>Not the violent student from earlier.</p>
+    <p>Not the boy everyone feared now.</p>
+    <p>Just someone carrying guilt heavier than he should.</p>
+    <p>Finally, the principal sighed.</p>
+    <p><span class="dialogue">“Alex. Wait outside for a moment.”</span></p>
+    <p>Alex frowned slightly but stood up anyway.</p>
+    <p>Before leaving, he glanced once toward Lara.</p>
+    <p>Then quietly walked out.</p>
+    <p>The door closed.</p>
+    <p>Silence settled inside the office.</p>
+    <p>The principal removed his glasses slowly and rubbed his eyes.</p>
+    <p>Lara immediately noticed the exhaustion on his face.</p>
+    <p><span class="dialogue">“…Dad?”</span></p>
+    <p>He stayed quiet for a few seconds before speaking.</p>
+    <p><span class="dialogue">“I spoke with the psychiatrist near the school yesterday.”</span></p>
+    <p>Lara’s expression changed slightly.</p>
+    <p>The principal leaned back in his chair.</p>
+    <p><span class="dialogue">“I wanted to understand what happened to Alex.”</span></p>
+    <p>The room felt quieter now.</p>
+    <p><span class="dialogue">“The psychiatrist said his reactions aren’t random.”</span></p>
+    <p><span class="dialogue">“Something about situations like this triggers him.”</span></p>
+    <p>Lara listened silently.</p>
+    <p><span class="dialogue">“But nobody knows exactly what happened in his past.”</span></p>
+    <p>The principal’s jaw tightened slightly.</p>
+    <p><span class="dialogue">“And apparently… counseling sessions never went well.”</span></p>
+    <p>A pause.</p>
+    <p><span class="dialogue">“He shuts down.”</span></p>
+    <p>Lara slowly looked toward the closed door outside.</p>
+    <p>The principal followed her gaze.</p>
+    <p><span class="dialogue">“But today,”</span> he said quietly, <span class="dialogue">“you stopped him.”</span></p>
+    <p>Her eyes widened slightly.</p>
+    <p><span class="dialogue">“I saw it myself.”</span></p>
+    <p>His voice softened.</p>
+    <p><span class="dialogue">“When you called his name… he came back.”</span></p>
+    <p>Silence filled the room again.</p>
+    <p>Then he looked directly at her.</p>
+    <p><span class="dialogue">“So I’m asking you honestly.”</span></p>
+    <p>Not as principal.</p>
+    <p>As a father.</p>
+    <p><span class="dialogue">“Stay close to him.”</span></p>
+    <p>Lara blinked slowly.</p>
+    <p><span class="dialogue">“He doesn’t need punishment right now,”</span> the principal continued quietly.</p>
+    <p><span class="dialogue">“He needs someone who can pull him back before he loses himself completely.”</span></p>
+    <p>For a moment—</p>
+    <p>she remembered Alex earlier.</p>
+    <p>Sitting near the window.</p>
+    <p>Laughing quietly during lunch.</p>
+    <p>Looking exhausted instead of dangerous.</p>
+    <p>Then she nodded softly.</p>
+    <p><span class="dialogue">“…okay.”</span></p>
+    <p>The principal exhaled slowly.</p>
+    <p><span class="dialogue">“Thank you.”</span></p>
+    <p>A few moments later—</p>
+    <p>Lara stepped outside the office.</p>
+    <p>Alex stood near the hallway window waiting quietly with his hands in his pockets.</p>
+    <p>He looked over immediately.</p>
+    <p><span class="dialogue">“…everything okay?”</span></p>
+    <p>Lara stared at him for a second before smiling faintly.</p>
+    <p><span class="dialogue">“Yeah.”</span></p>
+    <p>He studied her expression carefully.</p>
+    <p>Then nodded once.</p>
+    <p>The two of them began walking side by side through the nearly empty school hallways while evening sunlight stretched across the floors around them.</p>
+    <p>The hallway beyond the administration block had grown quieter by the time Alex and Lara stepped outside.</p>
+    <p>Most students had already gone home.</p>
+    <p>The evening sky burned orange through the tall school windows, long shadows stretching across the empty corridors as they walked side by side toward the east wing.</p>
+    <p>For a while, neither of them spoke.</p>
+    <p>The silence wasn’t awkward anymore.</p>
+    <p>Not after everything today.</p>
+    <p>Alex kept one hand inside his pocket while lazily spinning his Nintendo Switch cartridge with the other.</p>
+    <p>Lara noticed.</p>
+    <p><span class="dialogue">“You carry that everywhere?”</span> Lara asked curiously.</p>
+    <p><span class="dialogue">“It’s important emotional support,”</span> Alex replied without missing a beat.</p>
+    <p><span class="dialogue">“That’s genuinely sad,”</span> Lara said while trying not to laugh.</p>
+    <p><span class="dialogue">“It’s extremely effective,”</span> Alex defended confidently.</p>
+    <p>A faint smile tugged at Lara’s lips.</p>
+    <p>Their footsteps echoed softly through the nearly empty building.</p>
+    <p>Then—</p>
+    <p>Alex slowed slightly.</p>
+    <p>Lara noticed immediately.</p>
+    <p><span class="dialogue">“…what?”</span></p>
+    <p>He didn’t answer at first.</p>
+    <p>His eyes remained fixed ahead.</p>
+    <p>The corridor leading toward the old library was no longer empty.</p>
+    <p>Several figures stood near the entrance.</p>
+    <p>Waiting.</p>
+    <p>Lara’s stomach tightened slightly.</p>
+    <p>Five students.</p>
+    <p>Maybe six.</p>
+    <p>All seniors.</p>
+    <p>And standing among them—</p>
+    <p>were the two boys from the storage room.</p>
+    <p>Bruises still visible across their faces.</p>
+    <p>One of them had a bandage wrapped across his nose.</p>
+    <p>The moment Alex recognized them—</p>
+    <p>the relaxed atmosphere vanished instantly.</p>
+    <p>Not violently.</p>
+    <p>Not dramatically.</p>
+    <p>It simply disappeared.</p>
+    <p>Like a switch turning off.</p>
+    <p>One of the injured boys pointed toward Alex slowly.</p>
+    <p><span class="dialogue">“…that’s him.”</span></p>
+    <p>The tallest senior standing near the center shifted his gaze toward Alex calmly.</p>
+    <p>Then toward Lara beside him.</p>
+    <p>His expression changed slightly.</p>
+    <p>Curious.</p>
+    <p>Careful.</p>
+    <p>The hallway suddenly felt much colder than before.</p>
+    <p>Lara glanced sideways toward Alex.</p>
+    <p>His face looked unreadable again.</p>
+    <p>Quiet.</p>
+    <p>Still.</p>
+    <p>Dangerously still.</p>
+    <p>The seniors slowly stepped away from the library entrance—</p>
+    <p>blocking the hallway completely.</p>
+    <p>Nobody spoke for a few seconds.</p>
+    <p>Only the sound of distant evening wind echoed faintly through the corridor windows.</p>
+    <p>Then the tallest senior finally spoke.</p>
+    <p>Low.</p>
+    <p>Calm.</p>
+    <p><span class="dialogue">“So you’re Alex.”</span></p>
+    <p>Silence.</p>
+    <p>Lara felt the tension immediately.</p>
+    <p>Like the entire hallway was waiting for one wrong word.</p>
+    <p>Then—</p>
+    <p>Very slowly—</p>
+    <p>Alex took his hand out of his pocket.</p>
+    <p>And the boy with the bandaged nose instinctively flinched.</p>
+
+  </article>
+
+  <div class="ch-end fade-in delay-2">
+    <p class="ch-end-text">— End of Chapter 9 —</p>
+    <div class="ch-nav">
+      <a href="chapter8.html" class="ch-nav-btn">← Previous</a>
+      <a href="index.html" class="ch-nav-toc">All Chapters</a>
+      <a href="#" class="ch-nav-btn disabled">Next →</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const starfield = document.getElementById('starfield');
+for (let i = 0; i < 60; i++) {
+  const s = document.createElement('div');
+  s.className = 'star-dot';
+  const size = Math.random() < 0.7 ? 1 : 2;
+  s.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*4}s;--delay:${Math.random()*5}s;--op:${0.2+Math.random()*0.5};`;
+  starfield.appendChild(s);
+}
+const progressFill = document.getElementById('progressFill');
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  progressFill.style.width = Math.min(pct, 100) + '%';
+});
+// Custom cursor
+const cursor=document.getElementById('cursor'),cursorRing=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+function animRing(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;cursorRing.style.left=rx+'px';cursorRing.style.top=ry+'px';requestAnimationFrame(animRing);}
+animRing();
+document.querySelectorAll('a, button, .ch-node, .story-card').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cursor.style.transform='translate(-50%,-50%) scale(2)';cursorRing.style.transform='translate(-50%,-50%) scale(1.5)';cursorRing.style.borderColor='rgba(14,165,233,0.7)';});
+  el.addEventListener('mouseleave',()=>{cursor.style.transform='translate(-50%,-50%) scale(1)';cursorRing.style.transform='translate(-50%,-50%) scale(1)';cursorRing.style.borderColor='rgba(14,165,233,0.4)';});
+});
+</script>
+</body>
+</html>
