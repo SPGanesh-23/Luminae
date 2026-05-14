@@ -1374,10 +1374,11 @@ const chapters = [
   { num: 7, title: "Lines You Don't Cross",   read: "~5 min", href: "chapter7.html", tl: "A", side: "right" },
   { num: 8, title: "After the Noise",         read: "~5 min", href: "chapter8.html", tl: "A", side: "left" },
   { num: 9, title: "The Detention",           read: "~6 min", href: "chapter9.html", tl: "A", side: "right" },
+  { num: 10, title: "The Fracture Breathes",  read: "~6 min", href: "chapter10.html", tl: "B", side: "left" },
 ];
 
 const CARD_W = 240, CARD_H = 68, ROW_H = 110, SPINE_X_FRAC = 0.5, BRANCH_LEN = 90;
-const CONV_H = 60, CONV_LABELS = ["◈ REALITY BLINKS — Ch 3 ↔ Ch 7", "◈ TIMELINES INVERT — Ch 6 ↔ Ch 9"];
+const CONV_H = 60, CONV_LABELS = ["◈ REALITY BLINKS — Ch 3 ↔ Ch 7", "◈ TIMELINES INVERT — Ch 6 ↔ Ch 9", "◈ THE FRACTURE WIDENS — Ch 9 ↔ Ch 12"];
 
 function calcLayout() {
   let h = 40; const rows = [];
@@ -1519,6 +1520,7 @@ function buildSVG() {
     const to = chNodes[i + 1];
     if (from.ch.num === 3 && to.ch.num === 4) continue;
     if (from.ch.num === 6 && to.ch.num === 7) continue;
+    if (from.ch.num === 9 && to.ch.num === 10) continue;
 
     const y1 = from.y + CARD_H / 2;
     const y2 = to.y + CARD_H / 2;
@@ -1534,7 +1536,7 @@ function buildSVG() {
   function getChY(num) { const r = chRows.find(r => r.ch.num === num); return r ? r.y + CARD_H / 2 : null; }
   const arcs = [
     { from: 3, to: 7, tl: 'A', side: 'right' },
-    { from: 6, to: 9, tl: 'B', side: 'left' }
+    { from: 6, to: 10, tl: 'B', side: 'left' }
   ];
 
   arcs.forEach(arc => {

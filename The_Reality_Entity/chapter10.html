@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 10 — The Reality Entity | Luminae</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Cinzel+Decorative:wght@400;700&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0d0a1a; --parchment: #fdf8f0; --cream: #f5ede0;
+    --gold: #c9933a; --gold-light: #e8c97a; --gold-glow: #f0d898;
+    --violet: #6b3fa0; --violet-dark: #3d1f6e; --violet-light: #a67dd0;
+    --rose: #c45a7a; --midnight: #0f0820; --mist: #c8bfe0; --star: #f8f0e3;
+    --accent: #0ea5e9; --accent-glow: rgba(14,165,233,0.4);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--midnight); color: var(--star); font-family: 'Raleway', sans-serif; font-weight: 300; overflow-x: hidden; min-height: 100vh; }
+  .starfield { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .star-dot { position: absolute; border-radius: 50%; background: white; animation: twinkle var(--d, 3s) ease-in-out infinite; animation-delay: var(--delay, 0s); opacity: 0; }
+  @keyframes twinkle { 0%, 100% { opacity: 0; transform: scale(0.5); } 50% { opacity: var(--op, 0.7); transform: scale(1); } }
+  .top-nav { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; padding: 1rem 3rem; background: linear-gradient(to bottom, rgba(15,8,32,0.98), rgba(15,8,32,0.9)); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(124,58,237,0.2); }
+  .logo { font-family: 'Cinzel Decorative', cursive; font-size: 1.1rem; color: var(--accent); letter-spacing: 0.08em; text-shadow: 0 0 20px var(--accent-glow); text-decoration: none; }
+  .nav-chapter-info { font-size: 0.7rem; color: var(--mist); letter-spacing: 0.1em; text-transform: uppercase; }
+  .toc-link { color: var(--accent); text-decoration: none; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.3s; }
+  .toc-link:hover { color: #7c3aed; }
+  .reader-page { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; padding: 4rem 2rem 3rem; }
+  .ch-header { text-align: center; margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid rgba(124,58,237,0.2); }
+  .ch-number { font-size: 0.65rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.2rem; display: block; }
+  .ch-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 300; line-height: 1.15; color: var(--star); margin-bottom: 0.8rem; }
+  .ch-title em { font-style: italic; color: #7c3aed; text-shadow: 0 0 30px rgba(124,58,237,0.4); }
+  .ch-divider { display: flex; align-items: center; gap: 0.8rem; margin: 1.5rem auto 0; max-width: 160px; }
+  .ch-divider-line { flex: 1; height: 1px; background: linear-gradient(to right, transparent, rgba(124,58,237,0.5), transparent); }
+  .ch-divider-glyph { color: var(--accent); font-size: 0.8rem; }
+  .ch-content { font-family: 'Cormorant Garamond', serif; font-size: 1.18rem; color: var(--mist); line-height: 2; font-weight: 400; }
+  .ch-content p { margin-bottom: 1.5rem; }
+  .ch-content p.first::first-letter { font-family: 'Cinzel Decorative', cursive; font-size: 3.8rem; float: left; line-height: 1; margin: 0.05em 0.12em -0.1em 0; color: var(--accent); text-shadow: 0 0 20px var(--accent-glow); }
+  .ch-content em { color: #7c3aed; font-style: italic; }
+  .ch-content .dialogue { color: var(--star); }
+  .ch-content .thought { color: #0ea5e9; font-style: italic; }
+  .ch-content hr { border: none; text-align: center; margin: 2.5rem 0; }
+  .ch-content hr::after { content: '✦ ✦ ✦'; color: var(--accent); font-size: 0.7rem; letter-spacing: 0.5em; }
+  .ch-end { text-align: center; padding: 3rem 0 0; margin-top: 3rem; border-top: 1px solid rgba(124,58,237,0.2); }
+  .ch-end-text { font-family: 'Cormorant Garamond', serif; font-size: 0.85rem; font-style: italic; color: rgba(200,191,224,0.4); letter-spacing: 0.1em; margin-bottom: 2rem; }
+  .ch-nav { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
+  .ch-nav-btn { display: inline-flex; align-items: center; gap: 0.6rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(124,58,237,0.3); color: var(--star); padding: 0.8rem 1.8rem; font-family: 'Raleway', sans-serif; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; transition: all 0.3s; border-radius: 2px; }
+  .ch-nav-btn:hover { background: rgba(124,58,237,0.15); border-color: rgba(14,165,233,0.5); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.4); }
+  .ch-nav-btn.disabled { opacity: 0.3; pointer-events: none; }
+  .ch-nav-toc { color: var(--accent); text-decoration: none; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.3s; }
+  .ch-nav-toc:hover { color: #7c3aed; }
+  .progress-wrap { position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 100; background: rgba(0,0,0,0.3); }
+  .progress-fill { height: 100%; width: 0; background: linear-gradient(to right, #7c3aed, #0ea5e9); transition: width 0.1s; }
+  .fade-in { opacity: 0; transform: translateY(20px); animation: fadeUp 0.8s ease forwards; }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+  .delay-1 { animation-delay: 0.15s; }
+  .delay-2 { animation-delay: 0.3s; }
+  /* Custom cursor */
+  body { cursor: none; }
+  .cursor { position:fixed; width:8px; height:8px; background:#0ea5e9; border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:transform 0.1s, background 0.3s; box-shadow:0 0 12px rgba(14,165,233,0.6); }
+  .cursor-ring { position:fixed; width:32px; height:32px; border:1px solid rgba(14,165,233,0.4); border-radius:50%; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:all 0.18s ease; }
+  @media (pointer: coarse) {
+    body { cursor: auto; }
+    .cursor, .cursor-ring { display: none !important; }
+  }
+  @media (max-width: 768px) {
+    .top-nav { padding: 1rem 1.5rem !important; }
+    .logo { font-size: 1.1rem !important; }
+    .reader-page { padding: 3rem 1.2rem 2rem !important; }
+    .ch-title { font-size: 2.2rem !important; }
+    .ch-nav { justify-content: center !important; }
+    .ch-nav-btn { padding: 0.7rem 1.2rem !important; font-size: 0.65rem !important; }
+  }
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<div class="progress-wrap"><div class="progress-fill" id="progressFill"></div></div>
+<div class="starfield" id="starfield"></div>
+
+<nav class="top-nav">
+  <a href="../index.html" class="logo">Luminae</a>
+  <span class="nav-chapter-info">Chapter 10 of 10</span>
+  <a href="index.html" class="toc-link">☰ Chapters</a>
+</nav>
+
+<div class="reader-page">
+
+  <header class="ch-header fade-in">
+    <span class="ch-number">✦ Chapter 10 ✦</span>
+    <h1 class="ch-title">The Fracture <em>Breathes</em></h1>
+    <div class="ch-divider">
+      <div class="ch-divider-line"></div>
+      <span class="ch-divider-glyph">✦</span>
+      <div class="ch-divider-line"></div>
+    </div>
+  </header>
+
+  <article class="ch-content fade-in delay-1">
+    <p class="first">The bunker no longer felt like a shelter.</p>
+    <p>It felt like a dying organism trying desperately to stay alive.</p>
+    <p>Emergency lights flickered across cracked concrete walls. Smoke drifted from exposed wiring overhead. Entire sections of the underground structure groaned under pressure from the last distortion surge, metal supports creaking like strained bones.</p>
+    <p>Nobody relaxed.</p>
+    <p>Nobody even sat down properly anymore.</p>
+    <p>Because everyone understood the same thing now:</p>
+    <p>The next cycle could begin at any moment.</p>
+    <p>And if another acceleration phase hit like the last one—</p>
+    <p>most of them wouldn’t survive it.</p>
+    <p>Ron lay against a collapsed support beam, barely conscious.</p>
+    <p>Every breath sounded wet.</p>
+    <p>Dark blood soaked through the bandages wrapped around his ribs, slowly spreading across his shirt no matter how tightly Jax pulled the compression straps.</p>
+    <p><span class="dialogue">“The acceleration crushed something internally,”</span> Jax muttered quietly.</p>
+    <p>Ron gave a weak laugh that turned into coughing.</p>
+    <p><span class="dialogue">“Very comforting.”</span></p>
+    <p>Nearby, Soren was worse.</p>
+    <p>Far worse.</p>
+    <p>He lay motionless on a steel medical table while the bunker lights flickered above him. A jagged metal fragment had pierced straight through his shoulder during the collapse, tearing deep enough that even breathing made his body twitch.</p>
+    <p>His pulse was unstable.</p>
+    <p>Slow.</p>
+    <p>Weak.</p>
+    <p>Every few seconds, Liora checked to make sure he was still alive.</p>
+    <p>Each time, her relief lasted shorter than before.</p>
+    <p>A sharp sound suddenly cut through the bunker.</p>
+    <hr>
+    <p>Iris stumbled slightly near the medical cabinet, one hand pressing hard against her side.</p>
+    <p>Kyros moved immediately.</p>
+    <p>He caught her before she fully lost balance.</p>
+    <p>For a second, she tensed instinctively at the contact—</p>
+    <p>then stopped.</p>
+    <p>Her breathing faltered.</p>
+    <p>Kyros carefully steadied her by the waist while guiding her against the nearby table.</p>
+    <p><span class="dialogue">“You’re bleeding.”</span>, he said quietly.</p>
+    <p><span class="dialogue">“I’m fine.”</span>, she replied.</p>
+    <p><span class="dialogue">“You can barely stand.”</span>, kyros disagrees.</p>
+    <p><span class="dialogue">“I said I’m fi—”</span></p>
+    <p>Pain cut her off sharply.</p>
+    <p>Her fingers tightened unconsciously against his sleeve.</p>
+    <p>Kyros looked down.</p>
+    <p>Blood had already soaked through the side of her dark jacket.</p>
+    <p>Not surface-level.</p>
+    <p>Deep.</p>
+    <p><span class="dialogue">“You hid this?”</span></p>
+    <p>Iris avoided his eyes.</p>
+    <p><span class="dialogue">“Everyone else was worse.”</span></p>
+    <p>For a moment neither of them moved.</p>
+    <p>The bunker noise faded strangely around them.</p>
+    <p>Kyros crouched slightly to examine the wound, fingers careful near the torn fabric.</p>
+    <p><span class="dialogue">“You should’ve treated this earlier.”</span></p>
+    <p><span class="dialogue">“And leave everyone else?”</span></p>
+    <p>Her voice came lower this time.</p>
+    <p>Still rough.</p>
+    <p>Still stubborn.</p>
+    <p>Just more tired than before.</p>
+    <p>Kyros looked up at her.</p>
+    <p><span class="dialogue">“You collapsing helps nobody.”</span></p>
+    <p>Something in her expression shifted for half a second.</p>
+    <p>Not softness.</p>
+    <p>Not vulnerability.</p>
+    <p>Just exhaustion slipping through the cracks.</p>
+    <p>Before she could answer, another violent groan echoed through the bunker ceiling.</p>
+    <p>Reality itself seemed to creak.</p>
+    <p>Dust rained from above.</p>
+    <p>Kyros instinctively pulled her slightly closer to keep debris from hitting her.</p>
+    <p>Their faces ended up closer than either expected.</p>
+    <p>Too close.</p>
+    <p>For a second, Iris just stared at him.</p>
+    <p>Then she immediately pushed lightly against his chest and stepped back.</p>
+    <p><span class="dialogue">“I’m still alive,”</span> she muttered.</p>
+    <p>Kyros let go slowly.</p>
+    <p><span class="dialogue">“Barely.”</span></p>
+    <p>A tiny almost-smirk tugged at the corner of her mouth.</p>
+    <p>Then vanished instantly.</p>
+    <hr>
+    <p>Across the room, Kai sat slumped against the central workstation, gripping his arm tightly while blood dripped through his fingers.</p>
+    <p>His right shoulder had dislocated during the acceleration surge.</p>
+    <p>Burn marks from a ruptured watch circuit ran across the side of his neck.</p>
+    <p>Liora knelt in front of him with medical tape and stabilizers.</p>
+    <p><span class="dialogue">“You need to stop moving,”</span> she said firmly.</p>
+    <p>Kai gave her a tired look.</p>
+    <p><span class="dialogue">“We’re all about to die and you’re worried about posture?”</span></p>
+    <p><span class="dialogue">“I’m worried because your shoulder is hanging by optimism alone.”</span></p>
+    <p>Despite the chaos around them, Kai laughed weakly.</p>
+    <p>Liora carefully adjusted his arm.</p>
+    <p>The moment she touched the joint, Kai inhaled sharply through his teeth.</p>
+    <p><span class="dialogue">“Okay,”</span> she warned quietly. <span class="dialogue">“This is going to hurt.”</span></p>
+    <p><span class="dialogue">“Define hur—”</span></p>
+    <p>She snapped the shoulder back into place.</p>
+    <p>Kai nearly punched the wall.</p>
+    <p><span class="dialogue">“LIORA—”</span></p>
+    <p><span class="dialogue">“You’re welcome.”</span></p>
+    <p>He glared at her while breathing hard.</p>
+    <p>She tried to hide it—</p>
+    <p>but a small smile escaped anyway.</p>
+    <p>Kai noticed immediately.</p>
+    <p><span class="dialogue">“There it is.”</span></p>
+    <p><span class="dialogue">“What?”</span></p>
+    <p><span class="dialogue">“That smile.”</span></p>
+    <p><span class="dialogue">“You hallucinated it.”</span></p>
+    <p><span class="dialogue">“Definitely real.”</span></p>
+    <p>For a brief second, the tension between them softened into something warmer. Familiar. Human.</p>
+    <p>Then Liora’s expression hardened again as she looked toward the shattered watches across the table.</p>
+    <hr>
+    <p><span class="dialogue">“I can’t rebuild the synchronization system alone,”</span> she muttered.</p>
+    <p>Kai slowly pushed himself upright despite the pain.</p>
+    <p><span class="dialogue">“You won’t.”</span></p>
+    <p>At the center of the bunker, Tarek stood silently watching everyone.</p>
+    <p>Not panicking.</p>
+    <p>Not shouting.</p>
+    <p>Thinking.</p>
+    <p>That was what made him dangerous.</p>
+    <p>Even now, while the bunker practically collapsed around them, his mind kept moving.</p>
+    <p>Calculating.</p>
+    <p>Adapting.</p>
+    <p>He finally spoke.</p>
+    <p><span class="dialogue">“How long?”</span></p>
+    <p>The room quieted immediately.</p>
+    <p>Liora checked the corrupted readings again.</p>
+    <p><span class="dialogue">“It won’t still be five minutes.”</span></p>
+    <p>Tarek nodded once.</p>
+    <p><span class="dialogue">“I know.”</span></p>
+    <p>Kai leaned against the table.</p>
+    <p><span class="dialogue">“We estimate at least three minutes before another distortion cycle.”</span></p>
+    <p><span class="dialogue">“Estimate?”</span> Ron muttered weakly.</p>
+    <p>Kai looked exhausted.</p>
+    <p><span class="dialogue">“Maybe more. Maybe less.”</span></p>
+    <p>Tarek’s eyes narrowed slightly.</p>
+    <p><span class="dialogue">“So we’re blind now.”</span></p>
+    <p>Nobody answered.</p>
+    <p>Because yes.</p>
+    <p>They were.</p>
+    <p>Jax looked toward the damaged watches.</p>
+    <p><span class="dialogue">“What if we rebuild them using the readings from the last cycle?”</span></p>
+    <p>Kyros immediately shook his head.</p>
+    <p><span class="dialogue">“No.”</span></p>
+    <p>Everyone turned toward him.</p>
+    <hr>
+    <p><span class="dialogue">“The last distortion wasn’t stable.”</span></p>
+    <p>Kai frowned slightly.</p>
+    <p><span class="dialogue">“It lasted six seconds.”</span></p>
+    <p>Kyros looked directly at him.</p>
+    <p><span class="dialogue">“No,”</span> he said quietly. <span class="dialogue">“It didn’t.”</span></p>
+    <p>Silence.</p>
+    <p>Kyros stepped toward the broken monitor displays.</p>
+    <p><span class="dialogue">“During the pause phase, I counted while moving.”</span></p>
+    <p>His voice remained calm.</p>
+    <p><span class="dialogue">“The distortion pause lasted exactly six point two one seconds.”</span></p>
+    <p>Liora’s expression changed instantly.</p>
+    <p><span class="dialogue">“And the acceleration phase lasted six point four two.”</span></p>
+    <p>Nobody spoke after that.</p>
+    <p>Because they understood immediately what that meant.</p>
+    <p>Milliseconds.</p>
+    <p>The distortion was no longer mutating in whole seconds.</p>
+    <p>It was evolving on microscopic levels.</p>
+    <p>Kyros looked around slowly.</p>
+    <p><span class="dialogue">“Even one unexpected millisecond of acceleration would kill half the bunker before your nervous systems could adjust.”</span></p>
+    <p>Ron looked away grimly.</p>
+    <p>Jax cursed under his breath.</p>
+    <p>Kai exhaled slowly.</p>
+    <p><span class="dialogue">“So what’s the solution then?”</span></p>
+    <p>Kyros hesitated.</p>
+    <p><span class="dialogue">“I don’t fully understand your technology yet.”</span></p>
+    <p>He picked up one of the broken watches carefully.</p>
+    <p><span class="dialogue">“But where I come from… we used synchronization systems.”</span></p>
+    <p>Liora’s attention sharpened instantly.</p>
+    <p><span class="dialogue">“What kind?”</span></p>
+    <p>Kyros searched for simpler words.</p>
+    <p><span class="dialogue">“Imagine two objects existing in perfect behavioral alignment.”</span></p>
+    <p>He tapped the damaged watch core.</p>
+    <p><span class="dialogue">“One becomes the source.”</span></p>
+    <p><span class="dialogue">“The other continuously copies its state.”</span></p>
+    <p>Kai frowned slightly.</p>
+    <p><span class="dialogue">“At software level?”</span></p>
+    <p>Kyros shook his head.</p>
+    <p><span class="dialogue">“Deeper.”</span></p>
+    <p>He pointed toward himself.</p>
+    <p><span class="dialogue">“Atomic response patterns.”</span></p>
+    <p>That got everyone’s attention.</p>
+    <p>Kyros continued carefully.</p>
+    <p><span class="dialogue">“In our systems, every particle inside a stabilized container broadcasts behavioral data constantly. Motion. Energy fluctuation. Temporal interaction. Everything.”</span></p>
+    <p>Liora slowly stood now despite exhaustion.</p>
+    <p><span class="dialogue">“You’re talking about adaptive state mirroring…”</span></p>
+    <p>Kyros looked at her, slightly surprised.</p>
+    <p><span class="dialogue">“Yes.”</span></p>
+    <p>Her eyes widened slightly.</p>
+    <p><span class="dialogue">“That’s… absurdly advanced.”</span></p>
+    <p>Kyros gave a small shrug.</p>
+    <p><span class="dialogue">“Where I come from, impossible usually just meant expensive.”</span></p>
+    <p>Even Tarek almost smiled at that.</p>
+    <p>Kyros looked around the bunker again.</p>
+    <p><span class="dialogue">“The distortion doesn’t affect me.”</span></p>
+    <p><span class="dialogue">“If I became the synchronization source…”</span></p>
+    <p>Understanding slowly spread across the room.</p>
+    <p><span class="dialogue">“The watches wouldn’t predict the distortion anymore,”</span> Kai whispered.</p>
+    <p><span class="dialogue">“They’d follow him,”</span> Liora finished quietly.</p>
+    <p>Kyros nodded.</p>
+    <p><span class="dialogue">“My state would continuously broadcast to all connected watches.”</span></p>
+    <p><span class="dialogue">“Meaning no more fixed timing.”</span></p>
+    <p><span class="dialogue">“No more anticipating cycles.”</span></p>
+    <p><span class="dialogue">“The watches would adapt in real time because I already naturally survive the distortion.”</span></p>
+    <p>Silence filled the bunker.</p>
+    <p>Not fear this time.</p>
+    <p>Hope.</p>
+    <p>Small.</p>
+    <p>Fragile.</p>
+    <p>But real.</p>
+    <p>Then Kyros leaned back slightly.</p>
+    <p><span class="dialogue">“Of course, this only works unless some unbelievable miracle happens and the distortion suddenly tears me apart too.”</span></p>
+    <p>The room went quiet for half a second.</p>
+    <p>Then Iris immediately smacked the side of his arm.</p>
+    <p>Hard enough to actually make a sound.</p>
+    <p><span class="dialogue">“Can you not say stupid things like that right now?”</span></p>
+    <p>Kyros blinked once.</p>
+    <p><span class="dialogue">“What?”</span></p>
+    <p><span class="dialogue">“You heard me.”</span>, Iris said.</p>
+    <p>She crossed her arms tightly, visibly irritated now.</p>
+    <p><span class="dialogue">“We finally get one workable idea after this place nearly collapses and your first instinct is joking about dying?”</span></p>
+    <p><span class="dialogue">“It was sarcasm.”</span></p>
+    <p><span class="dialogue">“It was dumb.”</span></p>
+    <p>Ron looked between them with exhausted amusement.</p>
+    <p><span class="dialogue">“That sounded weirdly personal.”</span></p>
+    <p><span class="dialogue">“Shut up, Ron.”</span></p>
+    <p>Kyros stared at her for another second.</p>
+    <p><span class="dialogue">“You worried about losing your synchronization source?”</span></p>
+    <p>Iris rolled her eyes instantly.</p>
+    <p><span class="dialogue">“Don’t flatter yourself.”</span></p>
+    <p>But she didn’t fully look away when she said it.</p>
+    <p>And that tiny hesitation was enough for everyone in the room to notice.</p>
+    <p>Kai smirked weakly despite the pain.</p>
+    <p>Even Tarek quietly looked elsewhere to avoid making it worse for her.</p>
+    <p>Iris noticed immediately.</p>
+    <p>Her expression hardened.</p>
+    <p><span class="dialogue">“If any of you start smiling right now, I’m letting the next acceleration phase kill you myself.”</span></p>
+    <p>Ron slowly raised both hands.</p>
+    <p><span class="dialogue">“See? That’s the Iris we know.”</span></p>
+    <p>But Liora wasn’t listening anymore.</p>
+    <p>Her mind was already racing ahead.</p>
+    <p><span class="dialogue">“No…”</span> she whispered suddenly.</p>
+    <p><span class="dialogue">“This can actually work.”</span></p>
+    <p>She rushed toward the shattered workstation screens, ignoring the pain in her side.</p>
+    <hr>
+    <p>Kai stared at her.</p>
+    <p><span class="dialogue">“Liora?”</span></p>
+    <p>Her hands moved rapidly across damaged interfaces.</p>
+    <p><span class="dialogue">“We can’t recreate full adaptive synchronization technology,”</span> she muttered quickly.</p>
+    <p><span class="dialogue">“But we don’t need to.”</span></p>
+    <p>She grabbed one intact watch core.</p>
+    <p><span class="dialogue">“One primary watch.”</span></p>
+    <p>Then pointed directly at Kyros.</p>
+    <p><span class="dialogue">“You wear it.”</span></p>
+    <p>Next, she grabbed several damaged synchronization modules.</p>
+    <p><span class="dialogue">“Then we create linked receiver watches for everyone else.”</span></p>
+    <p>Tarek stepped closer.</p>
+    <p><span class="dialogue">“Explain.”</span></p>
+    <p>Liora looked up immediately.</p>
+    <p><span class="dialogue">“The primary watch continuously studies Kyros’ temporal state.”</span></p>
+    <p><span class="dialogue">“It learns from him in real time.”</span></p>
+    <p><span class="dialogue">“Then broadcasts synchronization corrections directly to every connected receiver.”</span></p>
+    <p>Kai’s eyes widened despite exhaustion.</p>
+    <p><span class="dialogue">“The watches stop predicting distortion…”</span></p>
+    <p><span class="dialogue">“They adapt alongside him,”</span> Tarek finished.</p>
+    <p>Liora nodded immediately.</p>
+    <p><span class="dialogue">“Yes.”</span></p>
+    <p>Kyros folded his arms slightly.</p>
+    <p><span class="dialogue">“There’ll still be delay.”</span></p>
+    <p><span class="dialogue">“Microseconds,”</span> Kai said quietly.</p>
+    <p>Liora nodded.</p>
+    <p><span class="dialogue">“But survivable microseconds.”</span></p>
+    <p>Then her expression darkened again.</p>
+    <p><span class="dialogue">“Probably.”</span></p>
+    <p>That word hung heavily.</p>
+    <p>Tarek finally stepped forward fully.</p>
+    <p>Leadership returned instantly to the room.</p>
+    <p><span class="dialogue">“Then we move now.”</span></p>
+    <p>Everyone looked toward him.</p>
+    <p><span class="dialogue">“We don’t have another option.”</span></p>
+    <p>His gaze settled on every injured member one by one.</p>
+    <p><span class="dialogue">“Ron stabilizes communications.”</span></p>
+    <p><span class="dialogue">“Jax assists medical support.”</span></p>
+    <p><span class="dialogue">“Kai monitors synchronization readings.”</span></p>
+    <p>Then he looked directly at Kyros.</p>
+    <p><span class="dialogue">“And you.”</span></p>
+    <p>A pause.</p>
+    <p><span class="dialogue">“For the first time since this started…”</span></p>
+    <p>Tarek’s voice lowered slightly.</p>
+    <p><span class="dialogue">“You might actually be the reason we survive the next cycle.”</span></p>
+    <p>The bunker exploded into motion.</p>
+    <p>Liora and Kyros worked side-by-side across the central workstation, dismantling surviving watch components piece by piece.</p>
+    <p>Sparks flew from exposed circuitry.</p>
+    <p>Receiver modules lined the table.</p>
+    <p>Broken displays flickered endlessly with unstable distortion readings.</p>
+    <p>Kyros quickly learned how their systems worked while simultaneously explaining concepts Liora had never even imagined before.</p>
+    <p>And somehow—</p>
+    <p>they began understanding each other frighteningly fast.</p>
+    <p>Kai monitored the unstable readings while helping calibrate surviving modules with one usable arm.</p>
+    <p>Jax moved between medical stations preparing emergency stabilizers for the next cycle.</p>
+    <p>Ron, despite barely breathing properly, managed to restore partial communications across the bunker systems.</p>
+    <p>Even Iris eventually sat beside Kyros near the workstation, silently helping organize components while pretending she wasn’t staying close on purpose.</p>
+    <p>And slowly—</p>
+    <p>the bunker stopped feeling like a place waiting to die.</p>
+    <p>It started feeling like people fighting to survive.</p>
+    <p>Outside the bunker walls, the world still groaned under the growing distortion.</p>
+    <p>The fracture in space across the far wall still pulsed faintly like a wound in reality itself.</p>
+    <p>But this time—</p>
+    <p>for the first time since Kyros arrived—</p>
+    <p>nobody looked at it with helplessness.</p>
+    <p>Liora finally lifted the unfinished primary watch carefully from the workstation.</p>
+    <p>Its cracked surface flickered weakly with unstable blue light.</p>
+    <p>Not complete.</p>
+    <p>Not perfect.</p>
+    <p>But alive.</p>
+    <p>Tarek stared at it for a long moment.</p>
+    <p>Then nodded once.</p>
+    <p><span class="dialogue">“Good,”</span> he said quietly.</p>
+    <p><span class="dialogue">“Now we make sure this world doesn’t break before we finish it.”</span></p>
+  </article>
+
+  <div class="ch-end fade-in delay-2">
+    <p class="ch-end-text">— End of Chapter 10 —</p>
+    <div class="ch-nav">
+      <a href="chapter9.html" class="ch-nav-btn">← Previous</a>
+      <a href="index.html" class="ch-nav-toc">All Chapters</a>
+      <a href="#" class="ch-nav-btn disabled">Next →</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const starfield = document.getElementById('starfield');
+for (let i = 0; i < 60; i++) {
+  const s = document.createElement('div');
+  s.className = 'star-dot';
+  const size = Math.random() < 0.7 ? 1 : 2;
+  s.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*4}s;--delay:${Math.random()*5}s;--op:${0.2+Math.random()*0.5};`;
+  starfield.appendChild(s);
+}
+const progressFill = document.getElementById('progressFill');
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  progressFill.style.width = Math.min(pct, 100) + '%';
+});
+// Custom cursor
+const cursor=document.getElementById('cursor'),cursorRing=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+function animRing(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;cursorRing.style.left=rx+'px';cursorRing.style.top=ry+'px';requestAnimationFrame(animRing);}
+animRing();
+document.querySelectorAll('a, button, .ch-node, .story-card').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cursor.style.transform='translate(-50%,-50%) scale(2)';cursorRing.style.transform='translate(-50%,-50%) scale(1.5)';cursorRing.style.borderColor='rgba(14,165,233,0.7)';});
+  el.addEventListener('mouseleave',()=>{cursor.style.transform='translate(-50%,-50%) scale(1)';cursorRing.style.transform='translate(-50%,-50%) scale(1)';cursorRing.style.borderColor='rgba(14,165,233,0.4)';});
+});
+</script>
+</body>
+</html>
