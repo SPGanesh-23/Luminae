@@ -1375,6 +1375,8 @@ const chapters = [
   { num: 8, title: "After the Noise",         read: "~5 min", href: "chapter8.html", tl: "A", side: "left" },
   { num: 9, title: "The Detention",           read: "~6 min", href: "chapter9.html", tl: "A", side: "right" },
   { num: 10, title: "The Fracture Breathes",  read: "~6 min", href: "chapter10.html", tl: "B", side: "left" },
+  { num: 11, title: "The First Shared Pulse", read: "~6 min", href: "chapter11.html", tl: "B", side: "right" },
+  { num: 12, title: "The Shared Fracture",    read: "~6 min", href: "chapter12.html", tl: "B", side: "left" },
 ];
 
 const CARD_W = 240, CARD_H = 68, ROW_H = 110, SPINE_X_FRAC = 0.5, BRANCH_LEN = 90;
@@ -1536,7 +1538,8 @@ function buildSVG() {
   function getChY(num) { const r = chRows.find(r => r.ch.num === num); return r ? r.y + CARD_H / 2 : null; }
   const arcs = [
     { from: 3, to: 7, tl: 'A', side: 'right' },
-    { from: 6, to: 10, tl: 'B', side: 'left' }
+    { from: 6, to: 10, tl: 'B', side: 'left' },
+    { from: 9, to: 13, tl: 'A', side: 'right' }
   ];
 
   arcs.forEach(arc => {

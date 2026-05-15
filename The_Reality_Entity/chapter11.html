@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 11 — The Reality Entity | Luminae</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Cinzel+Decorative:wght@400;700&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0d0a1a; --parchment: #fdf8f0; --cream: #f5ede0;
+    --gold: #c9933a; --gold-light: #e8c97a; --gold-glow: #f0d898;
+    --violet: #6b3fa0; --violet-dark: #3d1f6e; --violet-light: #a67dd0;
+    --rose: #c45a7a; --midnight: #0f0820; --mist: #c8bfe0; --star: #f8f0e3;
+    --accent: #0ea5e9; --accent-glow: rgba(14,165,233,0.4);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--midnight); color: var(--star); font-family: 'Raleway', sans-serif; font-weight: 300; overflow-x: hidden; min-height: 100vh; }
+  .starfield { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .star-dot { position: absolute; border-radius: 50%; background: white; animation: twinkle var(--d, 3s) ease-in-out infinite; animation-delay: var(--delay, 0s); opacity: 0; }
+  @keyframes twinkle { 0%, 100% { opacity: 0; transform: scale(0.5); } 50% { opacity: var(--op, 0.7); transform: scale(1); } }
+  .top-nav { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; padding: 1rem 3rem; background: linear-gradient(to bottom, rgba(15,8,32,0.98), rgba(15,8,32,0.9)); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(124,58,237,0.2); }
+  .logo { font-family: 'Cinzel Decorative', cursive; font-size: 1.1rem; color: var(--accent); letter-spacing: 0.08em; text-shadow: 0 0 20px var(--accent-glow); text-decoration: none; }
+  .nav-chapter-info { font-size: 0.7rem; color: var(--mist); letter-spacing: 0.1em; text-transform: uppercase; }
+  .toc-link { color: var(--accent); text-decoration: none; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.3s; }
+  .toc-link:hover { color: #7c3aed; }
+  .reader-page { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; padding: 4rem 2rem 3rem; }
+  .ch-header { text-align: center; margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid rgba(124,58,237,0.2); }
+  .ch-number { font-size: 0.65rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.2rem; display: block; }
+  .ch-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 300; line-height: 1.15; color: var(--star); margin-bottom: 0.8rem; }
+  .ch-title em { font-style: italic; color: #7c3aed; text-shadow: 0 0 30px rgba(124,58,237,0.4); }
+  .ch-divider { display: flex; align-items: center; gap: 0.8rem; margin: 1.5rem auto 0; max-width: 160px; }
+  .ch-divider-line { flex: 1; height: 1px; background: linear-gradient(to right, transparent, rgba(124,58,237,0.5), transparent); }
+  .ch-divider-glyph { color: var(--accent); font-size: 0.8rem; }
+  .ch-content { font-family: 'Cormorant Garamond', serif; font-size: 1.18rem; color: var(--mist); line-height: 2; font-weight: 400; }
+  .ch-content p { margin-bottom: 1.5rem; }
+  .ch-content p.first::first-letter { font-family: 'Cinzel Decorative', cursive; font-size: 3.8rem; float: left; line-height: 1; margin: 0.05em 0.12em -0.1em 0; color: var(--accent); text-shadow: 0 0 20px var(--accent-glow); }
+  .ch-content em { color: #7c3aed; font-style: italic; }
+  .ch-content .dialogue { color: var(--star); }
+  .ch-content .thought { color: #0ea5e9; font-style: italic; }
+  .ch-content hr { border: none; text-align: center; margin: 2.5rem 0; }
+  .ch-content hr::after { content: '✦ ✦ ✦'; color: var(--accent); font-size: 0.7rem; letter-spacing: 0.5em; }
+  .author-note { background: rgba(0, 0, 0, 0.15); border: 1px solid rgba(124, 58, 237, 0.15); border-radius: 4px; padding: 2.5rem; margin-top: 4rem; }
+  .author-note .note-label { font-family: 'Raleway', sans-serif; font-size: 0.65rem; font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase; color: #a67dd0; margin-bottom: 1.5rem; }
+  .author-note p { font-size: 1.15rem; color: var(--mist); line-height: 2; margin-bottom: 1rem; }
+  .author-note p:last-child { margin-bottom: 0; }
+  .ch-end { text-align: center; padding: 3rem 0 0; margin-top: 3rem; border-top: 1px solid rgba(124,58,237,0.2); }
+  .ch-end-text { font-family: 'Cormorant Garamond', serif; font-size: 0.85rem; font-style: italic; color: rgba(200,191,224,0.4); letter-spacing: 0.1em; margin-bottom: 2rem; }
+  .ch-nav { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
+  .ch-nav-btn { display: inline-flex; align-items: center; gap: 0.6rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(124,58,237,0.3); color: var(--star); padding: 0.8rem 1.8rem; font-family: 'Raleway', sans-serif; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; transition: all 0.3s; border-radius: 2px; }
+  .ch-nav-btn:hover { background: rgba(124,58,237,0.15); border-color: rgba(14,165,233,0.5); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.4); }
+  .ch-nav-btn.disabled { opacity: 0.3; pointer-events: none; }
+  .ch-nav-toc { color: var(--accent); text-decoration: none; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.3s; }
+  .ch-nav-toc:hover { color: #7c3aed; }
+  .progress-wrap { position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 100; background: rgba(0,0,0,0.3); }
+  .progress-fill { height: 100%; width: 0; background: linear-gradient(to right, #7c3aed, #0ea5e9); transition: width 0.1s; }
+  .fade-in { opacity: 0; transform: translateY(20px); animation: fadeUp 0.8s ease forwards; }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+  .delay-1 { animation-delay: 0.15s; }
+  .delay-2 { animation-delay: 0.3s; }
+  /* Custom cursor */
+  body { cursor: none; }
+  .cursor { position:fixed; width:8px; height:8px; background:#0ea5e9; border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:transform 0.1s, background 0.3s; box-shadow:0 0 12px rgba(14,165,233,0.6); }
+  .cursor-ring { position:fixed; width:32px; height:32px; border:1px solid rgba(14,165,233,0.4); border-radius:50%; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:all 0.18s ease; }
+  @media (pointer: coarse) {
+    body { cursor: auto; }
+    .cursor, .cursor-ring { display: none !important; }
+  }
+  @media (max-width: 768px) {
+    .top-nav { padding: 1rem 1.5rem !important; }
+    .logo { font-size: 1.1rem !important; }
+    .reader-page { padding: 3rem 1.2rem 2rem !important; }
+    .ch-title { font-size: 2.2rem !important; }
+    .ch-nav { justify-content: center !important; }
+    .ch-nav-btn { padding: 0.7rem 1.2rem !important; font-size: 0.65rem !important; }
+    .author-note { padding: 1.5rem !important; }
+  }
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<div class="progress-wrap"><div class="progress-fill" id="progressFill"></div></div>
+<div class="starfield" id="starfield"></div>
+
+<nav class="top-nav">
+  <a href="../index.html" class="logo">Luminae</a>
+  <span class="nav-chapter-info">Chapter 11 of 12</span>
+  <a href="index.html" class="toc-link">☰ Chapters</a>
+</nav>
+
+<div class="reader-page">
+
+  <header class="ch-header fade-in">
+    <span class="ch-number">✦ Chapter 11 ✦</span>
+    <h1 class="ch-title">The First Shared <em>Pulse</em></h1>
+    <div class="ch-divider">
+      <div class="ch-divider-line"></div>
+      <span class="ch-divider-glyph">✦</span>
+      <div class="ch-divider-line"></div>
+    </div>
+  </header>
+
+  <article class="ch-content fade-in delay-1">
+    <p class="first">The bunker no longer sounded broken.</p>
+    <p>Now it sounded alive.</p>
+    <p>Machines hummed across the underground chamber while unstable power surged through exposed wiring overhead. Sparks burst occasionally from damaged panels, briefly illuminating the exhausted faces gathered around the central workstation.</p>
+    <p>Nobody had slept.</p>
+    <p>Nobody even remembered how long they had been working anymore.</p>
+    <p>But for the first time since the distortion began evolving—</p>
+    <p>they had something that resembled a plan.</p>
+    <p>At the center of the room, Liora adjusted another receiver watch beneath the pale glow of fractured monitors. Tiny synchronization readings flickered rapidly across her screen while her trembling hands carefully stabilized the final calibration sequence.</p>
+    <p>Across from her, Kyros worked on the broadcaster watch.</p>
+    <p>Or rather—</p>
+    <p>he rebuilt it.</p>
+    <p>The original device had almost completely disappeared beneath layers of modified circuitry and unfamiliar components. Rotating internal rings moved slowly around a glowing blue core while thin streams of light pulsed rhythmically beneath the cracked outer casing.</p>
+    <p>Kai stared at it from nearby.</p>
+    <p><span class="dialogue">“That thing still qualifies as a watch?”</span></p>
+    <p>Kyros didn’t look up.</p>
+    <p><span class="dialogue">“Technically.”</span></p>
+    <p><span class="dialogue">“That is not a reassuring answer.”</span></p>
+    <p>Liora slid another finished receiver across the table.</p>
+    <p><span class="dialogue">“Done.”</span></p>
+    <p>Kyros immediately took it and connected the watch manually into the broadcaster system using several thin synchronization threads.</p>
+    <p>The moment the connection locked—</p>
+    <p>a soft blue pulse spread through both devices.</p>
+    <p>Stable.</p>
+    <p>Functional.</p>
+    <p>Liora exhaled quietly.</p>
+    <p><span class="dialogue">“One more.”</span></p>
+    <p>Nearby, Iris silently organized the finished watches into separate groups while pretending she wasn’t paying attention to Kyros every few seconds.</p>
+    <p>Unfortunately for her—</p>
+    <p>Kai noticed.</p>
+    <p>Again.</p>
+    <p>He smirked faintly to himself but wisely decided survival was more important than teasing her right now.</p>
+    <p>Barely.</p>
+    <p>Kyros finally sealed the broadcaster casing shut.</p>
+    <p>The watch emitted a low synchronized hum.</p>
+    <p>Not loud.</p>
+    <p>But alive.</p>
+    <p>Liora immediately checked the readings.</p>
+    <p><span class="dialogue">“Signal stabilization holding.”</span></p>
+    <p>Kyros nodded once.</p>
+    <p><span class="dialogue">“For now.”</span></p>
+    <p>Kai leaned against the damaged console carefully.</p>
+    <p><span class="dialogue">“That phrase is becoming emotionally exhausting.”</span></p>
+    <p>Kyros picked up several completed watches before turning toward Iris.</p>
+    <p><span class="dialogue">“Distribute these.”</span></p>
+    <p>She took them immediately.</p>
+    <p><span class="dialogue">“To the injured first?”</span></p>
+    <p><span class="dialogue">“They’ll need synchronization correction fastest during acceleration.”</span></p>
+    <p>Iris moved through the bunker quickly, handing the watches out one by one.</p>
+    <p>Ron struggled fastening his with shaking hands.</p>
+    <p><span class="dialogue">“If this kills me,”</span> he muttered weakly, <span class="dialogue">“I’m haunting all of you specifically.”</span></p>
+    <p>Jax tightened his own watch securely.</p>
+    <p><span class="dialogue">“If this works, I’m naming my future children after whoever invented this.”</span></p>
+    <p>Kai blinked.</p>
+    <p><span class="dialogue">“You don’t even know how it functions.”</span></p>
+    <p><span class="dialogue">“I don’t need details. I need survival.”</span></p>
+    <p>Despite the tension—</p>
+    <p>a few tired laughs escaped across the bunker.</p>
+    <p>Small.</p>
+    <p>Uneven.</p>
+    <p>Human.</p>
+    <p>And somehow, that mattered more than anyone admitted aloud.</p>
+    <p>Two minutes remained before the next cycle.</p>
+    <p>The distortion readings had already started rising again.</p>
+    <p>The bunker lights flickered in unstable rhythm now, matching the invisible pressure spreading through reality itself outside the walls.</p>
+    <p>Everyone gathered near the central chamber while Kyros activated the broadcaster watch.</p>
+    <p>Instantly, blue synchronization pulses spread across every connected receiver simultaneously.</p>
+    <p>The damaged bunker monitors lit up.</p>
+    <p>SYNC LINK ESTABLISHED</p>
+    <p>TEMPORAL RESPONSE ACTIVE</p>
+    <p>STABILITY: 72%</p>
+    <p>Kai stared at the readings.</p>
+    <p><span class="dialogue">“Oh.”</span></p>
+    <p>Liora immediately moved between each survivor, checking signal reception one by one while Kyros monitored the broadcaster directly.</p>
+    <p><span class="dialogue">“Ron?”</span></p>
+    <p><span class="dialogue">“Receiving.”</span></p>
+    <p><span class="dialogue">“Jax?”</span></p>
+    <p><span class="dialogue">“Receiving.”</span></p>
+    <p><span class="dialogue">“Soren?”</span></p>
+    <p>Weak synchronization confirmation flickered beside his medical monitor.</p>
+    <p>Liora nodded quickly.</p>
+    <p><span class="dialogue">“Good.”</span></p>
+    <p>Kyros moved toward Kai next.</p>
+    <p><span class="dialogue">“Receiver stable.”</span></p>
+    <p>Kai looked genuinely impressed now.</p>
+    <p><span class="dialogue">“This is actually functioning.”</span></p>
+    <p>One by one—</p>
+    <p>every watch synchronized successfully.</p>
+    <p>Until Kyros reached Iris.</p>
+    <p>She stood near the bunker wall with her arms crossed tightly, watching him approach.</p>
+    <p>Kyros gently turned her wrist upward.</p>
+    <p><span class="dialogue">“This may feel strange.”</span></p>
+    <p><span class="dialogue">“I’ve survived worse.”</span></p>
+    <p><span class="dialogue">“You say that constantly.”</span></p>
+    <p><span class="dialogue">“Because it keeps being true.”</span></p>
+    <p>A faint almost-smile touched Kyros’ expression before he aligned her watch beside the broadcaster.</p>
+    <p>The moment the signals connected—</p>
+    <p>the receiver screen glitched violently.</p>
+    <p>The blue synchronization pulse vanished instantly.</p>
+    <p>Instead—</p>
+    <p>a deep crimson signal spread across the display.</p>
+    <p>LINK ERROR</p>
+    <p>SIGNAL EXCHANGE DETECTED</p>
+    <p>Kyros frowned immediately.</p>
+    <p><span class="dialogue">“That’s not a receiver response.”</span></p>
+    <p>Liora rushed over the second she saw the readings.</p>
+    <p>Then stopped cold.</p>
+    <p><span class="dialogue">“Oh no.”</span></p>
+    <p>Kai stepped beside her and immediately grimaced.</p>
+    <p><span class="dialogue">“Wait…”</span></p>
+    <p>His eyes widened slightly.</p>
+    <p><span class="dialogue">“She’s wearing the prototype?”</span></p>
+    <p>Iris frowned.</p>
+    <p><span class="dialogue">“What prototype?”</span></p>
+    <p>Liora looked genuinely horrified now.</p>
+    <p><span class="dialogue">“That isn’t a receiver-capable watch.”</span></p>
+    <p>The room went silent.</p>
+    <p>Kyros looked directly at her.</p>
+    <p><span class="dialogue">“Explain.”</span></p>
+    <p>Kai rubbed a hand across his face tiredly.</p>
+    <p><span class="dialogue">“Before everything collapsed, we were developing experimental synchronization systems.”</span></p>
+    <p>Liora pointed toward Iris’ watch.</p>
+    <p><span class="dialogue">“That model wasn’t designed to receive temporal correction signals.”</span></p>
+    <p><span class="dialogue">“It exchanges them.”</span></p>
+    <p>Tarek stepped closer.</p>
+    <p><span class="dialogue">“What exactly does that mean?”</span></p>
+    <p>Liora hesitated briefly.</p>
+    <p><span class="dialogue">“It temporarily exchanges temporal states between two connected watches.”</span></p>
+    <p>Kyros’ expression sharpened slightly.</p>
+    <p>Kai nodded grimly.</p>
+    <p><span class="dialogue">“The system transfers synchronization conditions directly between paired users.”</span></p>
+    <p>Ron stared from across the bunker.</p>
+    <p><span class="dialogue">“That sounds catastrophically unsafe.”</span></p>
+    <p><span class="dialogue">“It was,”</span> Kai admitted immediately.</p>
+    <p><span class="dialogue">“That’s why we abandoned it.”</span></p>
+    <p>The crimson warning continued flashing across Iris’ watch.</p>
+    <p>PAIR LINK REQUIRED</p>
+    <p>NO SECONDARY SOURCE FOUND</p>
+    <p>Liora immediately started removing her own receiver watch.</p>
+    <p><span class="dialogue">“Take mine.”</span></p>
+    <p>But before she could finish—</p>
+    <p>every light inside the bunker suddenly died.</p>
+    <p>Silence swallowed the room.</p>
+    <p>Then reality stopped.</p>
+    <p>The pause phase had begun.</p>
+    <p>Everything froze instantly.</p>
+    <p>Dust remained suspended in the air.</p>
+    <p>Loose sparks hung motionless above exposed wiring.</p>
+    <p>Every survivor in the bunker became perfectly still.</p>
+    <p>Except Kyros.</p>
+    <p>He turned immediately toward Iris.</p>
+    <p>Frozen against the wall.</p>
+    <p>The crimson warning continued flashing silently across her watch.</p>
+    <p>PAIR LINK REQUIRED</p>
+    <p>NO SECONDARY SOURCE FOUND</p>
+    <p>Kyros looked toward the others.</p>
+    <p>Liora.</p>
+    <p>Kai.</p>
+    <p>Tarek.</p>
+    <p>All motionless.</p>
+    <p>Nobody could help now.</p>
+    <p>Only him.</p>
+    <p>The bunker groaned again as temporal pressure built rapidly through reality itself.</p>
+    <p>Acceleration was coming.</p>
+    <p>Fast.</p>
+    <p>Kyros looked back toward the prototype watch.</p>
+    <p><span class="dialogue">“A paired synchronization exchange…”</span> he muttered quietly.</p>
+    <p>Kai’s explanation replayed in his mind.</p>
+    <p>The watch didn’t share synchronization.</p>
+    <p>It exchanged it.</p>
+    <p>Two connected watches temporarily swapped temporal states between each other.</p>
+    <p>Meaning if he connected himself to Iris—</p>
+    <p>the distortion immunity protecting him would transfer across both systems temporarily.</p>
+    <p>And for the first time since arriving in this world—</p>
+    <p>Kyros himself would become vulnerable to the acceleration.</p>
+    <p>His eyes lowered toward the broadcaster watch on his wrist.</p>
+    <p>Then back toward Iris.</p>
+    <p>He didn’t hesitate again after that.</p>
+    <p>Kyros stepped forward, grabbed Iris’ wrist carefully, and activated the prototype.</p>
+    <p>The crimson signal immediately surged brighter.</p>
+    <p>PAIR EXCHANGE ACCEPTED</p>
+    <p>TEMPORAL STATE EXCHANGE ACTIVE</p>
+    <p>For a brief second—</p>
+    <p>the broadcaster pulse vanished entirely.</p>
+    <p>Then returned.</p>
+    <p>Different.</p>
+    <p>Unstable.</p>
+    <p>Kyros looked down at the readings once.</p>
+    <p>Whatever happened next—</p>
+    <p>there would be no reversing it until the cycle ended.</p>
+    <p>The bunker lights flickered violently overhead.</p>
+    <p>One second remained before acceleration.</p>
+    <p>Kyros quietly guided Iris closer against the bunker wall to keep her stable after transition.</p>
+    <p>Kyros looked at her for another second.</p>
+    <p>As if trying to memorize her before reality started moving again.</p>
+    <p>Even frozen within the pause phase, her expression still carried that same stubborn tension she always wore like armor.</p>
+    <p>Kyros exhaled quietly.</p>
+    <p>Then, before the acceleration began—</p>
+    <p>he leaned down and pressed a light kiss against her forehead.</p>
+    <p>Small.</p>
+    <p>Gentle.</p>
+    <p>Almost apologetic.</p>
+    <p>Like a goodbye he never intended her to hear.</p>
+    <p>Then he walked across the room.</p>
+    <p>Slowly.</p>
+    <p>Calmly.</p>
+    <p>Like someone already preparing for impact.</p>
+    <p>He lowered himself onto the old sofa near the far side of the bunker and leaned back against it.</p>
+    <p>The broadcaster watch flickered faintly against his wrist.</p>
+    <p>Kyros closed his eyes briefly.</p>
+    <p>And waited for the worst part to begin.</p>
+    <p>Then reality accelerated.</p>
+    <p>Movement returned all at once.</p>
+    <p>Everyone inhaled sharply as synchronization stabilized across the bunker.</p>
+    <p>Ron nearly lost balance before catching himself against the communications console.</p>
+    <p>Jax immediately checked the readings on his watch.</p>
+    <p><span class="dialogue">“It worked…”</span></p>
+    <p>Kai looked around quickly.</p>
+    <p><span class="dialogue">“No neural tearing…”</span></p>
+    <p>Liora checked her pulse monitor in disbelief.</p>
+    <p><span class="dialogue">“We survived the transition.”</span></p>
+    <p>Relief spread across the bunker instantly.</p>
+    <p>Real relief.</p>
+    <p>The first successful survival since the distortion began mutating.</p>
+    <p>Then someone noticed Iris.</p>
+    <p>She was standing normally.</p>
+    <p>Alive.</p>
+    <p>Completely stable.</p>
+    <p>For half a second, nobody understood why that mattered.</p>
+    <p>Then Kai’s expression changed.</p>
+    <p>Slowly.</p>
+    <p>Horribly.</p>
+    <p>He looked down toward the prototype watch still connected to her wrist.</p>
+    <p>And finally understood what Kyros had done.</p>
+    <p>The color drained from Liora’s face immediately after.</p>
+    <p>Tarek turned sharply.</p>
+    <p><span class="dialogue">“Kai.”</span></p>
+    <p>But Kai was already staring toward the far side of the bunker.</p>
+    <p>Toward the old sofa near the wall.</p>
+    <p>Everyone followed his gaze.</p>
+    <p>And saw Kyros.</p>
+    <p>Motionless against the cushions.</p>
+    <p>The broadcaster watch on his wrist flickering erratically in the dark.</p>
+    <p>Then the screen suddenly flashed red.</p>
+    <p>NEURAL STABILITY FAILURE DETECTED</p>
+    <p>And Iris started running toward him.</p>
+
+  </article>
+
+  <div class="ch-end fade-in delay-2">
+    <p class="ch-end-text">— End of Chapter 11 —</p>
+    <div class="ch-nav">
+      <a href="chapter10.html" class="ch-nav-btn ">← Previous</a>
+      <a href="index.html" class="ch-nav-toc">All Chapters</a>
+      <a href="chapter12.html" class="ch-nav-btn ">Next →</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const starfield = document.getElementById('starfield');
+for (let i = 0; i < 60; i++) {
+  const s = document.createElement('div');
+  s.className = 'star-dot';
+  const size = Math.random() < 0.7 ? 1 : 2;
+  s.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*4}s;--delay:${Math.random()*5}s;--op:${0.2+Math.random()*0.5};`;
+  starfield.appendChild(s);
+}
+const progressFill = document.getElementById('progressFill');
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  progressFill.style.width = Math.min(pct, 100) + '%';
+});
+// Custom cursor
+const cursor=document.getElementById('cursor'),cursorRing=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+function animRing(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;cursorRing.style.left=rx+'px';cursorRing.style.top=ry+'px';requestAnimationFrame(animRing);}
+animRing();
+document.querySelectorAll('a, button, .ch-node, .story-card').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cursor.style.transform='translate(-50%,-50%) scale(2)';cursorRing.style.transform='translate(-50%,-50%) scale(1.5)';cursorRing.style.borderColor='rgba(14,165,233,0.7)';});
+  el.addEventListener('mouseleave',()=>{cursor.style.transform='translate(-50%,-50%) scale(1)';cursorRing.style.transform='translate(-50%,-50%) scale(1)';cursorRing.style.borderColor='rgba(14,165,233,0.4)';});
+});
+</script>
+</body>
+</html>
