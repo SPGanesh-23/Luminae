@@ -80,7 +80,7 @@
   .back-link:hover { color: var(--gold-light); }
 
   /* Page content */
-  .page { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; padding: 0 2rem 5rem; }
+  .page { position: relative; z-index: 1; max-width: 1280px; margin: 0 auto; padding: 0 2rem 5rem; }
 
   /* Hero header */
   .book-hero {
@@ -288,21 +288,22 @@
 
   .char-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2rem;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
     position: relative;
     z-index: 1;
-    max-width: 800px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 0 1rem;
   }
 
+  @media (max-width: 900px) { .char-grid { grid-template-columns: repeat(2, 1fr); max-width: 700px; } }
   @media (max-width: 600px) { .char-grid { grid-template-columns: 1fr; max-width: 340px; } }
 
   .char-card {
     position: relative;
     aspect-ratio: 2/3;
-    min-height: 420px;
+    min-height: 320px;
     border-radius: 18px;
     overflow: hidden;
     cursor: pointer;
@@ -629,6 +630,52 @@
         </div>
       </div>      
 
+      <!-- Zayn -->
+      <div class="char-card" data-tl="B">
+        <div class="char-aura"></div>
+        <div class="char-portrait" style="background-image: url('Images/Zayn.jpg'); background-color: #100a1a;"></div>
+        <div class="char-overlay-base"></div>
+        <div class="char-spotlight"></div>
+        <div class="char-frame"></div>
+        <div class="char-corners"></div>
+        <canvas class="char-particle-canvas"></canvas>
+        <div class="char-content">
+          <div class="char-name">Zayn</div>
+          <div class="char-details">
+            <div class="char-role-line">
+              <div class="char-role-dot"></div>
+              <span class="char-role-text">Supporting · Anchor</span>
+            </div>
+            <div class="char-tagline">The Protective Friend</div>
+            <div class="char-divider"></div>
+            <div class="char-desc">A fiercely protective presence who anchors Luna to the real world. He might not know about the door, but he knows when someone he cares about is slipping away.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Clara -->
+      <div class="char-card" data-tl="A">
+        <div class="char-aura"></div>
+        <div class="char-portrait" style="background-image: url('Images/Clara.jpg'); background-color: #1a0a14;"></div>
+        <div class="char-overlay-base"></div>
+        <div class="char-spotlight"></div>
+        <div class="char-frame"></div>
+        <div class="char-corners"></div>
+        <canvas class="char-particle-canvas"></canvas>
+        <div class="char-content">
+          <div class="char-name">Clara</div>
+          <div class="char-details">
+            <div class="char-role-line">
+              <div class="char-role-dot"></div>
+              <span class="char-role-text">Supporting · Confidant</span>
+            </div>
+            <div class="char-tagline">The Voice of Reason</div>
+            <div class="char-divider"></div>
+            <div class="char-desc">Grounded and observant, she stays steadfast by Luna's side. Though she cannot see the worlds beyond, her steady presence provides a vital tether to reality.</div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -775,6 +822,110 @@
             <div class="chapter-info">
               <div class="chapter-name">The Eyes Filled With Pain</div>
               <div class="chapter-meta">~5 min read</div>
+            </div>
+          </div>
+          <span class="chapter-arrow">→</span>
+        </a>
+      </li>
+
+      <li class="chapter-item">
+        <a href="chapter12.html" class="chapter-link">
+          <div class="chapter-left">
+            <span class="chapter-num">12</span>
+            <div class="chapter-info">
+              <div class="chapter-name">You Really Don't Remember Me.</div>
+              <div class="chapter-meta">~3 min read</div>
+            </div>
+          </div>
+          <span class="chapter-arrow">→</span>
+        </a>
+      </li>
+
+      <li class="chapter-item">
+        <a href="chapter13.html" class="chapter-link">
+          <div class="chapter-left">
+            <span class="chapter-num">13</span>
+            <div class="chapter-info">
+              <div class="chapter-name">Please Stop Looking At Me Like That.</div>
+              <div class="chapter-meta">~3 min read</div>
+            </div>
+          </div>
+          <span class="chapter-arrow">→</span>
+        </a>
+      </li>
+
+      <li class="chapter-item">
+        <a href="chapter14.html" class="chapter-link">
+          <div class="chapter-left">
+            <span class="chapter-num">14</span>
+            <div class="chapter-info">
+              <div class="chapter-name">She Forgot You.</div>
+              <div class="chapter-meta">~4 min read</div>
+            </div>
+          </div>
+          <span class="chapter-arrow">→</span>
+        </a>
+      </li>
+
+      <li class="chapter-item">
+        <a href="chapter15.html" class="chapter-link">
+          <div class="chapter-left">
+            <span class="chapter-num">15</span>
+            <div class="chapter-info">
+              <div class="chapter-name">Don't Say Her Name Again.</div>
+              <div class="chapter-meta">~4 min read</div>
+            </div>
+          </div>
+          <span class="chapter-arrow">→</span>
+        </a>
+      </li>
+
+      <li class="chapter-item">
+        <a href="chapter16.html" class="chapter-link">
+          <div class="chapter-left">
+            <span class="chapter-num">16</span>
+            <div class="chapter-info">
+              <div class="chapter-name">You Loved Him.</div>
+              <div class="chapter-meta">~4 min read</div>
+            </div>
+          </div>
+          <span class="chapter-arrow">→</span>
+        </a>
+      </li>
+
+      <li class="chapter-item">
+        <a href="chapter17.html" class="chapter-link">
+          <div class="chapter-left">
+            <span class="chapter-num">17</span>
+            <div class="chapter-info">
+              <div class="chapter-name">He Didn't Even Look Back.</div>
+              <div class="chapter-meta">~4 min read</div>
+            </div>
+          </div>
+          <span class="chapter-arrow">→</span>
+        </a>
+      </li>
+
+      <li class="chapter-item">
+        <a href="chapter18.html" class="chapter-link">
+          <div class="chapter-left">
+            <span class="chapter-num">18</span>
+            <div class="chapter-info">
+              <div class="chapter-name">Five Years Later.</div>
+              <div class="chapter-meta">~4 min read</div>
+            </div>
+          </div>
+          <span class="chapter-arrow">→</span>
+        </a>
+      </li>
+
+      <li class="chapter-item">
+        <a href="chapter19.html" class="chapter-link">
+          <div class="chapter-left">
+            <span class="chapter-num">19</span>
+            <div class="chapter-info">
+              <div class="chapter-name">Stay Close To Me.</div>
+              <div class="chapter-meta">~4 min read</div>
             </div>
           </div>
           <span class="chapter-arrow">→</span>

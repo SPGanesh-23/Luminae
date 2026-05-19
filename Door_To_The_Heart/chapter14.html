@@ -1,0 +1,310 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 14 — Door To The Heart | Luminae</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Cinzel+Decorative:wght@400;700&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0d0a1a; --parchment: #fdf8f0; --cream: #f5ede0;
+    --gold: #c9933a; --gold-light: #e8c97a; --gold-glow: #f0d898;
+    --violet: #6b3fa0; --violet-dark: #3d1f6e; --violet-light: #a67dd0;
+    --rose: #c45a7a; --midnight: #0f0820; --mist: #c8bfe0; --star: #f8f0e3;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--midnight); color: var(--star); font-family: 'Raleway', sans-serif; font-weight: 300; overflow-x: hidden; min-height: 100vh; }
+  .starfield { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .star-dot { position: absolute; border-radius: 50%; background: white; animation: twinkle var(--d, 3s) ease-in-out infinite; animation-delay: var(--delay, 0s); opacity: 0; }
+  @keyframes twinkle { 0%, 100% { opacity: 0; transform: scale(0.5); } 50% { opacity: var(--op, 0.7); transform: scale(1); } }
+  .top-nav { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; padding: 1rem 3rem; background: linear-gradient(to bottom, rgba(15,8,32,0.98), rgba(15,8,32,0.9)); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(201,147,58,0.1); }
+  .logo { font-family: 'Cinzel Decorative', cursive; font-size: 1.1rem; color: var(--gold); letter-spacing: 0.08em; text-shadow: 0 0 20px rgba(201,147,58,0.6); text-decoration: none; }
+  .nav-chapter-info { font-size: 0.7rem; color: var(--mist); letter-spacing: 0.1em; text-transform: uppercase; }
+  .toc-link { color: var(--gold-light); text-decoration: none; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.3s; }
+  .toc-link:hover { color: var(--gold); }
+  .reader-page { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; padding: 4rem 2rem 3rem; }
+  .ch-header { text-align: center; margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid rgba(201,147,58,0.12); }
+  .ch-number { font-size: 0.65rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.2rem; display: block; }
+  .ch-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 300; line-height: 1.15; color: var(--star); margin-bottom: 0.8rem; }
+  .ch-title em { font-style: italic; color: var(--gold-light); text-shadow: 0 0 30px rgba(232,201,122,0.3); }
+  .ch-divider { display: flex; align-items: center; gap: 0.8rem; margin: 1.5rem auto 0; max-width: 160px; }
+  .ch-divider-line { flex: 1; height: 1px; background: linear-gradient(to right, transparent, rgba(201,147,58,0.3), transparent); }
+  .ch-divider-glyph { color: var(--gold); font-size: 0.8rem; }
+  .ch-content { font-family: 'Cormorant Garamond', serif; font-size: 1.18rem; color: var(--mist); line-height: 2; font-weight: 400; }
+  .ch-content p { margin-bottom: 1.5rem; }
+  .ch-content p.first::first-letter { font-family: 'Cinzel Decorative', cursive; font-size: 3.8rem; float: left; line-height: 1; margin: 0.05em 0.12em -0.1em 0; color: var(--gold); text-shadow: 0 0 20px rgba(201,147,58,0.4); }
+  .ch-content em { color: var(--gold-light); font-style: italic; }
+  .ch-content .dialogue { color: var(--star); }
+  .ch-content hr { border: none; text-align: center; margin: 2.5rem 0; }
+  .ch-content hr::after { content: '\2726 \2726 \2726'; color: var(--gold); font-size: 0.7rem; letter-spacing: 0.5em; }
+  .ch-end { text-align: center; padding: 3rem 0 0; margin-top: 3rem; border-top: 1px solid rgba(201,147,58,0.12); }
+  .ch-end-text { font-family: 'Cormorant Garamond', serif; font-size: 0.85rem; font-style: italic; color: rgba(200,191,224,0.4); letter-spacing: 0.1em; margin-bottom: 2rem; }
+  .ch-nav { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
+  .ch-nav-btn { display: inline-flex; align-items: center; gap: 0.6rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(201,147,58,0.15); color: var(--star); padding: 0.8rem 1.8rem; font-family: 'Raleway', sans-serif; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; transition: all 0.3s; border-radius: 2px; }
+  .ch-nav-btn:hover { background: rgba(107,63,160,0.1); border-color: rgba(201,147,58,0.35); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.3); }
+  .ch-nav-btn.disabled { opacity: 0.3; pointer-events: none; }
+  .ch-nav-toc { color: var(--gold-light); text-decoration: none; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.3s; }
+  .ch-nav-toc:hover { color: var(--gold); }
+  .progress-wrap { position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 100; background: rgba(0,0,0,0.3); }
+  .progress-fill { height: 100%; width: 0; background: linear-gradient(to right, var(--violet), var(--gold)); transition: width 0.1s; }
+  .fade-in { opacity: 0; transform: translateY(20px); animation: fadeUp 0.8s ease forwards; }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+  .delay-1 { animation-delay: 0.15s; }
+  .delay-2 { animation-delay: 0.3s; }
+  /* Custom cursor */
+  body { cursor: none; }
+  .cursor { position:fixed; width:8px; height:8px; background:#c9933a; border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:transform 0.1s, background 0.3s; box-shadow:0 0 12px #f0d898; }
+  .cursor-ring { position:fixed; width:32px; height:32px; border:1px solid rgba(201,147,58,0.4); border-radius:50%; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:all 0.18s ease; }
+  @media (pointer: coarse) {
+    body { cursor: auto; }
+    .cursor, .cursor-ring { display: none !important; }
+  }
+  @media (max-width: 768px) {
+    .top-nav { padding: 1rem 1.5rem !important; }
+    .logo { font-size: 1.1rem !important; }
+    .reader-page { padding: 3rem 1.2rem 2rem !important; }
+    .ch-title { font-size: 2.2rem !important; }
+    .ch-nav { justify-content: center !important; }
+    .ch-nav-btn { padding: 0.7rem 1.2rem !important; font-size: 0.65rem !important; }
+    .author-note { padding: 1.5rem !important; }
+  }
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="progress-wrap"><div class="progress-fill" id="progressFill"></div></div>
+<div class="starfield" id="starfield"></div>
+<nav class="top-nav">
+  <a href="../index.html" class="logo">Luminae</a>
+  <span class="nav-chapter-info">Chapter 14 of 19</span>
+  <a href="index.html" class="toc-link">&#9776; Chapters</a>
+</nav>
+<div class="reader-page">
+  <header class="ch-header fade-in">
+    <span class="ch-number">&#10022; Chapter Fourteen &#10022;</span>
+    <h1 class="ch-title">She Forgot <em>You</em>.</h1>
+    <div class="ch-divider">
+      <div class="ch-divider-line"></div>
+      <span class="ch-divider-glyph">&#10022;</span>
+      <div class="ch-divider-line"></div>
+    </div>
+  </header>
+  <article class="ch-content fade-in delay-1">
+    <p class="first">The hospital hallway felt unbearably cold.</p>
+    <p>White lights.</p>
+    <p>White walls.</p>
+    <p>White silence.</p>
+    <p>Everything around Luna looked lifeless.</p>
+    <p>Machines beeped softly beside her hospital bed while rain tapped endlessly against the window nearby.</p>
+    <p>Her mother sat beside her with trembling hands wrapped around Luna’s fingers like she was afraid to let go.</p>
+    <p>“What happened to my daughter…?” she whispered tearfully.</p>
+    <p>Across the room, Zayn stood completely soaked from the rain, exhausted both physically and emotionally.</p>
+    <p>He looked toward Luna for a moment before answering quietly.</p>
+    <p>“She collapsed outside.”</p>
+    <p>Her mother immediately stood up in panic.</p>
+    <p>“Collapsed? Why?”</p>
+    <p>Zayn opened his mouth…</p>
+    <p>then stopped.</p>
+    <p>Because how was he supposed to explain any of this?</p>
+    <p>How could he explain the way Luna cried like her heart was being torn apart in front of a stranger?</p>
+    <p>“She was talking to someone,” he finally muttered.</p>
+    <p>“Who?”</p>
+    <p>Zayn’s jaw tightened.</p>
+    <p>“I don’t know.”</p>
+    <p>But that wasn’t true anymore.</p>
+    <p>Because the image of Kyros refusing to leave Luna in the rain kept replaying inside his head.</p>
+    <p>The way that man looked at her…</p>
+    <p>It wasn’t normal.</p>
+    <p>It looked painful.</p>
+    <p>Too painful.</p>
+    <p>Before another word could be spoken—</p>
+    <p>the hospital room door suddenly opened.</p>
+    <p>Zayn turned immediately.</p>
+    <p>And his expression darkened.</p>
+    <p>Kyros stood there silently.</p>
+    <p>His clothes were still wet from the storm.</p>
+    <p>Dark hair dripping water onto the hospital floor.</p>
+    <p>But none of that mattered.</p>
+    <p>Because the moment his eyes landed on Luna lying unconscious on the bed—</p>
+    <p>his entire expression broke.</p>
+    <p>Like someone had stabbed something directly into his chest.</p>
+    <p>He took a slow step forward instinctively.</p>
+    <p>“Luna…”</p>
+    <p>Her name left his lips so softly it almost sounded like a prayer.</p>
+    <p>Zayn immediately blocked his path.</p>
+    <p>“Don’t.”</p>
+    <p>Kyros looked at him slowly.</p>
+    <p>For a second, he didn’t even seem angry.</p>
+    <p>Just desperate.</p>
+    <p>“I need to see her.”</p>
+    <p>“She fainted because of you.”</p>
+    <p>The words hit hard.</p>
+    <p>But Kyros barely reacted.</p>
+    <p>His eyes never left Luna.</p>
+    <p>Pale.</p>
+    <p>Weak.</p>
+    <p>Silent.</p>
+    <p>And somehow that silence seemed to be destroying him more every second.</p>
+    <p>“I just want to know if she’s okay,” he whispered.</p>
+    <p>Zayn laughed bitterly.</p>
+    <p>“You suddenly care now?”</p>
+    <p>That finally made Kyros look at him.</p>
+    <p>And God—</p>
+    <p>his eyes looked ruined.</p>
+    <p>Like he hadn’t slept properly in years.</p>
+    <p>Like loving Luna had slowly become the saddest part of his life.</p>
+    <p>“You think I stopped caring?” he asked quietly.</p>
+    <p>Zayn went silent for a second.</p>
+    <p>Because that voice…</p>
+    <p>That wasn’t guilt alone.</p>
+    <p>That was grief.</p>
+    <p>Real grief.</p>
+    <p>The kind people carry after losing someone they never emotionally recovered from.</p>
+    <p>But Zayn still stepped in front of the room protectively.</p>
+    <p>“You’re not going near her.”</p>
+    <p>Kyros clenched his jaw painfully.</p>
+    <p>“And who are you to decide that?”</p>
+    <p>“Someone who stayed.”</p>
+    <p>Silence.</p>
+    <p>Heavy.</p>
+    <p>Sharp.</p>
+    <p>Kyros looked like those words physically hurt him.</p>
+    <p>Then quietly—</p>
+    <p>“Who are you to her?”</p>
+    <p>Zayn stared at him coldly.</p>
+    <p>But before answering, he glanced toward Luna sleeping weakly on the hospital bed.</p>
+    <p>Then back at Kyros.</p>
+    <p>“At least she remembers me.”</p>
+    <p>Kyros froze completely.</p>
+    <p>That single sentence shattered every emotion on his face.</p>
+    <p>Zayn continued mercilessly.</p>
+    <p>“You keep asking why she forgot you?”</p>
+    <p>His voice cracked angrily now.</p>
+    <p>“She didn’t choose to.”</p>
+    <p>Kyros stopped breathing.</p>
+    <p>Zayn stepped closer.</p>
+    <p>“She has memory loss.”</p>
+    <p>The world around Kyros seemed to collapse silently.</p>
+    <p>His eyes widened slowly.</p>
+    <p>Like his mind rejected the words immediately.</p>
+    <p>“No…”</p>
+    <p>But Zayn didn’t stop.</p>
+    <p>“She lost her memories after the accident.”</p>
+    <p>Accident.</p>
+    <p>That word destroyed him.</p>
+    <p>Completely.</p>
+    <p>Kyros took a small step back without realizing it.</p>
+    <p>His face slowly drained of color.</p>
+    <p>And for the first time—</p>
+    <p>he looked terrified.</p>
+    <p>Not angry.</p>
+    <p>Not cold.</p>
+    <p>Terrified.</p>
+    <p>Like his worst fear had just become real.</p>
+    <p>Zayn’s eyes burned with anger.</p>
+    <p>“Do you know what she went through after that?”</p>
+    <p>Kyros couldn’t answer.</p>
+    <p>Because suddenly every moment from tonight replayed in his head.</p>
+    <p>The confusion in Luna’s eyes.</p>
+    <p>The fear in her voice.</p>
+    <p>The way she cried saying:</p>
+    <p>“I don’t remember you…”</p>
+    <p>God.</p>
+    <p>She wasn’t lying.</p>
+    <p>She truly didn’t remember him.</p>
+    <p>Zayn laughed bitterly through his anger.</p>
+    <p>“She forgot everything.”</p>
+    <p>Kyros’ breathing became uneven.</p>
+    <p>“Her memories.”</p>
+    <p>“Her past.”</p>
+    <p>“Pieces of herself.”</p>
+    <p>Each word sounded like another knife twisting deeper into him.</p>
+    <p>“And you…”</p>
+    <p>Zayn’s voice lowered dangerously.</p>
+    <p>“…you were part of what she lost.”</p>
+    <p>Kyros looked toward Luna again instantly.</p>
+    <p>His eyes slowly filled.</p>
+    <p>Not dramatic tears.</p>
+    <p>The kind that appear when someone’s heart quietly gives up trying to stay strong.</p>
+    <p>Luna slept peacefully now.</p>
+    <p>Completely unaware that the person standing outside her room looked like he was falling apart just by looking at her.</p>
+    <p>Kyros swallowed hard.</p>
+    <p>“What happened to her…?” he whispered weakly.</p>
+    <p>Zayn’s expression hardened immediately.</p>
+    <p>“You don’t deserve to know.”</p>
+    <p>That sentence broke something inside Kyros completely.</p>
+    <p>Because maybe Zayn was right.</p>
+    <p>Maybe he didn’t deserve to stand here after whatever pain Luna suffered because of him.</p>
+    <p>A shaky breath escaped his lips.</p>
+    <p>Then suddenly—</p>
+    <p>he laughed.</p>
+    <p>Softly.</p>
+    <p>Brokenly.</p>
+    <p>Like he couldn’t believe fate could be this cruel.</p>
+    <p>All this time…</p>
+    <p>he thought Luna abandoned him.</p>
+    <p>But she didn’t.</p>
+    <p>She lost herself too.</p>
+    <p>Kyros looked at her through the glass window with eyes full of unbearable love and regret.</p>
+    <p>The girl who once knew every part of him…</p>
+    <p>now looked at him like a stranger.</p>
+    <p>And somehow—</p>
+    <p>that hurt more than losing her.</p>
+    <p>Before he could move closer, two men in black suits rushed down the hallway.</p>
+    <p>“Sir.”</p>
+    <p>Kyros ignored them completely.</p>
+    <p>“Sir, we need to leave.”</p>
+    <p>Still nothing.</p>
+    <p>His eyes remained fixed on Luna.</p>
+    <p>One of the bodyguards lowered his voice carefully.</p>
+    <p>“It’s dangerous for you to stay here.”</p>
+    <p>Kyros finally spoke.</p>
+    <p>Quietly.</p>
+    <p>Almost empty.</p>
+    <p>“I spent years trying to find her.”</p>
+    <p>His eyes never left Luna.</p>
+    <p>“And now I’m standing right in front of her…”</p>
+    <p>His voice cracked painfully.</p>
+    <p>“…but she can’t even remember loving me.”</p>
+    <p>Even Zayn went silent hearing that.</p>
+    <p>The bodyguards exchanged worried looks.</p>
+    <p>“Sir—”</p>
+    <p>Kyros shut his eyes tightly.</p>
+    <p>Like he was trying not to completely break down inside the hospital hallway.</p>
+    <p>Then Zayn’s cold voice came again.</p>
+    <p>“Stay away from her.”</p>
+    <p>Kyros slowly opened his eyes after that.</p>
+    <p>And for the first time since arriving—</p>
+    <p>he looked truly defeated.</p>
+  </article>
+  <div class="ch-end fade-in delay-2">
+    <p class="ch-end-text">&mdash; End of Chapter 14 &mdash;</p>
+    <div class="ch-nav">
+      <a href="chapter13.html" class="ch-nav-btn">&larr; Previous</a>
+      <a href="index.html" class="ch-nav-toc">All Chapters</a>
+      <a href="chapter15.html" class="ch-nav-btn">Next &rarr;</a>
+    </div>
+  </div>
+</div>
+<script>
+const sf=document.getElementById('starfield');for(let i=0;i<60;i++){const s=document.createElement('div');s.className='star-dot';const z=Math.random()<0.7?1:2;s.style.cssText='width:'+z+'px;height:'+z+'px;left:'+Math.random()*100+'%;top:'+Math.random()*100+'%;--d:'+(2+Math.random()*4)+'s;--delay:'+Math.random()*5+'s;--op:'+(0.2+Math.random()*0.5)+';';sf.appendChild(s);}
+const pf=document.getElementById('progressFill');window.addEventListener('scroll',()=>{const h=document.documentElement;pf.style.width=Math.min((h.scrollTop/(h.scrollHeight-h.clientHeight))*100,100)+'%';});
+// Custom cursor
+const cursor=document.getElementById('cursor'),cursorRing=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+function animRing(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;cursorRing.style.left=rx+'px';cursorRing.style.top=ry+'px';requestAnimationFrame(animRing);}
+animRing();
+document.querySelectorAll('a, button, .ch-node, .story-card').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cursor.style.transform='translate(-50%,-50%) scale(2)';cursorRing.style.transform='translate(-50%,-50%) scale(1.5)';cursorRing.style.borderColor='rgba(201,147,58,0.7)';});
+  el.addEventListener('mouseleave',()=>{cursor.style.transform='translate(-50%,-50%) scale(1)';cursorRing.style.transform='translate(-50%,-50%) scale(1)';cursorRing.style.borderColor='rgba(201,147,58,0.4)';});
+});
+</script>
+</body>
+</html>
+
+
+
+
