@@ -65,7 +65,7 @@ html_template = """<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{ch_number} — The Reality Entity | Luminae</title>
+<title>Chapter {ch_idx} — The Reality Entity | Luminae</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Cinzel+Decorative:wght@400;700&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {{
@@ -120,9 +120,15 @@ html_template = """<!DOCTYPE html>
   @keyframes fadeUp {{ to {{ opacity: 1; transform: translateY(0); }} }}
   .delay-1 {{ animation-delay: 0.15s; }}
   .delay-2 {{ animation-delay: 0.3s; }}
+  body {{ cursor: none; }}
+  .cursor {{ position:fixed; width:8px; height:8px; background:#0ea5e9; border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:transform 0.1s, background 0.3s; box-shadow:0 0 12px rgba(14,165,233,0.6); }}
+  .cursor-ring {{ position:fixed; width:32px; height:32px; border:1px solid rgba(14,165,233,0.4); border-radius:50%; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:all 0.18s ease; }}
 </style>
 </head>
 <body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
 
 <div class="progress-wrap"><div class="progress-fill" id="progressFill"></div></div>
 <div class="starfield" id="starfield"></div>
@@ -136,7 +142,7 @@ html_template = """<!DOCTYPE html>
 <div class="reader-page">
 
   <header class="ch-header fade-in">
-    <span class="ch-number">✦ {ch_number} ✦</span>
+    <span class="ch-number">✦ Chapter {ch_idx} ✦</span>
     <h1 class="ch-title">{ch_title}</h1>
     <div class="ch-divider">
       <div class="ch-divider-line"></div>
@@ -150,7 +156,7 @@ html_template = """<!DOCTYPE html>
   </article>
 
   <div class="ch-end fade-in delay-2">
-    <p class="ch-end-text">— End of {ch_number} —</p>
+    <p class="ch-end-text">— End of Chapter {ch_idx} —</p>
     <div class="ch-nav">
       <a href="{prev_url}" class="ch-nav-btn {prev_disabled}">← Previous</a>
       <a href="index.html" class="ch-nav-toc">All Chapters</a>
@@ -174,6 +180,16 @@ window.addEventListener('scroll', () => {{
   const h = document.documentElement;
   const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
   progressFill.style.width = Math.min(pct, 100) + '%';
+}});
+
+const cursor = document.getElementById('cursor'), cursorRing = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => {{ mx = e.clientX; my = e.clientY; cursor.style.left = mx + 'px'; cursor.style.top = my + 'px'; }});
+function animRing() {{ rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12; cursorRing.style.left = rx + 'px'; cursorRing.style.top = ry + 'px'; requestAnimationFrame(animRing); }}
+animRing();
+document.querySelectorAll('a, button, .ch-nav-btn').forEach(el => {{
+  el.addEventListener('mouseenter', () => {{ cursor.style.transform = 'translate(-50%,-50%) scale(2)'; cursorRing.style.transform = 'translate(-50%,-50%) scale(1.5)'; cursorRing.style.borderColor = 'rgba(14,165,233,0.7)'; }});
+  el.addEventListener('mouseleave', () => {{ cursor.style.transform = 'translate(-50%,-50%) scale(1)'; cursorRing.style.transform = 'translate(-50%,-50%) scale(1)'; cursorRing.style.borderColor = 'rgba(14,165,233,0.4)'; }});
 }});
 </script>
 </body>
@@ -367,8 +383,8 @@ for (let i = 0; i < 80; i++) {
 </body>
 </html>"""
 
-    with open('The_Reality_Entity/index.html', 'w', encoding='utf-8') as out_f:
-        out_f.write(index_template)
+    # with open('The_Reality_Entity/index.html', 'w', encoding='utf-8') as out_f:
+    #     out_f.write(index_template)
 
 if __name__ == '__main__':
     generate()

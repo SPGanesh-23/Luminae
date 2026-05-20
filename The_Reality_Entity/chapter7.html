@@ -58,26 +58,13 @@
   @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
   .delay-1 { animation-delay: 0.15s; }
   .delay-2 { animation-delay: 0.3s; }
-  /* Custom cursor */
   body { cursor: none; }
   .cursor { position:fixed; width:8px; height:8px; background:#0ea5e9; border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:transform 0.1s, background 0.3s; box-shadow:0 0 12px rgba(14,165,233,0.6); }
   .cursor-ring { position:fixed; width:32px; height:32px; border:1px solid rgba(14,165,233,0.4); border-radius:50%; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:all 0.18s ease; }
-  @media (pointer: coarse) {
-    body { cursor: auto; }
-    .cursor, .cursor-ring { display: none !important; }
-  }
-  @media (max-width: 768px) {
-    .top-nav { padding: 1rem 1.5rem !important; }
-    .logo { font-size: 1.1rem !important; }
-    .reader-page { padding: 3rem 1.2rem 2rem !important; }
-    .ch-title { font-size: 2.2rem !important; }
-    .ch-nav { justify-content: center !important; }
-    .ch-nav-btn { padding: 0.7rem 1.2rem !important; font-size: 0.65rem !important; }
-    .author-note { padding: 1.5rem !important; }
-  }
 </style>
 </head>
 <body>
+
 <div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 
@@ -86,7 +73,7 @@
 
 <nav class="top-nav">
   <a href="../index.html" class="logo">Luminae</a>
-  <span class="nav-chapter-info">Chapter 7 of 12</span>
+  <span class="nav-chapter-info">Chapter 7 of 14</span>
   <a href="index.html" class="toc-link">☰ Chapters</a>
 </nav>
 
@@ -119,7 +106,6 @@
     <p>Five minutes.</p>
     <p>Ten.</p>
     <p>Still not out.</p>
-    <hr>
     <p><span class="dialogue">“You look bored.”</span></p>
     <p>Alex glanced up instantly.</p>
     <p>Lara stood a few feet away, one hand lightly gripping the strap of her bag.</p>
@@ -173,7 +159,6 @@
     <p>Maybe because Alex never tried too hard around her.</p>
     <p>There was something calm about him when he wasn’t fighting someone.</p>
     <p>Then—</p>
-    <hr>
     <p>A crash echoed faintly from down the corridor.</p>
     <p>Both of them paused.</p>
     <p>Another sound followed.</p>
@@ -237,7 +222,6 @@
     <p>Not emotionally.</p>
     <p>Not morally.</p>
     <p>Only logically.</p>
-    <hr>
     <p>Outside the hallway, another set of footsteps rapidly approached the principal’s office.</p>
     <p>A student athlete carrying a sports bag slowed after hearing Lara scream earlier.</p>
     <p>Confused, he instinctively followed Ethan and the principal toward the storage room.</p>
@@ -252,7 +236,6 @@
     <p>Nothing.</p>
     <p>It was like he couldn’t even hear her.</p>
     <p>Fear crawled up Lara’s spine.</p>
-    <hr>
     <p>She stumbled backward before turning and running toward the principal’s office.</p>
     <p><span class="dialogue">“ETHAN!”</span></p>
     <p>The office door swung open instantly.</p>
@@ -288,7 +271,6 @@
     <p>As the sports student hurried into the room behind Ethan, the half-open bag hanging from his shoulder slipped.</p>
     <p>The aluminum baseball bat slid free.</p>
     <p>CLANG.</p>
-    <hr>
     <p>The metallic sound echoed sharply across the storage room floor.</p>
     <p>Everyone’s eyes shifted instinctively.</p>
     <p>Even Alex’s.</p>
@@ -330,7 +312,6 @@
     <p><span class="dialogue">“Alex!”</span></p>
     <p>Lara’s voice cut through the room.</p>
     <p>Silence.</p>
-    <hr>
     <p>Alex stopped instantly.</p>
     <p>His grip loosened slightly.</p>
     <p>His breathing remained rough.</p>
@@ -365,7 +346,6 @@
     <p>he wasn’t wrong.</p>
     <p>After a few moments, the principal left to call medical staff and security.</p>
     <p>That left Ethan and Lara standing alone near the destroyed storage room.</p>
-    <hr>
     <p>Lara looked down the hallway Alex disappeared into.</p>
     <p>Then quietly asked,</p>
     <p><span class="dialogue">“…Does he always do that?”</span></p>
@@ -406,17 +386,12 @@
 
   </article>
 
-  <div class="author-note">
-    <div class="note-label">AUTHOR'S NOTE</div>
-    <p>This chapter explores the darker impulses of the Reality Entity and the trauma lurking within Alex's past. The lines are starting to blur.</p>
-  </div>
-
   <div class="ch-end fade-in delay-2">
     <p class="ch-end-text">— End of Chapter 7 —</p>
     <div class="ch-nav">
-      <a href="chapter6.html" class="ch-nav-btn">← Previous</a>
+      <a href="chapter6.html" class="ch-nav-btn ">← Previous</a>
       <a href="index.html" class="ch-nav-toc">All Chapters</a>
-      <a href="chapter8.html" class="ch-nav-btn">Next →</a>
+      <a href="chapter8.html" class="ch-nav-btn ">Next →</a>
     </div>
   </div>
 
@@ -437,15 +412,15 @@ window.addEventListener('scroll', () => {
   const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
   progressFill.style.width = Math.min(pct, 100) + '%';
 });
-// Custom cursor
-const cursor=document.getElementById('cursor'),cursorRing=document.getElementById('cursorRing');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
-function animRing(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;cursorRing.style.left=rx+'px';cursorRing.style.top=ry+'px';requestAnimationFrame(animRing);}
+
+const cursor = document.getElementById('cursor'), cursorRing = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cursor.style.left = mx + 'px'; cursor.style.top = my + 'px'; });
+function animRing() { rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12; cursorRing.style.left = rx + 'px'; cursorRing.style.top = ry + 'px'; requestAnimationFrame(animRing); }
 animRing();
-document.querySelectorAll('a, button, .ch-node, .story-card').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{cursor.style.transform='translate(-50%,-50%) scale(2)';cursorRing.style.transform='translate(-50%,-50%) scale(1.5)';cursorRing.style.borderColor='rgba(14,165,233,0.7)';});
-  el.addEventListener('mouseleave',()=>{cursor.style.transform='translate(-50%,-50%) scale(1)';cursorRing.style.transform='translate(-50%,-50%) scale(1)';cursorRing.style.borderColor='rgba(14,165,233,0.4)';});
+document.querySelectorAll('a, button, .ch-nav-btn').forEach(el => {
+  el.addEventListener('mouseenter', () => { cursor.style.transform = 'translate(-50%,-50%) scale(2)'; cursorRing.style.transform = 'translate(-50%,-50%) scale(1.5)'; cursorRing.style.borderColor = 'rgba(14,165,233,0.7)'; });
+  el.addEventListener('mouseleave', () => { cursor.style.transform = 'translate(-50%,-50%) scale(1)'; cursorRing.style.transform = 'translate(-50%,-50%) scale(1)'; cursorRing.style.borderColor = 'rgba(14,165,233,0.4)'; });
 });
 </script>
 </body>

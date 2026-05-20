@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 14 — The Reality Entity | Luminae</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Cinzel+Decorative:wght@400;700&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0d0a1a; --parchment: #fdf8f0; --cream: #f5ede0;
+    --gold: #c9933a; --gold-light: #e8c97a; --gold-glow: #f0d898;
+    --violet: #6b3fa0; --violet-dark: #3d1f6e; --violet-light: #a67dd0;
+    --rose: #c45a7a; --midnight: #0f0820; --mist: #c8bfe0; --star: #f8f0e3;
+    --accent: #0ea5e9; --accent-glow: rgba(14,165,233,0.4);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--midnight); color: var(--star); font-family: 'Raleway', sans-serif; font-weight: 300; overflow-x: hidden; min-height: 100vh; }
+  .starfield { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .star-dot { position: absolute; border-radius: 50%; background: white; animation: twinkle var(--d, 3s) ease-in-out infinite; animation-delay: var(--delay, 0s); opacity: 0; }
+  @keyframes twinkle { 0%, 100% { opacity: 0; transform: scale(0.5); } 50% { opacity: var(--op, 0.7); transform: scale(1); } }
+  .top-nav { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; padding: 1rem 3rem; background: linear-gradient(to bottom, rgba(15,8,32,0.98), rgba(15,8,32,0.9)); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(124,58,237,0.2); }
+  .logo { font-family: 'Cinzel Decorative', cursive; font-size: 1.1rem; color: var(--accent); letter-spacing: 0.08em; text-shadow: 0 0 20px var(--accent-glow); text-decoration: none; }
+  .nav-chapter-info { font-size: 0.7rem; color: var(--mist); letter-spacing: 0.1em; text-transform: uppercase; }
+  .toc-link { color: var(--accent); text-decoration: none; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.3s; }
+  .toc-link:hover { color: #7c3aed; }
+  .reader-page { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; padding: 4rem 2rem 3rem; }
+  .ch-header { text-align: center; margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid rgba(124,58,237,0.2); }
+  .ch-number { font-size: 0.65rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.2rem; display: block; }
+  .ch-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 300; line-height: 1.15; color: var(--star); margin-bottom: 0.8rem; }
+  .ch-title em { font-style: italic; color: #7c3aed; text-shadow: 0 0 30px rgba(124,58,237,0.4); }
+  .ch-divider { display: flex; align-items: center; gap: 0.8rem; margin: 1.5rem auto 0; max-width: 160px; }
+  .ch-divider-line { flex: 1; height: 1px; background: linear-gradient(to right, transparent, rgba(124,58,237,0.5), transparent); }
+  .ch-divider-glyph { color: var(--accent); font-size: 0.8rem; }
+  .ch-content { font-family: 'Cormorant Garamond', serif; font-size: 1.18rem; color: var(--mist); line-height: 2; font-weight: 400; }
+  .ch-content p { margin-bottom: 1.5rem; }
+  .ch-content p.first::first-letter { font-family: 'Cinzel Decorative', cursive; font-size: 3.8rem; float: left; line-height: 1; margin: 0.05em 0.12em -0.1em 0; color: var(--accent); text-shadow: 0 0 20px var(--accent-glow); }
+  .ch-content em { color: #7c3aed; font-style: italic; }
+  .ch-content .dialogue { color: var(--star); }
+  .ch-content .thought { color: #0ea5e9; font-style: italic; }
+  .ch-content hr { border: none; text-align: center; margin: 2.5rem 0; }
+  .ch-content hr::after { content: '✦ ✦ ✦'; color: var(--accent); font-size: 0.7rem; letter-spacing: 0.5em; }
+  .author-note { background: rgba(0, 0, 0, 0.15); border: 1px solid rgba(124, 58, 237, 0.15); border-radius: 4px; padding: 2.5rem; margin-top: 4rem; }
+  .author-note .note-label { font-family: 'Raleway', sans-serif; font-size: 0.65rem; font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase; color: #a67dd0; margin-bottom: 1.5rem; }
+  .author-note p { font-size: 1.15rem; color: var(--mist); line-height: 2; margin-bottom: 1rem; }
+  .author-note p:last-child { margin-bottom: 0; }
+  .ch-end { text-align: center; padding: 3rem 0 0; margin-top: 3rem; border-top: 1px solid rgba(124,58,237,0.2); }
+  .ch-end-text { font-family: 'Cormorant Garamond', serif; font-size: 0.85rem; font-style: italic; color: rgba(200,191,224,0.4); letter-spacing: 0.1em; margin-bottom: 2rem; }
+  .ch-nav { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
+  .ch-nav-btn { display: inline-flex; align-items: center; gap: 0.6rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(124,58,237,0.3); color: var(--star); padding: 0.8rem 1.8rem; font-family: 'Raleway', sans-serif; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; transition: all 0.3s; border-radius: 2px; }
+  .ch-nav-btn:hover { background: rgba(124,58,237,0.15); border-color: rgba(14,165,233,0.5); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.4); }
+  .ch-nav-btn.disabled { opacity: 0.3; pointer-events: none; }
+  .ch-nav-toc { color: var(--accent); text-decoration: none; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.3s; }
+  .ch-nav-toc:hover { color: #7c3aed; }
+  .progress-wrap { position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 100; background: rgba(0,0,0,0.3); }
+  .progress-fill { height: 100%; width: 0; background: linear-gradient(to right, #7c3aed, #0ea5e9); transition: width 0.1s; }
+  .fade-in { opacity: 0; transform: translateY(20px); animation: fadeUp 0.8s ease forwards; }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+  .delay-1 { animation-delay: 0.15s; }
+  .delay-2 { animation-delay: 0.3s; }
+  body { cursor: none; }
+  .cursor { position:fixed; width:8px; height:8px; background:#0ea5e9; border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:transform 0.1s, background 0.3s; box-shadow:0 0 12px rgba(14,165,233,0.6); }
+  .cursor-ring { position:fixed; width:32px; height:32px; border:1px solid rgba(14,165,233,0.4); border-radius:50%; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:all 0.18s ease; }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<div class="progress-wrap"><div class="progress-fill" id="progressFill"></div></div>
+<div class="starfield" id="starfield"></div>
+
+<nav class="top-nav">
+  <a href="../index.html" class="logo">Luminae</a>
+  <span class="nav-chapter-info">Chapter 14 of 14</span>
+  <a href="index.html" class="toc-link">☰ Chapters</a>
+</nav>
+
+<div class="reader-page">
+
+  <header class="ch-header fade-in">
+    <span class="ch-number">✦ Chapter 14 ✦</span>
+    <h1 class="ch-title">The Library That Shouldn’t <em>Breathe</em></h1>
+    <div class="ch-divider">
+      <div class="ch-divider-line"></div>
+      <span class="ch-divider-glyph">✦</span>
+      <div class="ch-divider-line"></div>
+    </div>
+  </header>
+
+  <article class="ch-content fade-in delay-1">
+    <p class="first">A sharp ringing echoed faintly inside Alex’s ears.</p>
+    <p>Then slowly—</p>
+    <p>consciousness returned.</p>
+    <p>The first thing he noticed was the ceiling light above him.</p>
+    <p>White.</p>
+    <p>Too bright.</p>
+    <p>The second thing he noticed was the smell of antiseptic.</p>
+    <p>School clinic.</p>
+    <p>Alex blinked slowly before trying to sit up slightly.</p>
+    <p>Pain immediately pulled through his ribs.</p>
+    <p><span class="dialogue">“…ow.”</span></p>
+    <p>His voice came out rough.</p>
+    <p>The nurse sitting near the desk glanced over instantly.</p>
+    <p><span class="dialogue">“Well look who finally decided to wake up.”</span></p>
+    <p>Alex ignored the comment completely.</p>
+    <p>His eyes immediately searched the room.</p>
+    <p>Left.</p>
+    <p>Right.</p>
+    <p>The nearby chair.</p>
+    <p>The doorway.</p>
+    <p><span class="dialogue">“…where’s Lara?”</span></p>
+    <p>The nurse paused for a second.</p>
+    <p>Then a tiny smile appeared on her face.</p>
+    <p><span class="dialogue">“Good morning to you too.”</span></p>
+    <p>Before Alex could respond—</p>
+    <p>the clinic door opened.</p>
+    <p>Lara stepped inside carrying a small paper bag filled with medicines and bottled water.</p>
+    <p>The moment Alex saw her—</p>
+    <p>something inside him relaxed slightly.</p>
+    <p>Not visibly.</p>
+    <p>But enough.</p>
+    <p>Behind her, the principal stood outside the clinic speaking quietly with the doctor near the hallway.</p>
+    <p>Lara noticed Alex sitting up immediately.</p>
+    <p><span class="dialogue">“You’re awake.”</span></p>
+    <p><span class="dialogue">“You disappeared.”</span></p>
+    <p><span class="dialogue">“I went to get your medicines. You were unconscious for twenty minutes.”</span></p>
+    <p><span class="dialogue">“…oh.”</span></p>
+    <p>The nurse sighed dramatically while standing up.</p>
+    <p><span class="dialogue">“He’s fine. Unfortunately.”</span></p>
+    <p>Alex looked mildly offended.</p>
+    <p>The nurse walked over toward Lara and handed her two tablets.</p>
+    <p><span class="dialogue">“Give him these for now.”</span></p>
+    <p>Then she pointed toward Alex.</p>
+    <p><span class="dialogue">“And make sure he takes them instead of pretending he’s immortal.”</span></p>
+    <p><span class="dialogue">“No promises,”</span> Alex muttered.</p>
+    <p><span class="dialogue">“I heard that.”</span></p>
+    <p>Lara laughed softly while the nurse left the room.</p>
+    <p>For a moment—</p>
+    <p>the clinic became quieter.</p>
+    <p>Evening sunlight filtered softly through the curtains while distant school noises echoed faintly outside.</p>
+    <p>Lara walked over and sat beside the bed before handing him the water bottle.</p>
+    <p><span class="dialogue">“Take these.”</span></p>
+    <p>Alex stared at the tablets suspiciously.</p>
+    <p><span class="dialogue">“…what are they?”</span></p>
+    <p><span class="dialogue">“Medicine.”</span></p>
+    <p><span class="dialogue">“That sounds untrustworthy.”</span></p>
+    <p><span class="dialogue">“You literally got punched through lockers today.”</span></p>
+    <p><span class="dialogue">“And survived.”</span></p>
+    <p><span class="dialogue">“Barely.”</span></p>
+    <p>Alex still looked unconvinced.</p>
+    <p>Lara narrowed her eyes slightly.</p>
+    <p><span class="dialogue">“…Alex.”</span></p>
+    <p><span class="dialogue">“…fine.”</span></p>
+    <p>He finally took the tablets with visible reluctance before leaning back against the pillow again.</p>
+    <p>Silence settled briefly.</p>
+    <p>Then Lara quietly looked toward the bandage wrapped around his knuckles.</p>
+    <p><span class="dialogue">“You scared me today.”</span></p>
+    <p>Alex looked away toward the window immediately.</p>
+    <p><span class="dialogue">“They weren’t supposed to involve you.”</span></p>
+    <p><span class="dialogue">“That’s not what I meant.”</span></p>
+    <p>A pause.</p>
+    <p>Lara exhaled softly.</p>
+    <p><span class="dialogue">“When they surrounded you…”</span></p>
+    <p>Her voice lowered slightly.</p>
+    <p><span class="dialogue">“…you still stood back up.”</span></p>
+    <p>Alex stayed quiet.</p>
+    <p><span class="dialogue">“I thought you were seriously hurt.”</span></p>
+    <p><span class="dialogue">“I’m okay.”</span></p>
+    <p><span class="dialogue">“You were bleeding.”</span></p>
+    <p><span class="dialogue">“I do that sometimes apparently.”</span></p>
+    <p>Lara laughed despite herself.</p>
+    <p><span class="dialogue">“You’re impossible.”</span></p>
+    <p><span class="dialogue">“I’m POSSIBLE.”</span></p>
+    <p>Another small smile followed.</p>
+    <p>Comfortable this time.</p>
+    <p>Then Lara suddenly tilted her head slightly.</p>
+    <p><span class="dialogue">“You know something?”</span></p>
+    <p><span class="dialogue">“What?”</span></p>
+    <p><span class="dialogue">“You looked really stupid unconscious.”</span></p>
+    <p>Alex blinked slowly.</p>
+    <p><span class="dialogue">“…excuse me?”</span></p>
+    <p><span class="dialogue">“You were drooling a little too.”</span></p>
+    <p><span class="dialogue">“I absolutely was not.”</span></p>
+    <p><span class="dialogue">“You absolutely were.”</span></p>
+    <p><span class="dialogue">“That feels medically inaccurate.”</span></p>
+    <p>Lara grinned now.</p>
+    <p><span class="dialogue">“You also grabbed my sleeve while unconscious.”</span></p>
+    <p>Alex froze.</p>
+    <p><span class="dialogue">“…what?”</span></p>
+    <p><span class="dialogue">“You heard me.”</span></p>
+    <p><span class="dialogue">“I did not do that.”</span></p>
+    <p><span class="dialogue">“You literally refused to let go for five minutes.”</span></p>
+    <p>Alex immediately looked away.</p>
+    <p><span class="dialogue">“…fake news.”</span></p>
+    <p>Lara laughed quietly again.</p>
+    <p>The sound felt warm against the quiet clinic room.</p>
+    <p>Then she noticed something near his cheek.</p>
+    <p><span class="dialogue">“…wait.”</span></p>
+    <p>Alex looked back.</p>
+    <p><span class="dialogue">“There’s still blood here.”</span></p>
+    <p>Before he could react—</p>
+    <p>Lara leaned slightly closer and gently wiped the corner of his lip using tissue from the bedside table.</p>
+    <p>Alex immediately went still.</p>
+    <p>Completely still.</p>
+    <p>Lara noticed instantly.</p>
+    <p><span class="dialogue">“…why do you look terrified?”</span></p>
+    <p><span class="dialogue">“I’m evaluating the situation.”</span></p>
+    <p><span class="dialogue">“You fought six people today.”</span></p>
+    <p><span class="dialogue">“Yes.”</span></p>
+    <p><span class="dialogue">“But THIS is stressful?”</span></p>
+    <p><span class="dialogue">“…significantly.”</span></p>
+    <p>Lara nearly laughed again.</p>
+    <hr>
+    <p>Then suddenly—</p>
+    <p>BANG.</p>
+    <p>The clinic door burst open violently.</p>
+    <p><span class="dialogue">“IS HE DEAD?!”</span></p>
+    <p>Ryan’s voice echoed across the entire room.</p>
+    <p>Alex visibly flinched.</p>
+    <p>Ethan walked in behind him looking exhausted already.</p>
+    <p><span class="dialogue">“For the sake of god stop screaming.”</span></p>
+    <p>Ryan ignored him completely and pointed dramatically toward Alex lying on the bed.</p>
+    <p><span class="dialogue">“Oh my god.”</span></p>
+    <p>Alex sighed instantly.</p>
+    <p><span class="dialogue">“You survived,”</span> Ryan whispered emotionally.</p>
+    <p><span class="dialogue">“Unfortunately,”</span> Ethan added.</p>
+    <p>Ryan grabbed a nearby chair and sat down backwards dramatically.</p>
+    <p><span class="dialogue">“Bro I leave school for ONE HOUR and suddenly you’re starring in Tokyo Revengers.”</span></p>
+    <p>Alex looked tired already.</p>
+    <p><span class="dialogue">“It wasn’t that serious.”</span></p>
+    <p><span class="dialogue">“YOU GOT JUMPED BY SIX PEOPLE.”</span></p>
+    <p><span class="dialogue">“Approximately.”</span></p>
+    <p>Ryan looked horrified.</p>
+    <p><span class="dialogue">“HE EVEN SAYS IT CALMLY.”</span></p>
+    <p>Ethan crossed his arms near the wall.</p>
+    <p><span class="dialogue">“Who were they?”</span></p>
+    <p><span class="dialogue">“Seniors,”</span> Lara answered quietly.</p>
+    <p><span class="dialogue">“The same idiots from before?”</span></p>
+    <p>Alex nodded once.</p>
+    <p>Ryan pointed accusingly toward Alex again.</p>
+    <p><span class="dialogue">“And you still fought all of them?”</span></p>
+    <p>Alex thought for a second.</p>
+    <p><span class="dialogue">“…not ideally.”</span></p>
+    <p><span class="dialogue">“That is NOT reassuring.”</span></p>
+    <p>Lara shook her head softly.</p>
+    <p><span class="dialogue">“He almost got destroyed at first.”</span></p>
+    <p>Ryan slowly turned toward Alex with betrayal in his eyes.</p>
+    <p><span class="dialogue">“You LOST?”</span></p>
+    <p><span class="dialogue">“There were variables.”</span></p>
+    <p><span class="dialogue">“What does that even MEAN?”</span></p>
+    <p><span class="dialogue">“It means six people is statistically inconvenient,”</span> Ethan replied dryly.</p>
+    <p>Ryan slapped the armrest dramatically.</p>
+    <p>Then his expression suddenly changed.</p>
+    <p><span class="dialogue">“…wait.”</span></p>
+    <p>His eyes slowly moved between Alex and Lara.</p>
+    <p>Then narrowed.</p>
+    <p><span class="dialogue">“Why does this room feel weirdly romantic?”</span></p>
+    <p>Alex looked genuinely offended now.</p>
+    <p><span class="dialogue">“It’s literally a clinic.”</span></p>
+    <p><span class="dialogue">“Exactly. Peak romance cinema.”</span></p>
+    <p>Lara nearly choked laughing.</p>
+    <p>Ethan rubbed his forehead.</p>
+    <p><span class="dialogue">“You’re mentally exhausting.”</span></p>
+    <p>Ryan pointed toward Alex proudly.</p>
+    <p><span class="dialogue">“And yet somehow I’m still healthier than him.”</span></p>
+    <p><span class="dialogue">“Debatable,”</span> Ethan muttered.</p>
+    <p>The clinic door opened again before Ryan could continue speaking.</p>
+    <p>The nurse stepped back inside holding several papers.</p>
+    <p><span class="dialogue">“Well,”</span> she said casually while looking over Alex’s condition, <span class="dialogue">“you’re perfectly alright.”</span></p>
+    <p>Ryan looked shocked.</p>
+    <p><span class="dialogue">“That sentence feels illegal.”</span></p>
+    <p>The nurse ignored him completely.</p>
+    <p><span class="dialogue">“You didn’t receive any major hits.”</span></p>
+    <p>Then she glanced toward Alex’s bruised knuckles.</p>
+    <p><span class="dialogue">“In fact, I think the other students should be more worried than you.”</span></p>
+    <p>Lara tried not to smile.</p>
+    <p>Even Ethan looked mildly impressed.</p>
+    <p>The nurse handed the discharge papers toward Alex.</p>
+    <p><span class="dialogue">“You’re good to go.”</span></p>
+    <p>Ryan immediately stood up dramatically.</p>
+    <p><span class="dialogue">“HE LIVES.”</span></p>
+    <p><span class="dialogue">“Please calm down,”</span> Ethan said.</p>
+    <p>A few minutes later—</p>
+    <p>everyone slowly stepped outside the clinic together.</p>
+    <p>Ryan kept talking nonsense.</p>
+    <p>Ethan kept correcting him.</p>
+    <p>Lara walked quietly beside Alex.</p>
+    <p>Then the nurse suddenly called out from behind.</p>
+    <p><span class="dialogue">“Alex.”</span></p>
+    <p>He turned back slightly.</p>
+    <p>The others kept walking ahead.</p>
+    <p>The nurse stood quietly near the clinic doorway now.</p>
+    <p>Her expression softer than before.</p>
+    <p>Then she glanced briefly toward Lara further ahead in the hallway.</p>
+    <p>And looked back at him.</p>
+    <p><span class="dialogue">“Always stay by her side.”</span></p>
+    <p>Alex stayed silent.</p>
+    <p><span class="dialogue">“She was the one who stayed beside you the entire time while you were unconscious.”</span></p>
+    <p>His eyes shifted slightly.</p>
+    <p>The nurse continued quietly,</p>
+    <p><span class="dialogue">“She cried for you.”</span></p>
+    <p>Alex froze for a second.</p>
+    <p><span class="dialogue">“She cares about you deeply.”</span></p>
+    <p>The hallway suddenly felt quieter.</p>
+    <p>Then the nurse smiled faintly.</p>
+    <p><span class="dialogue">“So protect her with your life.”</span></p>
+    <p>A pause.</p>
+    <p><span class="dialogue">“And don’t lose her at any cost.”</span></p>
+    <p>For once—</p>
+    <p>Alex didn’t know what to say.</p>
+    <p>So he simply nodded once but he understood how much Lara cared for him.</p>
+    <p>Then quietly walked away.</p>
+    <hr>
+    <p>Outside the clinic, the principal still stood near the hallway windows speaking with the doctor.</p>
+    <p>When he noticed Alex approaching, he sighed softly.</p>
+    <p><span class="dialogue">“You should all head home and rest.”</span></p>
+    <p>Alex adjusted his bag over his shoulder calmly.</p>
+    <p><span class="dialogue">“We’ll check the library first.”</span></p>
+    <p>The principal blinked.</p>
+    <p><span class="dialogue">“…today?”</span></p>
+    <p><span class="dialogue">“We need to make it functional within a month.”</span></p>
+    <p>His voice remained calm.</p>
+    <p><span class="dialogue">“We can’t waste days.”</span></p>
+    <p>The principal looked genuinely surprised for a second.</p>
+    <p>Then before he could answer—</p>
+    <p>Ryan suddenly stepped between them dramatically.</p>
+    <p><span class="dialogue">“Correction.”</span></p>
+    <p>Everyone looked at him.</p>
+    <p>Ryan pointed toward himself proudly.</p>
+    <p><span class="dialogue">“We are checking the library.”</span></p>
+    <p>Ethan sighed instantly.</p>
+    <p><span class="dialogue">“Why are you involving me?”</span></p>
+    <p><span class="dialogue">“Because horror movies require side characters.”</span></p>
+    <p><span class="dialogue">“You just volunteered us to die.”</span></p>
+    <p>Ryan ignored him completely and pointed toward Lara too.</p>
+    <p><span class="dialogue">“And obviously we can’t let these two investigate haunted buildings alone.”</span></p>
+    <p><span class="dialogue">“It’s not haunted,”</span> Lara replied.</p>
+    <p>Ryan looked at the dark eastern hallway in the distance.</p>
+    <p><span class="dialogue">“…that building absolutely eats people.”</span></p>
+    <p>Alex almost smiled slightly.</p>
+    <p>Almost.</p>
+    <p>Then together—</p>
+    <p>the four of them slowly began walking toward the eastern wing while evening sunlight stretched long shadows across the empty school corridors.</p>
+    <p>And somewhere far ahead—</p>
+    <p>the old library waited silently.</p>
+
+  </article>
+
+  <div class="ch-end fade-in delay-2">
+    <p class="ch-end-text">— End of Chapter 14 —</p>
+    <div class="ch-nav">
+      <a href="chapter13.html" class="ch-nav-btn ">← Previous</a>
+      <a href="index.html" class="ch-nav-toc">All Chapters</a>
+      <a href="#" class="ch-nav-btn disabled">Next →</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const starfield = document.getElementById('starfield');
+for (let i = 0; i < 60; i++) {
+  const s = document.createElement('div');
+  s.className = 'star-dot';
+  const size = Math.random() < 0.7 ? 1 : 2;
+  s.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*4}s;--delay:${Math.random()*5}s;--op:${0.2+Math.random()*0.5};`;
+  starfield.appendChild(s);
+}
+const progressFill = document.getElementById('progressFill');
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  progressFill.style.width = Math.min(pct, 100) + '%';
+});
+
+const cursor = document.getElementById('cursor'), cursorRing = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cursor.style.left = mx + 'px'; cursor.style.top = my + 'px'; });
+function animRing() { rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12; cursorRing.style.left = rx + 'px'; cursorRing.style.top = ry + 'px'; requestAnimationFrame(animRing); }
+animRing();
+document.querySelectorAll('a, button, .ch-nav-btn').forEach(el => {
+  el.addEventListener('mouseenter', () => { cursor.style.transform = 'translate(-50%,-50%) scale(2)'; cursorRing.style.transform = 'translate(-50%,-50%) scale(1.5)'; cursorRing.style.borderColor = 'rgba(14,165,233,0.7)'; });
+  el.addEventListener('mouseleave', () => { cursor.style.transform = 'translate(-50%,-50%) scale(1)'; cursorRing.style.transform = 'translate(-50%,-50%) scale(1)'; cursorRing.style.borderColor = 'rgba(14,165,233,0.4)'; });
+});
+</script>
+</body>
+</html>

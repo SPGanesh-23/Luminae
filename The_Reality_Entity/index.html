@@ -1377,6 +1377,8 @@ const chapters = [
   { num: 10, title: "The Fracture Breathes",  read: "~6 min", href: "chapter10.html", tl: "B", side: "left" },
   { num: 11, title: "The First Shared Pulse", read: "~6 min", href: "chapter11.html", tl: "B", side: "right" },
   { num: 12, title: "The Shared Fracture",    read: "~6 min", href: "chapter12.html", tl: "B", side: "left" },
+  { num: 13, title: "What Makes Him Stand",   read: "~6 min", href: "chapter13.html", tl: "A", side: "right" },
+  { num: 14, title: "The Library That Shouldn't Breathe", read: "~7 min", href: "chapter14.html", tl: "A", side: "left" },
 ];
 
 const CARD_W = 240, CARD_H = 68, ROW_H = 110, SPINE_X_FRAC = 0.5, BRANCH_LEN = 90;
@@ -1523,6 +1525,7 @@ function buildSVG() {
     if (from.ch.num === 3 && to.ch.num === 4) continue;
     if (from.ch.num === 6 && to.ch.num === 7) continue;
     if (from.ch.num === 9 && to.ch.num === 10) continue;
+    if (from.ch.num === 12 && to.ch.num === 13) continue;
 
     const y1 = from.y + CARD_H / 2;
     const y2 = to.y + CARD_H / 2;
@@ -1539,7 +1542,8 @@ function buildSVG() {
   const arcs = [
     { from: 3, to: 7, tl: 'A', side: 'right' },
     { from: 6, to: 10, tl: 'B', side: 'left' },
-    { from: 9, to: 13, tl: 'A', side: 'right' }
+    { from: 9, to: 13, tl: 'A', side: 'right' },
+    { from: 12, to: 16, tl: 'B', side: 'left' }
   ];
 
   arcs.forEach(arc => {

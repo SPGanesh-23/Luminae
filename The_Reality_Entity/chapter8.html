@@ -40,6 +40,10 @@
   .ch-content .thought { color: #0ea5e9; font-style: italic; }
   .ch-content hr { border: none; text-align: center; margin: 2.5rem 0; }
   .ch-content hr::after { content: '✦ ✦ ✦'; color: var(--accent); font-size: 0.7rem; letter-spacing: 0.5em; }
+  .author-note { background: rgba(0, 0, 0, 0.15); border: 1px solid rgba(124, 58, 237, 0.15); border-radius: 4px; padding: 2.5rem; margin-top: 4rem; }
+  .author-note .note-label { font-family: 'Raleway', sans-serif; font-size: 0.65rem; font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase; color: #a67dd0; margin-bottom: 1.5rem; }
+  .author-note p { font-size: 1.15rem; color: var(--mist); line-height: 2; margin-bottom: 1rem; }
+  .author-note p:last-child { margin-bottom: 0; }
   .ch-end { text-align: center; padding: 3rem 0 0; margin-top: 3rem; border-top: 1px solid rgba(124,58,237,0.2); }
   .ch-end-text { font-family: 'Cormorant Garamond', serif; font-size: 0.85rem; font-style: italic; color: rgba(200,191,224,0.4); letter-spacing: 0.1em; margin-bottom: 2rem; }
   .ch-nav { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
@@ -54,25 +58,13 @@
   @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
   .delay-1 { animation-delay: 0.15s; }
   .delay-2 { animation-delay: 0.3s; }
-  /* Custom cursor */
   body { cursor: none; }
   .cursor { position:fixed; width:8px; height:8px; background:#0ea5e9; border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:transform 0.1s, background 0.3s; box-shadow:0 0 12px rgba(14,165,233,0.6); }
   .cursor-ring { position:fixed; width:32px; height:32px; border:1px solid rgba(14,165,233,0.4); border-radius:50%; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:all 0.18s ease; }
-  @media (pointer: coarse) {
-    body { cursor: auto; }
-    .cursor, .cursor-ring { display: none !important; }
-  }
-  @media (max-width: 768px) {
-    .top-nav { padding: 1rem 1.5rem !important; }
-    .logo { font-size: 1.1rem !important; }
-    .reader-page { padding: 3rem 1.2rem 2rem !important; }
-    .ch-title { font-size: 2.2rem !important; }
-    .ch-nav { justify-content: center !important; }
-    .ch-nav-btn { padding: 0.7rem 1.2rem !important; font-size: 0.65rem !important; }
-  }
 </style>
 </head>
 <body>
+
 <div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 
@@ -81,7 +73,7 @@
 
 <nav class="top-nav">
   <a href="../index.html" class="logo">Luminae</a>
-  <span class="nav-chapter-info">Chapter 8 of 12</span>
+  <span class="nav-chapter-info">Chapter 8 of 14</span>
   <a href="index.html" class="toc-link">☰ Chapters</a>
 </nav>
 
@@ -135,7 +127,6 @@
     <p><span class="dialogue">“You were late. That’s why Alex lost it.”</span></p>
     <p>The words hit harder than anyone expected.</p>
     <p>Alex froze. Completely.</p>
-    <hr>
     <p>For a split second—</p>
     <p>Rain slammed against concrete. Red and blue lights flashed violently through darkness. Cold fingers slipping from his grip. A girl crying.</p>
     <p>Someone screaming directly into his face—</p>
@@ -145,7 +136,6 @@
     <p>Then—</p>
     <p>The classroom returned.</p>
     <p>Noise. Breathing. Voices.</p>
-    <hr>
     <p>Alex’s fingers clenched slowly beneath the desk.</p>
     <p><span class="dialogue">“…shut up.”</span></p>
     <p>The words came out low.</p>
@@ -176,7 +166,6 @@
     <p>Time passed slowly.</p>
     <p>Eventually—</p>
     <p>The lunch bell rang.</p>
-    <hr>
     <p>The classroom instantly exploded into noise. Students rushed outside toward the cafeteria within seconds.</p>
     <p>Ryan stood up immediately.</p>
     <p><span class="dialogue">“Finally. I’m starving.”</span></p>
@@ -209,7 +198,8 @@
     <p>Up close, the damage looked worse. Bruised knuckles. Small cuts. Dried blood across his fingers.</p>
     <p>Without thinking much, she gently reached for his wrist.</p>
     <p>Alex immediately tensed.</p>
-    <p>The reaction was instant. Like his body moved before his mind could.</p>
+    <p>The reaction was instant.</p>
+    <p>Like his body moved before his mind could.</p>
     <p>But Lara didn’t let go immediately.</p>
     <p><span class="dialogue">“…your hand’s injured.”</span></p>
     <p><span class="dialogue">“It’s fine.”</span></p>
@@ -226,6 +216,7 @@
     <p>Lara studied him silently for a moment.</p>
     <p><span class="dialogue">“But you still stopped after Ethan pulled you away.”</span></p>
     <p>Alex didn’t answer.</p>
+    <p><span class="dialogue">“That means something.”</span></p>
     <p>A quiet breeze passed through the classroom.</p>
     <p>Then Lara spoke again.</p>
     <p><span class="dialogue">“I know everyone’s scared of you now…”</span></p>
@@ -242,7 +233,8 @@
     <p>After a while, he spoke quietly.</p>
     <p><span class="dialogue">“People like that don’t stop unless someone makes them stop.”</span></p>
     <p>The way he said it felt wrong. Too experienced. Too personal.</p>
-    <p>Lara noticed it immediately. Like this wasn’t the first time Alex had seen something like that.</p>
+    <p>Lara noticed it immediately.</p>
+    <p>Like this wasn’t the first time Alex had seen something like that.</p>
     <p>For a moment, neither of them spoke.</p>
     <p>Then Lara suddenly tilted her head slightly.</p>
     <p><span class="dialogue">“You know…”</span></p>
@@ -258,44 +250,57 @@
     <p>A real laugh. Not forced. Not awkward.</p>
     <p>And somehow—</p>
     <p>That sound alone eased something inside the room.</p>
-    <p>Alex blinked slightly. Then—</p>
+    <p>Alex blinked slightly.</p>
+    <p>Then—</p>
     <p>For the first time—</p>
     <p>A small laugh escaped him too.</p>
     <p>Tiny. Barely there. But real.</p>
-    <p>Lara immediately noticed. Her eyes widened slightly.</p>
+    <p>Lara immediately noticed.</p>
+    <p>Her eyes widened slightly.</p>
     <p><span class="dialogue">“Oh.”</span></p>
     <p>Alex instantly looked away again.</p>
-    <p><span class="dialogue">“…don’t make it weird,”</span> Alex muttered quietly.</p>
-    <p><span class="dialogue">“I just discovered something historic.”</span> Lara said with an amused grin.</p>
-    <p><span class="dialogue">“It wasn’t that serious,”</span> he replied flatly.</p>
-    <p><span class="dialogue">“You smiled.”</span> Lara pointed out immediately.</p>
-    <p><span class="dialogue">“I didn’t,”</span> Alex denied without hesitation.</p>
-    <p><span class="dialogue">“You literally did.”</span> She laughed softly.</p>
-    <p><span class="dialogue">“I absolutely did not,”</span> he argued while looking away again.</p>
-    <p>Lara laughed again. And this time—</p>
+    <p><span class="dialogue">“…don’t make it weird.”</span></p>
+    <p><span class="dialogue">“I just discovered something historic.”</span></p>
+    <p><span class="dialogue">“It wasn’t that serious.”</span></p>
+    <p><span class="dialogue">“You smiled.”</span></p>
+    <p><span class="dialogue">“I didn’t.”</span></p>
+    <p><span class="dialogue">“You literally did.”</span></p>
+    <p><span class="dialogue">“I absolutely did not.”</span></p>
+    <p>Lara laughed again.</p>
+    <p>And this time—</p>
     <p>Alex didn’t look away immediately.</p>
-    <hr>
+    <p>Then—</p>
     <p>The classroom door suddenly burst open.</p>
     <p>Ryan walked in carrying multiple food trays while Ethan followed behind him.</p>
     <p><span class="dialogue">“There they are.”</span></p>
-    <p>Ryan immediately narrowed his eyes dramatically. <span class="dialogue">“Aha.”</span></p>
-    <p>Ethan already looked exhausted. <span class="dialogue">“Don’t start.”</span></p>
+    <p>Ryan immediately narrowed his eyes dramatically.</p>
+    <p><span class="dialogue">“Aha.”</span></p>
+    <p>Ethan already looked exhausted.</p>
+    <p><span class="dialogue">“Don’t start.”</span></p>
     <p>Ryan ignored him completely.</p>
-    <p>Slowly, he looked between Alex and Lara. Then grinned. <span class="dialogue">“Soooo…”</span></p>
+    <p>Slowly, he looked between Alex and Lara.</p>
+    <p>Then grinned.</p>
+    <p><span class="dialogue">“Soooo…”</span></p>
     <p>Alex sighed instantly.</p>
-    <p>Ryan pointed accusingly toward Alex. <span class="dialogue">“This is the special girl you walked home with, that night ah?”</span></p>
-    <p>Lara nearly choked. <span class="dialogue">“What?!”</span></p>
+    <p>Ryan pointed accusingly toward Alex.</p>
+    <p><span class="dialogue">“This is the special girl you walked home with that night ah?”</span></p>
+    <p>Lara nearly choked.</p>
+    <p><span class="dialogue">“What?!”</span></p>
     <p>Ethan immediately started laughing.</p>
-    <p>Alex looked genuinely irritated now. <span class="dialogue">“Ryan!!”</span></p>
-    <p><span class="dialogue">“OHHHH so it IS true.”,</span> Ryan said loudly, pointing at him dramatically.</p>
-    <p><span class="dialogue">“It’s not”,</span> Alex replied immediately with visible irritation.</p>
+    <p>Alex looked genuinely irritated now.</p>
+    <p><span class="dialogue">“Ryan.”</span></p>
+    <p><span class="dialogue">“OHHHH so it IS true.”</span></p>
+    <p><span class="dialogue">“It’s not.”</span></p>
     <p>Ryan placed the food trays down while grinning like an idiot.</p>
-    <p><span class="dialogue">“Bro was ready to kill people this morning and now suddenly he’s peacefully sitting here during lunch with one girl.”,</span> Ryan said with a smug grin.</p>
+    <p><span class="dialogue">“Bro was ready to kill people this morning and now suddenly he’s peacefully sitting here during lunch with one girl.”</span></p>
     <p>Lara’s cheeks turned slightly red.</p>
-    <p>Alex looked away toward the window immediately. Which honestly answered the question even more.</p>
-    <p>Ryan slapped the desk dramatically. <span class="dialogue">“I KNEW IT.”</span></p>
-    <p><span class="dialogue">“Shut up”</span> Alex muttered while looking away toward the window.</p>
-    <p>Ethan sat beside Ryan while laughing quietly. <span class="dialogue">“You’re making it worse.”</span></p>
+    <p>Alex looked away toward the window immediately.</p>
+    <p>Which honestly answered the question even more.</p>
+    <p>Ryan slapped the desk dramatically.</p>
+    <p><span class="dialogue">“I KNEW IT.”</span></p>
+    <p><span class="dialogue">“Shut up.”</span></p>
+    <p>Ethan sat beside Ryan while laughing quietly.</p>
+    <p><span class="dialogue">“You’re making it worse.”</span></p>
     <p><span class="dialogue">“This is cinema,”</span> Ryan declared proudly.</p>
     <p>For the first time since the incident—</p>
     <p>Alex almost smiled.</p>
@@ -304,14 +309,11 @@
     <p>Everything felt normal again.</p>
     <p>The laughter. The teasing. The warmth inside the classroom.</p>
     <p>It felt distant from violence. Distant from fear. Distant from blood.</p>
-    <hr>
     <p>But far beyond the school walls—</p>
     <p>Something watched silently.</p>
-    <p>Not from the sky.</p>
-    <p>Not from the darkness beyond reality.</p>
-    <p>But from directly behind the violet-tinted lenses resting quietly on Alex’s face.</p>
-    <p>Waiting. Observing.</p>
-    <p>Deep within the distortion space hidden inside the glasses, countless fractured screens floated endlessly around the entity.</p>
+    <p>Waiting.</p>
+    <p>Observing.</p>
+    <p>The entity remained motionless within the distortion space, countless fractured screens floating around it endlessly.</p>
     <p>One screen showed Alex.</p>
     <p>Another showed Lara.</p>
     <p>Then—</p>
@@ -327,9 +329,9 @@
   <div class="ch-end fade-in delay-2">
     <p class="ch-end-text">— End of Chapter 8 —</p>
     <div class="ch-nav">
-      <a href="chapter7.html" class="ch-nav-btn">← Previous</a>
+      <a href="chapter7.html" class="ch-nav-btn ">← Previous</a>
       <a href="index.html" class="ch-nav-toc">All Chapters</a>
-      <a href="chapter9.html" class="ch-nav-btn">Next →</a>
+      <a href="chapter9.html" class="ch-nav-btn ">Next →</a>
     </div>
   </div>
 
@@ -350,15 +352,15 @@ window.addEventListener('scroll', () => {
   const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
   progressFill.style.width = Math.min(pct, 100) + '%';
 });
-// Custom cursor
-const cursor=document.getElementById('cursor'),cursorRing=document.getElementById('cursorRing');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
-function animRing(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;cursorRing.style.left=rx+'px';cursorRing.style.top=ry+'px';requestAnimationFrame(animRing);}
+
+const cursor = document.getElementById('cursor'), cursorRing = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cursor.style.left = mx + 'px'; cursor.style.top = my + 'px'; });
+function animRing() { rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12; cursorRing.style.left = rx + 'px'; cursorRing.style.top = ry + 'px'; requestAnimationFrame(animRing); }
 animRing();
-document.querySelectorAll('a, button, .ch-node, .story-card').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{cursor.style.transform='translate(-50%,-50%) scale(2)';cursorRing.style.transform='translate(-50%,-50%) scale(1.5)';cursorRing.style.borderColor='rgba(14,165,233,0.7)';});
-  el.addEventListener('mouseleave',()=>{cursor.style.transform='translate(-50%,-50%) scale(1)';cursorRing.style.transform='translate(-50%,-50%) scale(1)';cursorRing.style.borderColor='rgba(14,165,233,0.4)';});
+document.querySelectorAll('a, button, .ch-nav-btn').forEach(el => {
+  el.addEventListener('mouseenter', () => { cursor.style.transform = 'translate(-50%,-50%) scale(2)'; cursorRing.style.transform = 'translate(-50%,-50%) scale(1.5)'; cursorRing.style.borderColor = 'rgba(14,165,233,0.7)'; });
+  el.addEventListener('mouseleave', () => { cursor.style.transform = 'translate(-50%,-50%) scale(1)'; cursorRing.style.transform = 'translate(-50%,-50%) scale(1)'; cursorRing.style.borderColor = 'rgba(14,165,233,0.4)'; });
 });
 </script>
 </body>
