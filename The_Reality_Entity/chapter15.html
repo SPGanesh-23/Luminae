@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 15 — The Reality Entity | Luminae</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Cinzel+Decorative:wght@400;700&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0d0a1a; --parchment: #fdf8f0; --cream: #f5ede0;
+    --gold: #c9933a; --gold-light: #e8c97a; --gold-glow: #f0d898;
+    --violet: #6b3fa0; --violet-dark: #3d1f6e; --violet-light: #a67dd0;
+    --rose: #c45a7a; --midnight: #0f0820; --mist: #c8bfe0; --star: #f8f0e3;
+    --accent: #0ea5e9; --accent-glow: rgba(14,165,233,0.4);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--midnight); color: var(--star); font-family: 'Raleway', sans-serif; font-weight: 300; overflow-x: hidden; min-height: 100vh; }
+  .starfield { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .star-dot { position: absolute; border-radius: 50%; background: white; animation: twinkle var(--d, 3s) ease-in-out infinite; animation-delay: var(--delay, 0s); opacity: 0; }
+  @keyframes twinkle { 0%, 100% { opacity: 0; transform: scale(0.5); } 50% { opacity: var(--op, 0.7); transform: scale(1); } }
+  .top-nav { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; padding: 1rem 3rem; background: linear-gradient(to bottom, rgba(15,8,32,0.98), rgba(15,8,32,0.9)); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(124,58,237,0.2); }
+  .logo { font-family: 'Cinzel Decorative', cursive; font-size: 1.1rem; color: var(--accent); letter-spacing: 0.08em; text-shadow: 0 0 20px var(--accent-glow); text-decoration: none; }
+  .nav-chapter-info { font-size: 0.7rem; color: var(--mist); letter-spacing: 0.1em; text-transform: uppercase; }
+  .toc-link { color: var(--accent); text-decoration: none; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.3s; }
+  .toc-link:hover { color: #7c3aed; }
+  .reader-page { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; padding: 4rem 2rem 3rem; }
+  .ch-header { text-align: center; margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid rgba(124,58,237,0.2); }
+  .ch-number { font-size: 0.65rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.2rem; display: block; }
+  .ch-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 300; line-height: 1.15; color: var(--star); margin-bottom: 0.8rem; }
+  .ch-title em { font-style: italic; color: #7c3aed; text-shadow: 0 0 30px rgba(124,58,237,0.4); }
+  .ch-divider { display: flex; align-items: center; gap: 0.8rem; margin: 1.5rem auto 0; max-width: 160px; }
+  .ch-divider-line { flex: 1; height: 1px; background: linear-gradient(to right, transparent, rgba(124,58,237,0.5), transparent); }
+  .ch-divider-glyph { color: var(--accent); font-size: 0.8rem; }
+  .ch-content { font-family: 'Cormorant Garamond', serif; font-size: 1.18rem; color: var(--mist); line-height: 2; font-weight: 400; }
+  .ch-content p { margin-bottom: 1.5rem; }
+  .ch-content p.first::first-letter { font-family: 'Cinzel Decorative', cursive; font-size: 3.8rem; float: left; line-height: 1; margin: 0.05em 0.12em -0.1em 0; color: var(--accent); text-shadow: 0 0 20px var(--accent-glow); }
+  .ch-content em { color: #7c3aed; font-style: italic; }
+  .ch-content .dialogue { color: var(--star); }
+  .ch-content .thought { color: #0ea5e9; font-style: italic; }
+  .ch-content hr { border: none; text-align: center; margin: 2.5rem 0; }
+  .ch-content hr::after { content: '✦ ✦ ✦'; color: var(--accent); font-size: 0.7rem; letter-spacing: 0.5em; }
+  .author-note { background: rgba(0, 0, 0, 0.15); border: 1px solid rgba(124, 58, 237, 0.15); border-radius: 4px; padding: 2.5rem; margin-top: 4rem; }
+  .author-note .note-label { font-family: 'Raleway', sans-serif; font-size: 0.65rem; font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase; color: #a67dd0; margin-bottom: 1.5rem; }
+  .author-note p { font-size: 1.15rem; color: var(--mist); line-height: 2; margin-bottom: 1rem; }
+  .author-note p:last-child { margin-bottom: 0; }
+  .ch-end { text-align: center; padding: 3rem 0 0; margin-top: 3rem; border-top: 1px solid rgba(124,58,237,0.2); }
+  .ch-end-text { font-family: 'Cormorant Garamond', serif; font-size: 0.85rem; font-style: italic; color: rgba(200,191,224,0.4); letter-spacing: 0.1em; margin-bottom: 2rem; }
+  .ch-nav { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
+  .ch-nav-btn { display: inline-flex; align-items: center; gap: 0.6rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(124,58,237,0.3); color: var(--star); padding: 0.8rem 1.8rem; font-family: 'Raleway', sans-serif; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; transition: all 0.3s; border-radius: 2px; }
+  .ch-nav-btn:hover { background: rgba(124,58,237,0.15); border-color: rgba(14,165,233,0.5); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.4); }
+  .ch-nav-btn.disabled { opacity: 0.3; pointer-events: none; }
+  .ch-nav-toc { color: var(--accent); text-decoration: none; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.3s; }
+  .ch-nav-toc:hover { color: #7c3aed; }
+  .progress-wrap { position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 100; background: rgba(0,0,0,0.3); }
+  .progress-fill { height: 100%; width: 0; background: linear-gradient(to right, #7c3aed, #0ea5e9); transition: width 0.1s; }
+  .fade-in { opacity: 0; transform: translateY(20px); animation: fadeUp 0.8s ease forwards; }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+  .delay-1 { animation-delay: 0.15s; }
+  .delay-2 { animation-delay: 0.3s; }
+  body { cursor: none; }
+  .cursor { position:fixed; width:8px; height:8px; background:#0ea5e9; border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:transform 0.1s, background 0.3s; box-shadow:0 0 12px rgba(14,165,233,0.6); }
+  .cursor-ring { position:fixed; width:32px; height:32px; border:1px solid rgba(14,165,233,0.4); border-radius:50%; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:all 0.18s ease; }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<div class="progress-wrap"><div class="progress-fill" id="progressFill"></div></div>
+<div class="starfield" id="starfield"></div>
+
+<nav class="top-nav">
+  <a href="../index.html" class="logo">Luminae</a>
+  <span class="nav-chapter-info">Chapter 15 of 15</span>
+  <a href="index.html" class="toc-link">☰ Chapters</a>
+</nav>
+
+<div class="reader-page">
+
+  <header class="ch-header fade-in">
+    <span class="ch-number">✦ Chapter 15 ✦</span>
+    <h1 class="ch-title">The East <em>Wing</em></h1>
+    <div class="ch-divider">
+      <div class="ch-divider-line"></div>
+      <span class="ch-divider-glyph">✦</span>
+      <div class="ch-divider-line"></div>
+    </div>
+  </header>
+
+  <article class="ch-content fade-in delay-1">
+    <p class="first">The school corridors had grown almost completely silent by the time the four of them reached the eastern wing.</p>
+    <p>Even the sunset outside looked dimmer here.</p>
+    <p>Orange light stretched weakly across the old hallway floors while several ceiling lights flickered lazily overhead.</p>
+    <p>Ryan walked slightly behind everyone with both hands inside his pockets.</p>
+    <p><span class="dialogue">“I’m telling you right now,”</span> he declared dramatically, <span class="dialogue">“if one ghost child runs across this hallway, I’m sacrificing Ethan and leaving.”</span></p>
+    <p>Ethan looked exhausted already.</p>
+    <p><span class="dialogue">“Why am I always first?”</span></p>
+    <p><span class="dialogue">“Because you run the slowest.”</span></p>
+    <p><span class="dialogue">“I literally play basketball.”</span></p>
+    <p><span class="dialogue">“Emotionally slow then.”</span></p>
+    <p>Lara laughed quietly.</p>
+    <p>Alex kept walking ahead silently.</p>
+    <p>Then Ethan suddenly slowed near the lockers lining the wall.</p>
+    <p><span class="dialogue">“…wait.”</span></p>
+    <p>Everyone looked toward him.</p>
+    <p>Dark reddish stains still stretched faintly across several dented lockers near the corner of the hallway.</p>
+    <p>The metal remained slightly bent inward from the earlier fight.</p>
+    <p>Ryan stared for a second.</p>
+    <p><span class="dialogue">“…damn.”</span></p>
+    <p>Even Lara grew quieter.</p>
+    <p>The atmosphere shifted immediately.</p>
+    <p>Because suddenly—</p>
+    <p>the fight from earlier no longer felt distant.</p>
+    <p>It happened here.</p>
+    <p>Right here.</p>
+    <p>Ryan slowly looked toward Alex.</p>
+    <p><span class="dialogue">“You really turned this hallway into a UFC event.”</span></p>
+    <p>Alex glanced toward the damaged lockers briefly.</p>
+    <p><span class="dialogue">“They started it.”</span></p>
+    <p><span class="dialogue">“That sentence is carrying this entire story,”</span> Ethan muttered.</p>
+    <p>Ryan walked closer toward one of the dents in the metal locker and whistled softly.</p>
+    <p><span class="dialogue">“Bro got jumped by six people and STILL redecorated the building.”</span></p>
+    <p>Alex ignored him completely.</p>
+    <hr>
+    <p>A few moments later—</p>
+    <p>they finally arrived outside the old library.</p>
+    <p>The large wooden doors stood partially open now after the principal unlocked them earlier.</p>
+    <p>Dust floated through the dim evening light leaking from inside.</p>
+    <p>The place somehow looked even older now.</p>
+    <p>Ryan immediately pointed toward the entrance.</p>
+    <p><span class="dialogue">“Yep. Haunted.”</span></p>
+    <p><span class="dialogue">“It’s literally books,”</span> Lara replied.</p>
+    <p><span class="dialogue">“Haunted books.”</span></p>
+    <p>Alex quietly stepped inside first.</p>
+    <p>The others followed behind him.</p>
+    <p>The smell of old paper and dust filled the air instantly.</p>
+    <p>Tall shelves stretched endlessly into the dim interior while white cloth covers rested over abandoned furniture near the back sections.</p>
+    <p>The library was massive.</p>
+    <p>Far bigger than any of them expected.</p>
+    <p>Ryan blinked slowly.</p>
+    <p><span class="dialogue">“Okay why does this place look like it belongs in a horror game?”</span></p>
+    <p><span class="dialogue">“Because nobody’s cleaned it in years,”</span> Ethan answered.</p>
+    <p>Alex silently grabbed several cleaning supplies stacked near the entrance wall.</p>
+    <p>Buckets.</p>
+    <p>Cloths.</p>
+    <p>Boxes.</p>
+    <p>Then without hesitation—</p>
+    <p>he started assigning work calmly.</p>
+    <p><span class="dialogue">“Ethan, left shelves.”</span></p>
+    <p>Ethan caught the cleaning cloth thrown toward him.</p>
+    <p><span class="dialogue">“Alright.”</span></p>
+    <p><span class="dialogue">“Ryan, clear the reading tables.”</span></p>
+    <p>Ryan looked offended immediately.</p>
+    <p><span class="dialogue">“Why do I sound like unpaid labor?”</span></p>
+    <p><span class="dialogue">“You are unpaid labor.”</span></p>
+    <p><span class="dialogue">“Tragic.”</span></p>
+    <p>Alex handed another cloth toward Lara.</p>
+    <p><span class="dialogue">“You take the center shelves.”</span></p>
+    <p>Then Ryan narrowed his eyes slowly.</p>
+    <p><span class="dialogue">“…wait.”</span></p>
+    <p>Alex looked at him.</p>
+    <p><span class="dialogue">“What are YOU going to do?”</span></p>
+    <p>Alex answered casually,</p>
+    <p><span class="dialogue">“I’m helping Lara.”</span></p>
+    <p>Ryan froze dramatically.</p>
+    <p>Then slowly looked between both of them.</p>
+    <p>Then pointed accusingly.</p>
+    <p><span class="dialogue">“OHHHH.”</span></p>
+    <p>Lara immediately knew where this was going.</p>
+    <p><span class="dialogue">“No.”</span></p>
+    <p>Ryan ignored her completely.</p>
+    <p><span class="dialogue">“Now I understand.”</span></p>
+    <p>Ethan sighed softly.</p>
+    <p><span class="dialogue">“Please don’t.”</span></p>
+    <p>Ryan placed one hand against his chest dramatically.</p>
+    <p><span class="dialogue">“Couple goals inside haunted libraries. Cinema.”</span></p>
+    <p><span class="dialogue">“It’s not like that,”</span> Lara replied instantly.</p>
+    <p>Ryan looked unconvinced.</p>
+    <p><span class="dialogue">“Bro nearly died protecting her TWICE today.”</span></p>
+    <p>Alex looked genuinely confused now.</p>
+    <p><span class="dialogue">“That feels unrelated.”</span></p>
+    <p>Ryan stared at him in disbelief.</p>
+    <p><span class="dialogue">“You are emotionally blind.”</span></p>
+    <p><span class="dialogue">“Clinically blind without glasses too,”</span> Ethan added.</p>
+    <p>Ryan slapped Ethan’s shoulder proudly.</p>
+    <p><span class="dialogue">“SEE? He gets me.”</span></p>
+    <p>Alex sighed quietly and walked deeper into the library beside Lara while Ryan continued complaining dramatically in the background.</p>
+    <p>Eventually—</p>
+    <p>the huge shelves naturally separated everyone further apart.</p>
+    <p>The library became quieter.</p>
+    <p>Distant cleaning sounds echoed faintly from the other sections while dust floated lazily through beams of orange evening light above them.</p>
+    <p>Lara dusted several books carefully before glancing sideways toward Alex beside her.</p>
+    <p>He was reorganizing old books unusually fast.</p>
+    <p>Almost automatically.</p>
+    <p>Like he already knew where things belonged.</p>
+    <p>Then her eyes slowly drifted toward his glasses.</p>
+    <p><span class="dialogue">“…Alex?”</span></p>
+    <p><span class="dialogue">“Hm?”</span></p>
+    <p><span class="dialogue">“Can I ask something weird?”</span></p>
+    <p><span class="dialogue">“That usually means danger.”</span></p>
+    <p>Lara ignored the comment.</p>
+    <p><span class="dialogue">“Your glasses…”</span></p>
+    <p>Alex looked toward her slightly.</p>
+    <p><span class="dialogue">“What about them?”</span></p>
+    <p>She hesitated briefly.</p>
+    <p>Then spoke quieter.</p>
+    <p><span class="dialogue">“…is there something wrong with them?”</span></p>
+    <p>For the first time—</p>
+    <p>Alex paused.</p>
+    <p>Only slightly.</p>
+    <p><span class="dialogue">“…why?”</span></p>
+    <p>Lara lowered the cloth in her hand slowly.</p>
+    <p><span class="dialogue">“Earlier… during the fight…”</span></p>
+    <p>Her expression tightened faintly.</p>
+    <p><span class="dialogue">“I felt something.”</span></p>
+    <p>Silence.</p>
+    <p>She looked directly toward him now.</p>
+    <p><span class="dialogue">“When I picked up your glasses…”</span></p>
+    <p>Alex stayed completely still.</p>
+    <p><span class="dialogue">“…it felt like something was inside them.”</span></p>
+    <p>The air suddenly felt colder.</p>
+    <p>Lara looked unsure of her own words now.</p>
+    <p><span class="dialogue">“I know that sounds insane,”</span> she admitted quietly. <span class="dialogue">“But for a second it looked like something was alive inside the lenses.”</span></p>
+    <p>Alex’s expression became unreadable again.</p>
+    <p>Not angry.</p>
+    <p>Not shocked.</p>
+    <p>Just still.</p>
+    <p>Then softly—</p>
+    <p><span class="dialogue">“What exactly did you see?”</span></p>
+    <p>Before Lara could answer—</p>
+    <p>CRASH.</p>
+    <hr>
+    <p>A massive sound exploded from the far end of the library.</p>
+    <p>Both of them immediately turned.</p>
+    <p>Ryan’s voice echoed seconds later.</p>
+    <p><span class="dialogue">“THAT WASN’T MY FAULT.”</span></p>
+    <p>Alex instantly sighed.</p>
+    <p><span class="dialogue">“…unbelievable.”</span></p>
+    <p>Lara nearly laughed.</p>
+    <p>Alex pointed lightly toward the shelves.</p>
+    <p><span class="dialogue">“Keep working.”</span></p>
+    <p><span class="dialogue">“And you?”</span></p>
+    <p><span class="dialogue">“I’m going to stop Ryan from destroying the building.”</span></p>
+    <p><span class="dialogue">“That might actually be impossible.”</span></p>
+    <p><span class="dialogue">“Probably.”</span></p>
+    <p>Alex walked toward the sound while Lara returned to dusting the shelves quietly.</p>
+    <p>Meanwhile—</p>
+    <p>near the far reading section—</p>
+    <p>an entire bookshelf had collapsed sideways onto the floor while books scattered everywhere.</p>
+    <p>Ryan stood frozen beside it holding one random encyclopedia.</p>
+    <p>Ethan looked seconds away from violence.</p>
+    <p><span class="dialogue">“How,”</span> he asked slowly, <span class="dialogue">“did you even manage this?”</span></p>
+    <p>Ryan pointed toward the shelf defensively.</p>
+    <p><span class="dialogue">“It attacked first.”</span></p>
+    <p>Alex arrived a second later and immediately stopped walking.</p>
+    <p><span class="dialogue">“…Ryan.”</span></p>
+    <p>Ryan raised both hands instantly.</p>
+    <p><span class="dialogue">“I can explain.”</span></p>
+    <p><span class="dialogue">“I genuinely don’t think you can.”</span></p>
+    <p><span class="dialogue">“It was structurally emotional.”</span></p>
+    <p><span class="dialogue">“That is not a sentence.”</span></p>
+    <p>Ethan rubbed his forehead.</p>
+    <p><span class="dialogue">“I told him not to climb it.”</span></p>
+    <p>Alex blinked slowly.</p>
+    <p><span class="dialogue">“…you climbed the bookshelf?”</span></p>
+    <p>Ryan pointed toward the upper shelves.</p>
+    <p><span class="dialogue">“How else was I supposed to reach the top?”</span></p>
+    <p><span class="dialogue">“There are ladders.”</span></p>
+    <p><span class="dialogue">“Oh.”</span></p>
+    <p>Alex looked physically exhausted now.</p>
+    <p>Then suddenly—</p>
+    <p>something caught his attention.</p>
+    <p>A faint cracking sound.</p>
+    <p>Tiny.</p>
+    <p>Sharp.</p>
+    <p>His eyes shifted upward instantly.</p>
+    <p>Far across the library—</p>
+    <p>directly above Lara—</p>
+    <p>a large crack stretched across the old ceiling.</p>
+    <p>Dust drifted downward slowly.</p>
+    <p>The structure was giving way.</p>
+    <p>Alex’s expression changed immediately.</p>
+    <p><span class="dialogue">“Lara!”</span></p>
+    <p>No response.</p>
+    <p>She stood near the center shelves quietly organizing books—</p>
+    <p>AirPods still in.</p>
+    <p>Didn’t hear him.</p>
+    <p>The crack spread wider.</p>
+    <p>FAST.</p>
+    <p><span class="dialogue">“LARA!”</span></p>
+    <p>Still nothing.</p>
+    <p>Ryan and Ethan turned immediately.</p>
+    <p>Alex grabbed a nearby book and threw it hard across the library.</p>
+    <p>It slammed against the shelf beside her loudly.</p>
+    <p>Lara flinched slightly—</p>
+    <p>but didn’t look up.</p>
+    <p>The ceiling above her split violently.</p>
+    <p>Chunks of concrete started falling.</p>
+    <p>Too fast.</p>
+    <p>Too far.</p>
+    <p>Alex understood instantly.</p>
+    <p>He couldn’t reach her in time.</p>
+    <p>For a single terrifying second—</p>
+    <p>everything slowed.</p>
+    <p>Lara beneath the collapsing ceiling.</p>
+    <p>Ryan shouting something.</p>
+    <p>Ethan running forward.</p>
+    <p>Dust exploding downward.</p>
+    <p>And Alex—</p>
+    <p>standing frozen several meters away.</p>
+    <p>Then slowly—</p>
+    <p>he closed his eyes.</p>
+    <p>And somewhere deep inside him—</p>
+    <p>a desperate thought formed.</p>
+    <p>A wish.</p>
+    <p>Not logical.</p>
+    <p>Not possible.</p>
+    <p>Just one overwhelming need.</p>
+    <p>Please.</p>
+    <p>Save her.</p>
+    <p>The world suddenly distorted.</p>
+    <p>Somewhere beyond reality—</p>
+    <p>the entity awakened instantly.</p>
+    <p>Usually—it rewrote probability.</p>
+    <p>Small changes.</p>
+    <p>Logical outcomes.</p>
+    <p>But this?</p>
+    <p>There was no logical way to save her now.</p>
+    <p>For the first time—</p>
+    <p>the entity forced reality itself to break.</p>
+    <p>Directly above Lara—</p>
+    <p>space cracked open.</p>
+    <p>A massive black fracture ripped silently through the air itself like shattered glass across reality.</p>
+    <p>And the collapsing ceiling vanished into it.</p>
+    <p>Gone.</p>
+    <p>Completely.</p>
+    <p>Silence.</p>
+    <p>The crack in space closed instantly afterward.</p>
+    <p>Dust drifted softly through the library.</p>
+    <p>Nothing else moved.</p>
+    <p>Ryan stood frozen.</p>
+    <p>Ethan stared in complete disbelief.</p>
+    <p>Lara slowly removed one AirPod.</p>
+    <p><span class="dialogue">“…what just happened?”</span></p>
+    <p>Nobody answered.</p>
+    <p>Because near the center of the library—</p>
+    <p>reality itself had just broken.</p>
+
+  </article>
+
+  <div class="ch-end fade-in delay-2">
+    <p class="ch-end-text">— End of Chapter 15 —</p>
+    <div class="ch-nav">
+      <a href="chapter14.html" class="ch-nav-btn ">← Previous</a>
+      <a href="index.html" class="ch-nav-toc">All Chapters</a>
+      <a href="#" class="ch-nav-btn disabled">Next →</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const starfield = document.getElementById('starfield');
+for (let i = 0; i < 60; i++) {
+  const s = document.createElement('div');
+  s.className = 'star-dot';
+  const size = Math.random() < 0.7 ? 1 : 2;
+  s.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*4}s;--delay:${Math.random()*5}s;--op:${0.2+Math.random()*0.5};`;
+  starfield.appendChild(s);
+}
+const progressFill = document.getElementById('progressFill');
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  progressFill.style.width = Math.min(pct, 100) + '%';
+});
+
+const cursor = document.getElementById('cursor'), cursorRing = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cursor.style.left = mx + 'px'; cursor.style.top = my + 'px'; });
+function animRing() { rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12; cursorRing.style.left = rx + 'px'; cursorRing.style.top = ry + 'px'; requestAnimationFrame(animRing); }
+animRing();
+document.querySelectorAll('a, button, .ch-nav-btn').forEach(el => {
+  el.addEventListener('mouseenter', () => { cursor.style.transform = 'translate(-50%,-50%) scale(2)'; cursorRing.style.transform = 'translate(-50%,-50%) scale(1.5)'; cursorRing.style.borderColor = 'rgba(14,165,233,0.7)'; });
+  el.addEventListener('mouseleave', () => { cursor.style.transform = 'translate(-50%,-50%) scale(1)'; cursorRing.style.transform = 'translate(-50%,-50%) scale(1)'; cursorRing.style.borderColor = 'rgba(14,165,233,0.4)'; });
+});
+</script>
+</body>
+</html>

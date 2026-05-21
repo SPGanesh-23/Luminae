@@ -6,822 +6,800 @@
 <title>The Reality Entity — Chapters | Luminae</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Cinzel+Decorative:wght@400;700&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --void: #07040f; --midnight: #0f0820; --star: #f8f0e3; --mist: #c8bfe0;
-    --tl-a: #0ea5e9; --tl-a-deep: #0369a1; --tl-a-light: #38bdf8; --tl-a-glow: rgba(14,165,233,0.4);
-    --tl-b: #7c3aed; --tl-b-deep: #5b21b6; --tl-b-light: #a67dd0; --tl-b-glow: rgba(124,58,237,0.4);
-    --convergence: #e8c97a; --convergence-glow: rgba(232,201,122,0.5);
-    --accent: var(--tl-a); --accent-glow: var(--tl-a-glow);
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
-  body { background: var(--void); color: var(--star); font-family: 'Raleway', sans-serif; font-weight: 300; overflow-x: hidden; min-height: 100vh; }
-
-  .starfield { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
-  .star-dot { position: absolute; border-radius: 50%; background: white; animation: twinkle var(--d, 3s) ease-in-out infinite; animation-delay: var(--delay, 0s); opacity: 0; }
-  @keyframes twinkle { 0%, 100% { opacity: 0; transform: scale(0.5); } 50% { opacity: var(--op, 0.7); transform: scale(1); } }
-
-  .orb { position: fixed; border-radius: 50%; filter: blur(80px); pointer-events: none; z-index: 0; animation: drift var(--orb-d, 20s) ease-in-out infinite alternate; }
-  .orb-1 { width: 500px; height: 500px; background: rgba(124,58,237,0.12); top: -10%; left: -10%; --orb-d: 22s; }
-  .orb-2 { width: 400px; height: 400px; background: rgba(14,165,233,0.1); bottom: 15%; right: -8%; --orb-d: 25s; }
-  @keyframes drift { from { transform: translate(0,0) scale(1); } to { transform: translate(30px,-20px) scale(1.1); } }
-
-  .top-nav { position: relative; z-index: 10; display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 3rem; border-bottom: 1px solid rgba(124,58,237,0.15); }
-  .logo { font-family: 'Cinzel Decorative', cursive; font-size: 1.3rem; color: var(--tl-a); letter-spacing: 0.08em; text-shadow: 0 0 20px var(--tl-a-glow); text-decoration: none; }
-  .back-link { color: var(--mist); text-decoration: none; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.3s; display: flex; align-items: center; gap: 0.5rem; }
-  .back-link:hover { color: var(--tl-b-light); }
-
-  .page { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 0 2rem 5rem; }
-
-  .book-hero { text-align: center; padding: 5rem 0 3rem; }
-  .book-hero-tag { font-size: 0.6rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--convergence); margin-bottom: 1.5rem; display: block; }
-  .book-hero-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 300; line-height: 1.1; color: var(--star); margin-bottom: 0.8rem; }
-  .book-hero-title .tl-a { color: var(--tl-a); text-shadow: 0 0 40px var(--tl-a-glow); }
-  .book-hero-title .tl-b { color: var(--tl-b-light); text-shadow: 0 0 40px var(--tl-b-glow); font-weight: 200; }
-  .book-hero-author { font-size: 0.82rem; letter-spacing: 0.15em; color: var(--mist); text-transform: uppercase; margin-bottom: 1rem; }
-  .book-hero-genre { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; }
-  .book-hero-genre .g-a { color: var(--tl-a-light); }
-  .book-hero-genre .g-b { color: var(--tl-b-light); }
-  .book-hero-genre .g-sep { color: rgba(200,191,224,0.3); margin: 0 0.3em; }
-
-  .hero-divider { display: flex; align-items: center; gap: 1rem; margin: 2.5rem auto; max-width: 300px; }
-  .hero-divider-line-a { flex: 1; height: 1px; background: linear-gradient(to right, transparent, var(--tl-a), transparent); opacity: 0.4; }
-  .hero-divider-line-b { flex: 1; height: 1px; background: linear-gradient(to right, transparent, var(--tl-b), transparent); opacity: 0.4; }
-  .hero-divider-glyph { color: var(--convergence); font-size: 1.1rem; text-shadow: 0 0 15px var(--convergence-glow); }
-
-  .helix-legend { display:flex; justify-content:center; gap:2.5rem; margin-bottom:2rem; font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase; }
-  .legend-a { color: var(--tl-a-light); display:flex; align-items:center; gap:0.4rem; }
-  .legend-b { color: var(--tl-b-light); display:flex; align-items:center; gap:0.4rem; }
-  .legend-dot { width:6px; height:6px; border-radius:50%; }
-  .legend-dot.a { background: var(--tl-a); box-shadow: 0 0 8px var(--tl-a-glow); }
-  .legend-dot.b { background: var(--tl-b); box-shadow: 0 0 8px var(--tl-b-glow); }
-
-  @keyframes convergence-ripple { 0%{r:8;opacity:0.6} 100%{r:22;opacity:0} }
-  .conv-ripple { animation: convergence-ripple 3s ease-out infinite; }
-  @keyframes conv-glow { 0%,100%{opacity:0.5} 50%{opacity:1} }
-  .conv-orb { animation: conv-glow 4s ease-in-out infinite; }
-
-  .branch-wrapper { position: relative; width: 100%; }
-  .branch-svg { width: 100%; display: block; overflow: visible; }
-
-  .ch-node { cursor: pointer; }
-  .ch-card { transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); transform-origin: center; }
-  .ch-node:hover .ch-card { filter: drop-shadow(0 0 18px rgba(124,58,237,0.7)); }
-  .ch-node:hover .ch-rect { stroke-width: 1.5px; }
-  .ch-node:hover .ch-title { fill: #ffffff; }
-  .ch-node:hover .ch-arrow-g { opacity: 1; }
-  .ch-node[data-tl='A']:hover .ch-rect { stroke: var(--tl-a) !important; }
-  .ch-node[data-tl='A']:hover .ch-num { fill: var(--tl-a-light); }
-  .ch-node[data-tl='B']:hover .ch-rect { stroke: var(--tl-b) !important; }
-  .ch-node[data-tl='B']:hover .ch-num { fill: var(--tl-b-light); }
-
-  @keyframes pulse-a { 0%,100%{opacity:0} 50%{opacity:0.8; box-shadow:0 0 6px var(--tl-a)} }
-  @keyframes pulse-b { 0%,100%{opacity:0} 40%{opacity:0.9; box-shadow:0 0 4px var(--tl-b)} 41%{opacity:0} }
-  .star-a { animation: pulse-a var(--pd,6s) ease-in-out infinite; background: var(--tl-a-light); }
-  .star-b { animation: pulse-b var(--pd,3s) ease-in-out infinite; background: var(--tl-b-light); }
-
-  @keyframes pulse-ring { 0% { r: 5; opacity: 0.8; } 100% { r: 14; opacity: 0; } }
-  .spine-pulse { animation: pulse-ring 2s ease-out infinite; transform-origin: center; }
-
-  @keyframes dash-flow { from { stroke-dashoffset: 40; } to { stroke-dashoffset: 0; } }
-  .branch-line-anim { stroke-dasharray: 4 4; animation: dash-flow 1.2s linear infinite; }
-
-  @keyframes spine-glow { 0%, 100% { opacity: 0.35; } 50% { opacity: 0.7; } }
-  .spine-main { animation: spine-glow 4s ease-in-out infinite; }
-
-  .toc-footer { border-top: 1px solid rgba(124,58,237,0.1); padding: 2rem 0; margin-top: 1rem; text-align: center; }
-  .toc-footer-text { font-size: 0.65rem; color: rgba(200,191,224,0.25); letter-spacing: 0.15em; }
-  ::selection { background: rgba(124,58,237,0.3); color: #fff; }
-
-  .fade-in { opacity: 0; transform: translateY(20px); animation: fadeUp 0.8s ease forwards; }
-  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
-  .delay-2 { animation-delay: 0.2s; }
-  .delay-3 { animation-delay: 0.4s; }
-
-  .ch-tooltip {
-    position: absolute;
-    background: rgba(15,8,32,0.96);
-    border: 1px solid rgba(124,58,237,0.5);
-    border-radius: 8px;
-    padding: 0.7rem 1rem;
-    font-size: 0.72rem;
-    color: var(--mist);
-    letter-spacing: 0.04em;
-    pointer-events: none;
-    white-space: nowrap;
-    opacity: 0;
-    transition: opacity 0.2s, transform 0.2s;
-    transform: translateY(4px);
-    z-index: 20;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 0 24px rgba(124,58,237,0.3);
-  }
-  .ch-tooltip.visible { opacity: 1; transform: translateY(0); }
-
-  body { cursor: none; }
-  .cursor { position:fixed; width:8px; height:8px; background:#0ea5e9; border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:transform 0.1s, background 0.3s; box-shadow:0 0 12px rgba(14,165,233,0.6); }
-  .cursor-ring { position:fixed; width:32px; height:32px; border:1px solid rgba(14,165,233,0.4); border-radius:50%; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:all 0.18s ease; }
-
-  /* ═══════════════════════════════════════════════════
-     CHARACTERS SECTION
-  ═══════════════════════════════════════════════════ */
-
-  .characters-section {
-    position: relative;
-    z-index: 2;
-    padding: 5rem 0 4rem;
-    overflow: visible;
-    /* Break out of .page max-width for full-width cards */
-    width: 100vw;
-    margin-left: calc(-50vw + 50%);
-    padding-left: 2rem;
-    padding-right: 2rem;
-    background: transparent;
-  }
-
-  .characters-header {
-    text-align: center;
-    margin-bottom: 3.5rem;
-  }
-
-  .characters-eyebrow {
-    font-size: 0.55rem;
-    letter-spacing: 0.5em;
-    text-transform: uppercase;
-    color: var(--convergence);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    margin-bottom: 1rem;
-  }
-
-  .characters-eyebrow::before,
-  .characters-eyebrow::after {
-    content: '';
-    display: block;
-    width: 40px;
-    height: 1px;
-    background: linear-gradient(to right, transparent, var(--convergence));
-    opacity: 0.5;
-  }
-  .characters-eyebrow::after { transform: scaleX(-1); }
-
-  .characters-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(2rem, 5vw, 3.2rem);
-    font-weight: 300;
-    color: var(--star);
-    letter-spacing: 0.05em;
-    margin-bottom: 0.6rem;
-  }
-
-  .characters-subtitle {
-    font-size: 0.65rem;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: rgba(200,191,224,0.4);
-  }
-
-  /* Ambient particles container */
-  .char-particles {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    overflow: hidden;
-  }
-
-  .char-particle {
-    position: absolute;
-    border-radius: 50%;
-    pointer-events: none;
-    animation: float-particle var(--fp-d, 8s) ease-in-out infinite;
-    animation-delay: var(--fp-delay, 0s);
-  }
-
-  @keyframes float-particle {
-    0%, 100% { transform: translateY(0) scale(1); opacity: var(--fp-op, 0.3); }
-    50% { transform: translateY(-20px) scale(1.2); opacity: calc(var(--fp-op, 0.3) * 1.6); }
-  }
-
-  /* ── Carousel wrapper ── */
-  .char-carousel {
-    position: relative;
-    z-index: 1;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1rem;
-    user-select: none;
-    background: transparent;
-  }
-
-  /* Fade edges */
-  .char-carousel::before,
-  .char-carousel::after {
-    display: none;
-  }
-
-  /* Scrollable track */
-  .char-grid {
-    display: flex;
-    gap: 1.5rem;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    padding: 1rem 2rem 1.5rem;
-    cursor: grab;
-    background: transparent !important;
-    background-color: transparent !important;
-  }
-  .char-grid:active { cursor: grabbing; }
-  .char-grid::-webkit-scrollbar { display: none; }
-
-  .char-grid .char-card {
-    flex: 0 0 260px;
-    scroll-snap-align: center;
-  }
-
-  /* Arrow nav buttons */
-  .carousel-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 20;
-    width: 40px; height: 40px;
-    border-radius: 50%;
-    border: 1px solid rgba(124,58,237,0.4);
-    background: rgba(15,8,32,0.85);
-    color: var(--mist);
-    font-size: 1rem;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 0 20px rgba(124,58,237,0.15);
-  }
-  .carousel-btn:hover {
-    border-color: rgba(14,165,233,0.7);
-    color: var(--tl-a-light);
-    box-shadow: 0 0 20px rgba(14,165,233,0.35);
-  }
-  .carousel-btn.prev { left: -4px; }
-  .carousel-btn.next { right: -4px; }
-  .carousel-btn:disabled { opacity: 0.25; pointer-events: none; }
-
-  /* Dot indicators */
-  .carousel-dots {
-    display: flex;
-    justify-content: center;
-    gap: 0.5rem;
-    margin-top: 1.2rem;
-  }
-  .carousel-dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: rgba(200,191,224,0.2);
-    transition: all 0.3s ease;
-    cursor: pointer;
-  }
-  .carousel-dot.active {
-    background: var(--tl-a);
-    box-shadow: 0 0 8px var(--tl-a-glow);
-    width: 18px;
-    border-radius: 3px;
-  }
-
-  @media (max-width: 600px) {
-    .char-grid .char-card { flex: 0 0 220px; }
-  }
-
-  /* Individual card */
-  .char-card {
-    position: relative;
-    aspect-ratio: 2/3;
-    min-height: 380px;
-    border-radius: 18px;
-    cursor: pointer;
-    transform-style: preserve-3d;
-    transition: transform 0.08s linear;
-    will-change: transform;
-    background: transparent;
-    box-shadow: 0 4px 30px rgba(0,0,0,0.5), 0 0 1px rgba(255,255,255,0.05);
-  }
-
-  /* Inner clip — keeps overflow hidden without blocking 3D perspective */
-  .char-card-inner {
-    position: absolute;
-    inset: 0;
-    border-radius: 18px;
-    overflow: hidden;
-    pointer-events: none;
-  }
-
-  /* Portrait layer */
-  .char-portrait {
-    position: absolute;
-    inset: 0;
-    background-size: cover;
-    background-position: center top;
-    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                filter 0.5s ease;
-    filter: saturate(0.7) brightness(0.65);
-    will-change: transform, filter;
-  }
-
-  .char-card:hover .char-portrait {
-    transform: scale(1.08);
-    filter: saturate(1) brightness(0.5);
-  }
-
-  /* Gradient overlay - always visible base */
-  .char-overlay-base {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      to top,
-      rgba(7,4,15,0.98) 0%,
-      rgba(7,4,15,0.85) 30%,
-      rgba(7,4,15,0.4) 55%,
-      rgba(7,4,15,0.05) 80%,
-      transparent 100%
-    );
-    z-index: 1;
-    transition: opacity 0.5s ease;
-  }
-
-  .char-card:hover .char-overlay-base {
-    opacity: 0.9;
-  }
-
-  /* Cinematic vignette frame */
-  .char-frame {
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-    border-radius: 18px;
-    border: 1px solid rgba(255,255,255,0.08);
-    transition: border-color 0.5s ease, box-shadow 0.5s ease;
-    pointer-events: none;
-  }
-
-  .char-card[data-tl="A"] .char-frame {
-    box-shadow: inset 0 0 0 1px rgba(14,165,233,0);
-  }
-  .char-card[data-tl="B"] .char-frame {
-    box-shadow: inset 0 0 0 1px rgba(124,58,237,0);
-  }
-  .char-card[data-tl="C"] .char-frame {
-    box-shadow: inset 0 0 0 1px rgba(232,201,122,0);
-  }
-
-  .char-card[data-tl="A"]:hover .char-frame {
-    border-color: rgba(14,165,233,0.35);
-    box-shadow: inset 0 0 30px rgba(14,165,233,0.08), 0 0 40px rgba(14,165,233,0.25);
-  }
-  .char-card[data-tl="B"]:hover .char-frame {
-    border-color: rgba(124,58,237,0.35);
-    box-shadow: inset 0 0 30px rgba(124,58,237,0.08), 0 0 40px rgba(124,58,237,0.25);
-  }
-  .char-card[data-tl="C"]:hover .char-frame {
-    border-color: rgba(232,201,122,0.35);
-    box-shadow: inset 0 0 30px rgba(232,201,122,0.08), 0 0 40px rgba(232,201,122,0.2);
-  }
-
-  /* Animated corner brackets */
-  .char-corners {
-    position: absolute;
-    inset: 0;
-    z-index: 3;
-    pointer-events: none;
-  }
-
-  .char-corners::before,
-  .char-corners::after {
-    content: '';
-    position: absolute;
-    width: 24px;
-    height: 24px;
-    opacity: 0;
-    transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-
-  .char-corners::before {
-    top: 12px;
-    left: 12px;
-    border-top: 2px solid currentColor;
-    border-left: 2px solid currentColor;
-    transform: translate(-6px, -6px);
-  }
-
-  .char-corners::after {
-    bottom: 12px;
-    right: 12px;
-    border-bottom: 2px solid currentColor;
-    border-right: 2px solid currentColor;
-    transform: translate(6px, 6px);
-  }
-
-  .char-card[data-tl="A"] .char-corners { color: var(--tl-a-light); }
-  .char-card[data-tl="B"] .char-corners { color: var(--tl-b-light); }
-  .char-card[data-tl="C"] .char-corners { color: var(--convergence); }
-
-  .char-card:hover .char-corners::before,
-  .char-card:hover .char-corners::after {
-    opacity: 1;
-    transform: translate(0, 0);
-  }
-
-  /* Spotlight effect — follows mouse */
-  .char-spotlight {
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-    border-radius: 16px;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    pointer-events: none;
-    background: radial-gradient(circle 120px at var(--mx, 50%) var(--my, 30%),
-      rgba(255,255,255,0.07) 0%,
-      transparent 70%
-    );
-  }
-
-  .char-card:hover .char-spotlight { opacity: 1; }
-
-  /* Floating data tag */
-  .char-data-tag {
-    position: absolute;
-    top: 16px;
-    right: 16px;
-    z-index: 5;
-    font-size: 0.5rem;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    padding: 4px 12px;
-    border-radius: 20px;
-    opacity: 0;
-    transform: translateY(-6px);
-    transition: opacity 0.4s ease 0.1s, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s;
-    backdrop-filter: blur(12px);
-    pointer-events: none;
-  }
-
-  .char-card[data-tl="A"] .char-data-tag {
-    background: rgba(14,165,233,0.15);
-    border: 1px solid rgba(14,165,233,0.3);
-    color: var(--tl-a-light);
-  }
-  .char-card[data-tl="B"] .char-data-tag {
-    background: rgba(124,58,237,0.15);
-    border: 1px solid rgba(124,58,237,0.3);
-    color: var(--tl-b-light);
-  }
-  .char-card[data-tl="C"] .char-data-tag {
-    background: rgba(232,201,122,0.12);
-    border: 1px solid rgba(232,201,122,0.3);
-    color: var(--convergence);
-  }
-
-  .char-card:hover .char-data-tag {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* Content area — anchored at bottom, slides up on hover */
-  .char-content {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 4;
-    padding: 0 1.5rem 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    transform: translateY(0);
-    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  }
-
-  .char-card:hover .char-content {
-    transform: translateY(-12px);
-  }
-
-  /* Hidden details wrapper — collapsed by default */
-  .char-details {
-    display: flex;
-    flex-direction: column;
-    gap: 0.45rem;
-    max-height: 0;
-    overflow: hidden;
-    opacity: 0;
-    transition: max-height 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                opacity 0.4s ease 0.1s;
-  }
-
-  .char-card:hover .char-details {
-    max-height: 220px;
-    opacity: 1;
-  }
-
-  /* Role indicator line */
-  .char-role-line {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    opacity: 0;
-    transform: translateY(6px);
-    transition: opacity 0.35s ease 0.08s, transform 0.35s ease 0.08s;
-  }
-
-  .char-role-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-
-  .char-card[data-tl="A"] .char-role-dot { background: var(--tl-a); box-shadow: 0 0 6px var(--tl-a-glow); }
-  .char-card[data-tl="B"] .char-role-dot { background: var(--tl-b); box-shadow: 0 0 6px var(--tl-b-glow); }
-  .char-card[data-tl="C"] .char-role-dot { background: var(--convergence); box-shadow: 0 0 6px var(--convergence-glow); }
-
-  .char-role-text {
-    font-size: 0.58rem;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-  }
-
-  .char-card[data-tl="A"] .char-role-text { color: var(--tl-a-light); }
-  .char-card[data-tl="B"] .char-role-text { color: var(--tl-b-light); }
-  .char-card[data-tl="C"] .char-role-text { color: var(--convergence); }
-
-  .char-card:hover .char-role-line {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* Name — always visible at the bottom */
-  .char-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(1.5rem, 3.5vw, 2rem);
-    font-weight: 600;
-    color: var(--star);
-    line-height: 1.1;
-    letter-spacing: 0.04em;
-    text-shadow: 0 2px 20px rgba(0,0,0,0.95), 0 0 40px rgba(0,0,0,0.6);
-    transition: text-shadow 0.4s ease, letter-spacing 0.4s ease;
-    position: relative;
-    padding-bottom: 0.5rem;
-  }
-
-  /* Glowing underline accent under the name */
-  .char-name::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 32px;
-    height: 2px;
-    border-radius: 1px;
-    transition: width 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s ease;
-  }
-
-  .char-card[data-tl="A"] .char-name::after {
-    background: var(--tl-a);
-    box-shadow: 0 0 8px var(--tl-a-glow);
-  }
-  .char-card[data-tl="B"] .char-name::after {
-    background: var(--tl-b);
-    box-shadow: 0 0 8px var(--tl-b-glow);
-  }
-  .char-card[data-tl="C"] .char-name::after {
-    background: var(--convergence);
-    box-shadow: 0 0 8px var(--convergence-glow);
-  }
-
-  .char-card:hover .char-name {
-    text-shadow: 0 0 24px rgba(255,255,255,0.35), 0 2px 16px rgba(0,0,0,0.95);
-    letter-spacing: 0.06em;
-  }
-
-  .char-card:hover .char-name::after {
-    width: 60px;
-    box-shadow: 0 0 14px currentColor;
-  }
-
-  /* Tagline */
-  .char-tagline {
-    font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    font-size: clamp(0.8rem, 1.8vw, 1rem);
-    font-weight: 300;
-    opacity: 0;
-    transform: translateY(8px);
-    transition: opacity 0.4s ease 0.15s, transform 0.4s ease 0.15s;
-    line-height: 1.3;
-  }
-
-  .char-card[data-tl="A"] .char-tagline { color: var(--tl-a-light); }
-  .char-card[data-tl="B"] .char-tagline { color: var(--tl-b-light); }
-  .char-card[data-tl="C"] .char-tagline { color: var(--convergence); }
-
-  .char-card:hover .char-tagline {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* Divider */
-  .char-divider {
-    height: 1px;
-    background: linear-gradient(to right, transparent, currentColor, transparent);
-    opacity: 0;
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: opacity 0.3s ease 0.2s, transform 0.4s ease 0.2s;
-    margin: 0.15rem 0;
-  }
-
-  .char-card[data-tl="A"] .char-divider { color: rgba(14,165,233,0.3); }
-  .char-card[data-tl="B"] .char-divider { color: rgba(124,58,237,0.3); }
-  .char-card[data-tl="C"] .char-divider { color: rgba(232,201,122,0.3); }
-
-  .char-card:hover .char-divider {
-    opacity: 1;
-    transform: scaleX(1);
-  }
-
-  /* Description */
-  .char-desc {
-    font-size: clamp(0.7rem, 1.4vw, 0.82rem);
-    font-weight: 300;
-    color: rgba(200,191,224,0.8);
-    line-height: 1.6;
-    letter-spacing: 0.02em;
-    opacity: 0;
-    transform: translateY(8px);
-    transition: opacity 0.4s ease 0.25s, transform 0.4s ease 0.25s;
-  }
-
-  .char-card:hover .char-desc {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* Particle canvas per card */
-  .char-particle-canvas {
-    position: absolute;
-    inset: 0;
-    z-index: 3;
-    border-radius: 16px;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.4s ease;
-  }
-
-  .char-card:hover .char-particle-canvas { opacity: 1; }
-
-  /* Energy aura — animated border */
-  .char-aura {
-    position: absolute;
-    inset: -1px;
-    border-radius: 17px;
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0;
-    transition: opacity 0.4s ease;
-  }
-
-  .char-card[data-tl="A"] .char-aura {
-    background: conic-gradient(from var(--aura-angle, 0deg), transparent 0%, rgba(14,165,233,0.5) 20%, transparent 40%, rgba(14,165,233,0.2) 60%, transparent 80%);
-    animation: spin-aura 3s linear infinite;
-  }
-  .char-card[data-tl="B"] .char-aura {
-    background: conic-gradient(from var(--aura-angle, 0deg), transparent 0%, rgba(124,58,237,0.5) 20%, transparent 40%, rgba(124,58,237,0.2) 60%, transparent 80%);
-    animation: spin-aura 4s linear infinite reverse;
-  }
-  .char-card[data-tl="C"] .char-aura {
-    background: conic-gradient(from var(--aura-angle, 0deg), transparent 0%, rgba(232,201,122,0.5) 20%, transparent 40%, rgba(232,201,122,0.2) 60%, transparent 80%);
-    animation: spin-aura 5s linear infinite;
-  }
-
-  @keyframes spin-aura {
-    from { --aura-angle: 0deg; }
-    to { --aura-angle: 360deg; }
-  }
-
-  .char-card:hover .char-aura { opacity: 1; }
-
-  /* Inner aura mask */
-  .char-aura-mask {
-    position: absolute;
-    inset: 2px;
-    border-radius: 15px;
-    background: var(--void);
-    z-index: 0;
-  }
-
-  /* Scan line effect on hover */
-  .char-scan {
-    position: absolute;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: linear-gradient(to right, transparent, rgba(255,255,255,0.06), transparent);
-    z-index: 5;
-    pointer-events: none;
-    opacity: 0;
-    top: -2px;
-    transform: none;
-  }
-
-  .char-card:hover .char-scan {
-    opacity: 1;
-    animation: scan-line 2.5s linear infinite;
-  }
-
-  @keyframes scan-line {
-    0% { top: 0; opacity: 0; }
-    5% { opacity: 1; }
-    95% { opacity: 0.5; }
-    100% { top: 100%; opacity: 0; }
-  }
-
-  /* Section divider */
-  .section-divider {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    margin: 2.5rem 0;
-  }
-
-  .section-divider-line {
-    flex: 1;
-    height: 1px;
-    background: linear-gradient(to right, transparent, rgba(124,58,237,0.2), transparent);
-  }
-
-  .section-divider-glyph {
-    font-size: 0.7rem;
-    color: rgba(200,191,224,0.2);
-    letter-spacing: 0.3em;
-    font-size: 0.5rem;
-    text-transform: uppercase;
-    white-space: nowrap;
-  }
-
-  /* Responsive adjustments */
-  @media (max-width: 600px) {
-    .char-name { font-size: 1.1rem; }
-    .char-desc { font-size: 0.65rem; }
-    .char-tagline { font-size: 0.78rem; }
-    .characters-section { padding: 3rem 0 2rem; }
-    .char-card { min-height: 340px; }
-    .char-content { padding: 1.4rem 1.1rem 1.1rem; }
-  }
-
-  /* Reduced motion */
-  @media (prefers-reduced-motion: reduce) {
-    .char-aura { animation: none !important; }
-    .char-scan { animation: none !important; }
-    .char-portrait { transition: filter 0.3s ease; }
-    .char-card { transition: none; }
-  }
-
-  /* Staggered entrance animation */
-  .char-card {
-    opacity: 0;
-    animation: card-entrance 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-  }
-
-  /* After animation completes, release transform control back to JS */
-  .char-card.tilt-ready {
-    animation: none;
-    opacity: 1;
-  }
-
-  @keyframes card-entrance {
-    from { opacity: 0; transform: translateY(20px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  .char-card:nth-child(1) { animation-delay: 0.1s; }
-  .char-card:nth-child(2) { animation-delay: 0.18s; }
-  .char-card:nth-child(3) { animation-delay: 0.26s; }
-  .char-card:nth-child(4) { animation-delay: 0.34s; }
-  .char-card:nth-child(5) { animation-delay: 0.42s; }
-  .char-card:nth-child(6) { animation-delay: 0.50s; }
-  .char-card:nth-child(7) { animation-delay: 0.58s; }
-  .char-card:nth-child(8) { animation-delay: 0.66s; }
-
+:root {
+  --void: #07040f;
+  --midnight: #0f0820;
+  --star: #f8f0e3;
+  --mist: #c8bfe0;
+  --tl-a: #0ea5e9;
+  --tl-a-deep: #0369a1;
+  --tl-a-light: #38bdf8;
+  --tl-a-glow: rgba(14,165,233,0.4);
+  --tl-b: #7c3aed;
+  --tl-b-deep: #5b21b6;
+  --tl-b-light: #a67dd0;
+  --tl-b-glow: rgba(124,58,237,0.4);
+  --convergence: #e8c97a;
+  --convergence-glow: rgba(232,201,122,0.5);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--void);
+  color: var(--star);
+  font-family: 'Raleway', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ── CURSOR ── */
+.cursor {
+  position: fixed; width: 8px; height: 8px;
+  background: var(--tl-a); border-radius: 50%;
+  pointer-events: none; z-index: 9999;
+  transform: translate(-50%,-50%);
+  box-shadow: 0 0 12px var(--tl-a-glow);
+  transition: background 0.3s, transform 0.1s;
+}
+.cursor-ring {
+  position: fixed; width: 32px; height: 32px;
+  border: 1px solid rgba(14,165,233,0.4); border-radius: 50%;
+  pointer-events: none; z-index: 9998;
+  transform: translate(-50%,-50%);
+  transition: all 0.18s ease;
+}
+
+/* ── STARFIELD ── */
+.starfield { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+.star-dot {
+  position: absolute; border-radius: 50%; background: white;
+  animation: twinkle var(--d,3s) ease-in-out infinite;
+  animation-delay: var(--delay,0s); opacity: 0;
+}
+@keyframes twinkle { 0%,100%{opacity:0;transform:scale(0.5)} 50%{opacity:var(--op,0.7);transform:scale(1)} }
+
+/* ── AMBIENT ORBS ── */
+.orb {
+  position: fixed; border-radius: 50%; filter: blur(90px);
+  pointer-events: none; z-index: 0;
+  animation: drift var(--d,20s) ease-in-out infinite alternate;
+}
+.orb-1 { width: 600px; height: 600px; background: rgba(124,58,237,0.1); top: -15%; left: -10%; --d: 22s; }
+.orb-2 { width: 500px; height: 500px; background: rgba(14,165,233,0.08); bottom: 10%; right: -12%; --d: 28s; }
+.orb-3 { width: 300px; height: 300px; background: rgba(232,201,122,0.06); top: 40%; left: 30%; --d: 35s; }
+@keyframes drift { from{transform:translate(0,0) scale(1)} to{transform:translate(25px,-18px) scale(1.08)} }
+
+/* ── NAV ── */
+.top-nav {
+  position: relative; z-index: 10;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.5rem 3rem;
+  border-bottom: 1px solid rgba(124,58,237,0.12);
+  backdrop-filter: blur(10px);
+}
+.logo {
+  font-family: 'Cinzel Decorative', cursive; font-size: 1.3rem;
+  color: var(--tl-a); letter-spacing: 0.08em;
+  text-shadow: 0 0 20px var(--tl-a-glow); text-decoration: none;
+}
+.back-link {
+  color: var(--mist); text-decoration: none;
+  font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase;
+  transition: color 0.3s; display: flex; align-items: center; gap: 0.5rem;
+}
+.back-link:hover { color: var(--tl-b-light); }
+
+/* ── PAGE SHELL ── */
+.page { position: relative; z-index: 1; max-width: 980px; margin: 0 auto; padding: 0 2rem 6rem; }
+
+/* ── HERO ── */
+.book-hero { text-align: center; padding: 5rem 0 3rem; }
+.book-hero-tag {
+  font-size: 0.58rem; letter-spacing: 0.45em; text-transform: uppercase;
+  color: var(--convergence); margin-bottom: 1.5rem; display: block;
+}
+.book-hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.8rem, 6vw, 5rem); font-weight: 300; line-height: 1.05;
+  color: var(--star); margin-bottom: 0.8rem;
+}
+.book-hero-title .tl-a { color: var(--tl-a); text-shadow: 0 0 50px var(--tl-a-glow); }
+.book-hero-title .tl-b { color: var(--tl-b-light); text-shadow: 0 0 50px var(--tl-b-glow); font-weight: 200; }
+.book-hero-author { font-size: 0.82rem; letter-spacing: 0.15em; color: var(--mist); text-transform: uppercase; margin-bottom: 1rem; }
+.book-hero-genre { font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; }
+.book-hero-genre .g-a { color: var(--tl-a-light); }
+.book-hero-genre .g-b { color: var(--tl-b-light); }
+.book-hero-genre .g-sep { color: rgba(200,191,224,0.3); margin: 0 0.4em; }
+
+.hero-divider {
+  display: flex; align-items: center; gap: 1rem; margin: 2.5rem auto; max-width: 320px;
+}
+.hero-divider-line-a { flex:1; height:1px; background: linear-gradient(to right, transparent, var(--tl-a), transparent); opacity:0.45; }
+.hero-divider-line-b { flex:1; height:1px; background: linear-gradient(to right, transparent, var(--tl-b), transparent); opacity:0.45; }
+.hero-divider-glyph { color: var(--convergence); font-size: 1.1rem; text-shadow: 0 0 15px var(--convergence-glow); }
+
+/* ── CHARACTERS ── */
+.characters-section {
+  position: relative; z-index: 2;
+  padding: 4rem 0 3.5rem;
+  width: 100vw; margin-left: calc(-50vw + 50%);
+  padding-left: 2rem; padding-right: 2rem;
+}
+.characters-header { text-align: center; margin-bottom: 3rem; }
+.characters-eyebrow {
+  font-size: 0.55rem; letter-spacing: 0.5em; text-transform: uppercase; color: var(--convergence);
+  display: flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 1rem;
+}
+.characters-eyebrow::before, .characters-eyebrow::after {
+  content:''; display:block; width:40px; height:1px;
+  background: linear-gradient(to right, transparent, var(--convergence)); opacity:0.5;
+}
+.characters-eyebrow::after { transform:scaleX(-1); }
+.characters-title { font-family:'Cormorant Garamond',serif; font-size:clamp(1.8rem,4vw,2.8rem); font-weight:300; color:var(--star); margin-bottom:0.5rem; }
+.characters-subtitle { font-size:0.62rem; letter-spacing:0.25em; text-transform:uppercase; color:rgba(200,191,224,0.4); }
+
+.char-carousel { position:relative; z-index:1; max-width:100%; margin:0 auto; user-select:none; overflow:hidden; }
+
+/* Fade edges */
+.char-carousel::before, .char-carousel::after {
+  content:''; position:absolute; top:0; bottom:0; width:120px; z-index:10; pointer-events:none;
+}
+.char-carousel::before { left:0; background:linear-gradient(to right, var(--void), transparent); }
+.char-carousel::after  { right:0; background:linear-gradient(to left, var(--void), transparent); }
+
+.char-grid {
+  display:flex; gap:1.5rem;
+  padding:1rem 0 1.5rem;
+  width:max-content;
+  animation: marquee-scroll 28s linear infinite;
+  will-change: transform;
+}
+.char-grid:hover { animation-play-state: paused; }
+.char-grid .char-card { flex:0 0 260px; scroll-snap-align:unset; }
+
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* Hide prev/next buttons and dots — not needed for infinite scroll */
+.carousel-btn { display:none; }
+.carousel-dots { display:none; }
+
+/* Character Cards */
+.char-card {
+  position:relative; aspect-ratio:2/3; min-height:380px;
+  border-radius:18px; cursor:pointer; transform-style:preserve-3d;
+  transition:transform 0.08s linear; will-change:transform;
+  box-shadow:0 4px 30px rgba(0,0,0,0.5), 0 0 1px rgba(255,255,255,0.05);
+  opacity:0; animation:card-entrance 0.7s cubic-bezier(0.25,0.46,0.45,0.94) forwards;
+}
+.char-card.tilt-ready { animation:none; opacity:1; }
+@keyframes card-entrance { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+.char-card:nth-child(1){animation-delay:.10s} .char-card:nth-child(2){animation-delay:.18s}
+.char-card:nth-child(3){animation-delay:.26s} .char-card:nth-child(4){animation-delay:.34s}
+.char-card:nth-child(5){animation-delay:.42s} .char-card:nth-child(6){animation-delay:.50s}
+.char-card:nth-child(7){animation-delay:.58s} .char-card:nth-child(8){animation-delay:.66s}
+.char-card:nth-child(9){animation-delay:.74s}
+
+.char-card-inner { position:absolute; inset:0; border-radius:18px; overflow:hidden; pointer-events:none; }
+.char-portrait {
+  position:absolute; inset:0; background-size:cover; background-position:center top;
+  transition:transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94), filter 0.5s;
+  filter:saturate(0.7) brightness(0.65);
+}
+.char-card:hover .char-portrait { transform:scale(1.08); filter:saturate(1) brightness(0.5); }
+
+.char-overlay-base {
+  position:absolute; inset:0; z-index:1; transition:opacity 0.5s;
+  background:linear-gradient(to top, rgba(7,4,15,0.98) 0%, rgba(7,4,15,0.85) 30%, rgba(7,4,15,0.35) 55%, rgba(7,4,15,0.05) 80%, transparent 100%);
+}
+.char-card:hover .char-overlay-base { opacity:0.9; }
+
+.char-frame {
+  position:absolute; inset:0; z-index:2; border-radius:18px;
+  border:1px solid rgba(255,255,255,0.08); transition:border-color 0.5s, box-shadow 0.5s; pointer-events:none;
+}
+.char-card[data-tl="A"]:hover .char-frame { border-color:rgba(14,165,233,0.35); box-shadow:inset 0 0 30px rgba(14,165,233,0.08), 0 0 40px rgba(14,165,233,0.25); }
+.char-card[data-tl="B"]:hover .char-frame { border-color:rgba(124,58,237,0.35); box-shadow:inset 0 0 30px rgba(124,58,237,0.08), 0 0 40px rgba(124,58,237,0.25); }
+.char-card[data-tl="C"]:hover .char-frame { border-color:rgba(232,201,122,0.35); box-shadow:inset 0 0 30px rgba(232,201,122,0.08), 0 0 40px rgba(232,201,122,0.2); }
+
+.char-corners { position:absolute; inset:0; z-index:3; pointer-events:none; }
+.char-corners::before, .char-corners::after {
+  content:''; position:absolute; width:24px; height:24px; opacity:0;
+  transition:opacity 0.4s, transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+}
+.char-corners::before { top:12px; left:12px; border-top:2px solid currentColor; border-left:2px solid currentColor; transform:translate(-6px,-6px); }
+.char-corners::after  { bottom:12px; right:12px; border-bottom:2px solid currentColor; border-right:2px solid currentColor; transform:translate(6px,6px); }
+.char-card[data-tl="A"] .char-corners { color:var(--tl-a-light); }
+.char-card[data-tl="B"] .char-corners { color:var(--tl-b-light); }
+.char-card[data-tl="C"] .char-corners { color:var(--convergence); }
+.char-card:hover .char-corners::before, .char-card:hover .char-corners::after { opacity:1; transform:translate(0,0); }
+
+.char-spotlight {
+  position:absolute; inset:0; z-index:2; border-radius:16px; opacity:0;
+  transition:opacity 0.3s; pointer-events:none;
+}
+.char-card:hover .char-spotlight { opacity:1; }
+
+.char-data-tag {
+  position:absolute; top:16px; right:16px; z-index:5;
+  font-size:0.5rem; letter-spacing:0.3em; text-transform:uppercase;
+  padding:4px 12px; border-radius:20px; opacity:0; transform:translateY(-6px);
+  transition:opacity 0.4s ease 0.1s, transform 0.4s cubic-bezier(0.34,1.56,0.64,1) 0.1s;
+  backdrop-filter:blur(12px); pointer-events:none;
+}
+.char-card[data-tl="A"] .char-data-tag { background:rgba(14,165,233,0.15); border:1px solid rgba(14,165,233,0.3); color:var(--tl-a-light); }
+.char-card[data-tl="B"] .char-data-tag { background:rgba(124,58,237,0.15); border:1px solid rgba(124,58,237,0.3); color:var(--tl-b-light); }
+.char-card[data-tl="C"] .char-data-tag { background:rgba(232,201,122,0.12); border:1px solid rgba(232,201,122,0.3); color:var(--convergence); }
+.char-card:hover .char-data-tag { opacity:1; transform:translateY(0); }
+
+.char-content { position:absolute; bottom:0; left:0; right:0; z-index:4; padding:0 1.5rem 1.5rem; display:flex; flex-direction:column; gap:0.5rem; transition:transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94); }
+.char-card:hover .char-content { transform:translateY(-12px); }
+
+.char-details { display:flex; flex-direction:column; gap:0.45rem; max-height:0; overflow:hidden; opacity:0; transition:max-height 0.5s cubic-bezier(0.25,0.46,0.45,0.94), opacity 0.4s ease 0.1s; }
+.char-card:hover .char-details { max-height:220px; opacity:1; }
+
+.char-role-line { display:flex; align-items:center; gap:0.5rem; opacity:0; transform:translateY(6px); transition:opacity 0.35s ease 0.08s, transform 0.35s ease 0.08s; }
+.char-role-dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+.char-card[data-tl="A"] .char-role-dot { background:var(--tl-a); box-shadow:0 0 6px var(--tl-a-glow); }
+.char-card[data-tl="B"] .char-role-dot { background:var(--tl-b); box-shadow:0 0 6px var(--tl-b-glow); }
+.char-card[data-tl="C"] .char-role-dot { background:var(--convergence); box-shadow:0 0 6px var(--convergence-glow); }
+.char-role-text { font-size:0.58rem; letter-spacing:0.25em; text-transform:uppercase; }
+.char-card[data-tl="A"] .char-role-text { color:var(--tl-a-light); }
+.char-card[data-tl="B"] .char-role-text { color:var(--tl-b-light); }
+.char-card[data-tl="C"] .char-role-text { color:var(--convergence); }
+.char-card:hover .char-role-line { opacity:1; transform:translateY(0); }
+
+.char-name {
+  font-family:'Cormorant Garamond',serif; font-size:clamp(1.5rem,3.5vw,2rem);
+  font-weight:600; color:var(--star); line-height:1.1; letter-spacing:0.04em;
+  text-shadow:0 2px 20px rgba(0,0,0,0.95); transition:letter-spacing 0.4s;
+  position:relative; padding-bottom:0.5rem;
+}
+.char-name::after {
+  content:''; position:absolute; bottom:0; left:0; width:32px; height:2px;
+  border-radius:1px; transition:width 0.5s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+.char-card[data-tl="A"] .char-name::after { background:var(--tl-a); box-shadow:0 0 8px var(--tl-a-glow); }
+.char-card[data-tl="B"] .char-name::after { background:var(--tl-b); box-shadow:0 0 8px var(--tl-b-glow); }
+.char-card[data-tl="C"] .char-name::after { background:var(--convergence); box-shadow:0 0 8px var(--convergence-glow); }
+.char-card:hover .char-name { letter-spacing:0.06em; }
+.char-card:hover .char-name::after { width:60px; }
+
+.char-tagline { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:clamp(0.8rem,1.8vw,1rem); font-weight:300; opacity:0; transform:translateY(8px); transition:opacity 0.4s ease 0.15s, transform 0.4s ease 0.15s; }
+.char-card[data-tl="A"] .char-tagline { color:var(--tl-a-light); }
+.char-card[data-tl="B"] .char-tagline { color:var(--tl-b-light); }
+.char-card[data-tl="C"] .char-tagline { color:var(--convergence); }
+.char-card:hover .char-tagline { opacity:1; transform:translateY(0); }
+
+.char-divider { height:1px; background:linear-gradient(to right, transparent, currentColor, transparent); opacity:0; transform:scaleX(0); transform-origin:left; transition:opacity 0.3s ease 0.2s, transform 0.4s ease 0.2s; margin:0.15rem 0; }
+.char-card[data-tl="A"] .char-divider { color:rgba(14,165,233,0.3); }
+.char-card[data-tl="B"] .char-divider { color:rgba(124,58,237,0.3); }
+.char-card[data-tl="C"] .char-divider { color:rgba(232,201,122,0.3); }
+.char-card:hover .char-divider { opacity:1; transform:scaleX(1); }
+
+.char-desc { font-size:clamp(0.7rem,1.4vw,0.82rem); font-weight:300; color:rgba(200,191,224,0.8); line-height:1.6; opacity:0; transform:translateY(8px); transition:opacity 0.4s ease 0.25s, transform 0.4s ease 0.25s; }
+.char-card:hover .char-desc { opacity:1; transform:translateY(0); }
+
+.char-aura { position:absolute; inset:-1px; border-radius:17px; pointer-events:none; z-index:0; opacity:0; transition:opacity 0.4s; }
+.char-card[data-tl="A"] .char-aura { background:conic-gradient(from 0deg, transparent 0%, rgba(14,165,233,0.5) 20%, transparent 40%, rgba(14,165,233,0.2) 60%, transparent 80%); animation:spin-aura 3s linear infinite; }
+.char-card[data-tl="B"] .char-aura { background:conic-gradient(from 0deg, transparent 0%, rgba(124,58,237,0.5) 20%, transparent 40%, rgba(124,58,237,0.2) 60%, transparent 80%); animation:spin-aura 4s linear infinite reverse; }
+.char-card[data-tl="C"] .char-aura { background:conic-gradient(from 0deg, transparent 0%, rgba(232,201,122,0.5) 20%, transparent 40%, rgba(232,201,122,0.2) 60%, transparent 80%); animation:spin-aura 5s linear infinite; }
+@keyframes spin-aura { to { rotate: 360deg; } }
+.char-card:hover .char-aura { opacity:1; }
+.char-aura-mask { position:absolute; inset:2px; border-radius:15px; background:var(--void); z-index:0; }
+
+.char-scan { position:absolute; left:0; right:0; height:2px; background:linear-gradient(to right, transparent, rgba(255,255,255,0.06), transparent); z-index:5; pointer-events:none; opacity:0; top:-2px; }
+.char-card:hover .char-scan { opacity:1; animation:scan-line 2.5s linear infinite; }
+@keyframes scan-line { 0%{top:0;opacity:0} 5%{opacity:1} 95%{opacity:0.5} 100%{top:100%;opacity:0} }
+
+.char-particle-canvas { position:absolute; inset:0; z-index:3; border-radius:16px; pointer-events:none; opacity:0; transition:opacity 0.4s; }
+.char-card:hover .char-particle-canvas { opacity:1; }
+
+/* ══════════════════════════════════════════
+   ARC HEADER & BODY
+══════════════════════════════════════════ */
+.arc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.2rem;
+  border-radius: 10px;
+  border: 1px solid rgba(124,58,237,0.15);
+  background: rgba(124,58,237,0.04);
+  cursor: pointer;
+  user-select: none;
+  margin-bottom: 2px;
+  transition: border-color 0.3s, background 0.3s;
+  position: relative;
+  z-index: 3;
+}
+.arc-header:hover {
+  border-color: rgba(124,58,237,0.3);
+  background: rgba(124,58,237,0.08);
+}
+.arc-header.open {
+  border-color: rgba(124,58,237,0.25);
+  background: rgba(124,58,237,0.06);
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.arc-header-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.arc-num-badge {
+  font-size: 0.48rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--convergence);
+  background: rgba(232,201,122,0.08);
+  border: 1px solid rgba(232,201,122,0.2);
+  padding: 3px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+.arc-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+.arc-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem;
+  font-weight: 400;
+  color: var(--star);
+  letter-spacing: 0.04em;
+}
+.arc-subtitle {
+  font-size: 0.58rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(200,191,224,0.4);
+}
+.arc-header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+.arc-range {
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  color: var(--tl-b-light);
+  opacity: 0.7;
+}
+.arc-ch-count {
+  font-size: 0.55rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(200,191,224,0.3);
+}
+.arc-chevron {
+  color: rgba(200,191,224,0.4);
+  display: flex;
+  align-items: center;
+  transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), color 0.3s;
+}
+.arc-header.open .arc-chevron {
+  transform: rotate(180deg);
+  color: var(--tl-b-light);
+}
+.arc-header:hover .arc-chevron { color: var(--mist); }
+
+/* Arc body — collapsed by default, expands smoothly */
+.arc-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.45s cubic-bezier(0.4,0,0.2,1);
+  border: 1px solid rgba(124,58,237,0.15);
+  border-top: none;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  margin-bottom: 0.5rem;
+  overflow: hidden;
+  position: relative;
+}
+.arc-body.open {
+  grid-template-rows: 1fr;
+  border-color: rgba(124,58,237,0.2);
+}
+.arc-body > * { min-height: 0; }
+
+/* Inner wrapper to allow overflow:hidden on arc-body */
+.arc-body-inner {
+  position: relative;
+  padding: 0.5rem 0 0.8rem;
+  overflow: hidden;
+}
+
+/* Spine inside an arc body */
+.arc-spine {
+  position: absolute;
+  left: 50%;
+  top: 0; bottom: 0;
+  width: 1px;
+  transform: translateX(-50%);
+  background: linear-gradient(to bottom,
+    rgba(124,58,237,0) 0%,
+    rgba(124,58,237,0.4) 10%,
+    rgba(232,201,122,0.2) 50%,
+    rgba(14,165,233,0.4) 90%,
+    rgba(14,165,233,0) 100%
+  );
+  pointer-events: none;
+  animation: spine-breathe 5s ease-in-out infinite;
+}
+
+/* Coming soon placeholder inside empty arc */
+.arc-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  padding: 2.5rem 0;
+  opacity: 0.5;
+}
+.arc-placeholder-gem {
+  width: 10px; height: 10px;
+  background: var(--convergence);
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  box-shadow: 0 0 12px var(--convergence-glow);
+  animation: gem-pulse 3s ease-in-out infinite;
+}
+.arc-placeholder-text {
+  font-size: 0.58rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: rgba(200,191,224,0.5);
+}
+
+/* ══════════════════════════════════════════
+   SECTION DIVIDER
+══════════════════════════════════════════ */
+.section-divider { display:flex; align-items:center; gap:1.5rem; margin:2.5rem 0; }
+.section-divider-line { flex:1; height:1px; background:linear-gradient(to right, transparent, rgba(124,58,237,0.2), transparent); }
+.section-divider-glyph { font-size:0.5rem; letter-spacing:0.3em; text-transform:uppercase; color:rgba(200,191,224,0.2); white-space:nowrap; }
+
+/* ══════════════════════════════════════════
+   TIMELINE HEADER / LEGEND
+══════════════════════════════════════════ */
+.timeline-header {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+.tl-header-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.tl-header-col.tl-a { align-items: flex-start; }
+.tl-header-col.tl-b { align-items: flex-end; }
+.tl-header-label {
+  font-size: 0.55rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.tl-header-col.tl-a .tl-header-label { color: var(--tl-a-light); }
+.tl-header-col.tl-b .tl-header-label { color: var(--tl-b-light); }
+.tl-header-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  font-weight: 300;
+  letter-spacing: 0.08em;
+}
+.tl-header-col.tl-a .tl-header-name { color: var(--tl-a); text-shadow: 0 0 20px var(--tl-a-glow); }
+.tl-header-col.tl-b .tl-header-name { color: var(--tl-b-light); text-shadow: 0 0 20px var(--tl-b-glow); }
+.tl-header-desc { font-size: 0.6rem; letter-spacing: 0.1em; color: rgba(200,191,224,0.45); }
+.tl-center-glyph {
+  font-size: 1.2rem; color: var(--convergence);
+  text-shadow: 0 0 20px var(--convergence-glow);
+  text-align: center;
+  animation: glyph-pulse 4s ease-in-out infinite;
+}
+@keyframes glyph-pulse { 0%,100%{opacity:0.6;text-shadow:0 0 20px var(--convergence-glow)} 50%{opacity:1;text-shadow:0 0 40px var(--convergence-glow)} }
+
+/* ══════════════════════════════════════════
+   DUAL TIMELINE GRID  ← THE BIG IMPROVEMENT
+══════════════════════════════════════════ */
+.timeline-container {
+  position: relative;
+}
+
+/* The center convergence spine — decorative vertical line */
+.timeline-spine {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  transform: translateX(-50%);
+  background: linear-gradient(to bottom,
+    rgba(124,58,237,0) 0%,
+    rgba(124,58,237,0.5) 8%,
+    rgba(232,201,122,0.35) 50%,
+    rgba(14,165,233,0.5) 92%,
+    rgba(14,165,233,0) 100%
+  );
+  pointer-events: none;
+  animation: spine-breathe 5s ease-in-out infinite;
+}
+@keyframes spine-breathe { 0%,100%{opacity:0.5} 50%{opacity:1} }
+
+/* The row wrapper — each chapter group occupies one row */
+.timeline-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.timeline-row {
+  display: grid;
+  grid-template-columns: 1fr 80px 1fr;
+  align-items: center;
+  min-height: 90px;
+  position: relative;
+}
+
+/* ── Chapter card ── */
+.ch-entry {
+  padding: 0.6rem 0;
+}
+.ch-entry.side-a { padding-right: 1.5rem; }
+.ch-entry.side-b { padding-left: 1.5rem; }
+.ch-entry.empty { opacity: 0; pointer-events: none; }
+
+.ch-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 0.9rem 1.1rem;
+  border-radius: 10px;
+  cursor: pointer;
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.34,1.4,0.64,1);
+  border: 1px solid transparent;
+}
+.ch-card::before {
+  content: '';
+  position: absolute; inset: 0; border-radius: 10px; opacity: 0;
+  transition: opacity 0.3s;
+}
+.ch-card:hover { transform: translateY(-2px); }
+
+/* Timeline A cards */
+.ch-entry.side-a .ch-card {
+  background: rgba(14,165,233,0.04);
+  border-color: rgba(14,165,233,0.15);
+}
+.ch-entry.side-a .ch-card::before { background: rgba(14,165,233,0.07); }
+.ch-entry.side-a .ch-card:hover {
+  background: rgba(14,165,233,0.08);
+  border-color: rgba(14,165,233,0.35);
+  box-shadow: 0 0 30px rgba(14,165,233,0.15), 0 4px 20px rgba(0,0,0,0.4);
+}
+.ch-entry.side-a .ch-card:hover::before { opacity: 1; }
+
+/* Timeline B cards */
+.ch-entry.side-b .ch-card {
+  background: rgba(124,58,237,0.04);
+  border-color: rgba(124,58,237,0.15);
+}
+.ch-entry.side-b .ch-card::before { background: rgba(124,58,237,0.07); }
+.ch-entry.side-b .ch-card:hover {
+  background: rgba(124,58,237,0.08);
+  border-color: rgba(124,58,237,0.35);
+  box-shadow: 0 0 30px rgba(124,58,237,0.15), 0 4px 20px rgba(0,0,0,0.4);
+}
+.ch-entry.side-b .ch-card:hover::before { opacity: 1; }
+
+/* Connector lines from card edge to spine */
+.ch-entry.side-a::after {
+  content: '';
+  position: absolute; right: 0; top: 50%; height: 1px;
+  width: 1.5rem; transform: translateY(-50%);
+  background: linear-gradient(to right, transparent, rgba(14,165,233,0.3));
+}
+.ch-entry.side-b::before {
+  content: '';
+  position: absolute; left: 0; top: 50%; height: 1px;
+  width: 1.5rem; transform: translateY(-50%);
+  background: linear-gradient(to left, transparent, rgba(124,58,237,0.3));
+}
+
+.ch-num {
+  font-size: 0.52rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.side-a .ch-num { color: var(--tl-a-light); }
+.side-b .ch-num { color: var(--tl-b-light); }
+
+.ch-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--star);
+  line-height: 1.2;
+  letter-spacing: 0.03em;
+  transition: color 0.3s;
+}
+.side-a .ch-card:hover .ch-title { color: white; }
+.side-b .ch-card:hover .ch-title { color: white; }
+
+.ch-meta {
+  font-size: 0.62rem;
+  color: rgba(200,191,224,0.4);
+  letter-spacing: 0.08em;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.ch-arrow {
+  margin-left: auto;
+  opacity: 0;
+  transition: opacity 0.25s, transform 0.25s;
+  transform: translateX(-4px);
+  font-size: 0.8rem;
+}
+.side-a .ch-card:hover .ch-arrow { opacity:1; transform:translateX(0); color:var(--tl-a-light); }
+.side-b .ch-card:hover .ch-arrow { opacity:1; transform:translateX(0); color:var(--tl-b-light); }
+
+/* ── Spine node (center column) ── */
+.spine-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  position: relative;
+  z-index: 2;
+}
+.spine-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  border: 1px solid rgba(200,191,224,0.2);
+  background: var(--void);
+}
+
+/* ── Convergence row ── */
+.convergence-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1.6rem 0;
+  position: relative;
+}
+.convergence-row::before {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; top: 50%;
+  height: 1px;
+  background: linear-gradient(to right,
+    rgba(14,165,233,0.15),
+    rgba(232,201,122,0.4) 30%,
+    rgba(232,201,122,0.4) 70%,
+    rgba(124,58,237,0.15)
+  );
+}
+.convergence-orb {
+  position: relative; z-index: 2;
+  display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
+}
+.convergence-gem {
+  width: 14px; height: 14px;
+  background: var(--convergence);
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  box-shadow: 0 0 20px var(--convergence-glow), 0 0 40px rgba(232,201,122,0.2);
+  animation: gem-pulse 3s ease-in-out infinite;
+}
+@keyframes gem-pulse {
+  0%,100%{box-shadow:0 0 15px var(--convergence-glow);transform:scale(1) rotate(0deg)}
+  50%{box-shadow:0 0 30px var(--convergence-glow), 0 0 60px rgba(232,201,122,0.3);transform:scale(1.15) rotate(45deg)}
+}
+.convergence-ripple-ring {
+  position: absolute;
+  width: 14px; height: 14px;
+  border: 1px solid var(--convergence);
+  border-radius: 50%;
+  animation: conv-ripple 2.5s ease-out infinite;
+  clip-path: none;
+}
+.convergence-ripple-ring:nth-child(2) { animation-delay: 0.8s; }
+.convergence-ripple-ring:nth-child(3) { animation-delay: 1.6s; }
+@keyframes conv-ripple { 0%{transform:scale(1);opacity:0.8} 100%{transform:scale(3.5);opacity:0} }
+.convergence-label {
+  font-size: 0.5rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--convergence);
+  opacity: 0.7;
+  white-space: nowrap;
+  background: var(--void);
+  padding: 0 0.8rem;
+  position: relative; z-index: 2;
+}
+.conv-side-label {
+  font-size: 0.48rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  background: var(--void);
+  padding: 0 0.8rem;
+  position: relative; z-index: 2;
+  opacity: 0.5;
+}
+.conv-side-label.a { color: var(--tl-a-light); }
+.conv-side-label.b { color: var(--tl-b-light); }
+
+/* ── Unread badge ── */
+.ch-status {
+  width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0;
+}
+.ch-status.read { background: rgba(14,165,233,0.5); }
+.ch-status.unread { background: rgba(200,191,224,0.15); border: 1px solid rgba(200,191,224,0.25); }
+
+/* ── scan line on card ── */
+.ch-card .ch-scan-line {
+  position: absolute; inset: 0; border-radius: 10px; pointer-events: none; overflow: hidden;
+}
+.ch-card .ch-scan-line::after {
+  content: '';
+  position: absolute; left: 0; right: 0; height: 1px; top: 0; opacity: 0;
+  background: linear-gradient(to right, transparent, rgba(255,255,255,0.05), transparent);
+}
+.ch-card:hover .ch-scan-line::after { opacity:1; animation:ch-scan 2s linear infinite; }
+@keyframes ch-scan { 0%{top:0;opacity:0} 5%{opacity:1} 95%{opacity:0.4} 100%{top:100%;opacity:0} }
+
+/* ── Mobile responsive ── */
+@media(max-width:640px) {
+  .timeline-header { grid-template-columns: 1fr auto; }
+  .tl-header-col.tl-b { display:none; }
+  .timeline-row { grid-template-columns: 1fr 48px 1fr; }
+  .ch-entry.side-a { padding-right: 0.8rem; }
+  .ch-entry.side-b { padding-left: 0.8rem; }
+  .ch-title { font-size: 0.88rem; }
+  .char-grid .char-card { flex:0 0 220px; }
+}
+
+/* ── Footer ── */
+.toc-footer { border-top:1px solid rgba(124,58,237,0.1); padding:2rem 0; margin-top:2rem; text-align:center; }
+.toc-footer-text { font-size:0.65rem; color:rgba(200,191,224,0.2); letter-spacing:0.2em; }
+
+/* ── Util ── */
+::selection { background:rgba(124,58,237,0.3); color:#fff; }
+.fade-in { opacity:0; transform:translateY(20px); animation:fadeUp 0.8s ease forwards; }
+@keyframes fadeUp { to{opacity:1;transform:translateY(0)} }
+.delay-2 { animation-delay:0.2s; }
+.delay-3 { animation-delay:0.4s; }
+
+/* Reduced motion */
+@media(prefers-reduced-motion:reduce) {
+  .char-aura,.char-scan,.timeline-spine { animation:none!important; }
+  .char-card { transition:none; }
+}
 </style>
 </head>
 <body>
+
 <div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 
 <div class="starfield" id="starfield"></div>
 <div class="orb orb-1"></div>
 <div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
 
 <nav class="top-nav">
   <a href="../index.html" class="logo">Luminae</a>
@@ -829,6 +807,8 @@
 </nav>
 
 <div class="page">
+
+  <!-- ═══ HERO ═══ -->
   <section class="book-hero fade-in">
     <span class="book-hero-tag">A Dual-Timeline Paradox</span>
     <h1 class="book-hero-title">The <span class="tl-a">Reality</span> <span class="tl-b">Entity</span></h1>
@@ -838,13 +818,16 @@
       <span class="hero-divider-glyph">◈</span>
       <div class="hero-divider-line-b"></div>
     </div>
-    <p class="book-hero-genre"><span class="g-a">Mystery</span> <span class="g-sep">/</span> <span class="g-b">Sci-Fi</span> <span class="g-a">Parallel Timelines</span> <span class="g-sep">/</span> <span class="g-b">Philosophy</span></p>
+    <p class="book-hero-genre">
+      <span class="g-a">Mystery</span><span class="g-sep">/</span>
+      <span class="g-b">Sci-Fi</span><span class="g-sep">/</span>
+      <span class="g-a">Parallel Timelines</span><span class="g-sep">/</span>
+      <span class="g-b">Philosophy</span>
+    </p>
   </section>
 
-  <!-- ═══ CHARACTERS SECTION ═══ -->
+  <!-- ═══ CHARACTERS ═══ -->
   <section class="characters-section fade-in delay-2">
-    <div class="char-particles" id="sectionParticles"></div>
-
     <div class="characters-header">
       <div class="characters-eyebrow">The Cast</div>
       <h2 class="characters-title">Voices Across the Membrane</h2>
@@ -854,758 +837,527 @@
     <div class="char-carousel" id="charCarousel">
       <button class="carousel-btn prev" id="carouselPrev" aria-label="Previous">&#8592;</button>
       <button class="carousel-btn next" id="carouselNext" aria-label="Next">&#8594;</button>
-    <div class="char-grid" id="charGrid">
+      <div class="char-grid" id="charGrid">
 
-      <!-- Card 1 -->
-      <div class="char-card" data-tl="A">
-        <div class="char-card-inner">
-        <div class="char-aura"></div>
-        <div class="char-aura-mask"></div>
-        <div class="char-portrait" style="background-image: url('Images/Alex.png'); background-color: #0d0b1e;"></div>
-        <div class="char-overlay-base"></div>
-        <div class="char-spotlight"></div>
-        <div class="char-frame"></div>
-        <div class="char-corners"></div>
-        <div class="char-scan"></div>
-        <canvas class="char-particle-canvas"></canvas>
-        <div class="char-content">
-          <div class="char-name">Alex</div>
-          <div class="char-details">
-            <div class="char-role-line">
-              <div class="char-role-dot"></div>
-              <span class="char-role-text">Protagonist · Timeline 2026</span>
+        <div class="char-card" data-tl="A">
+          <div class="char-card-inner">
+            <div class="char-aura"></div><div class="char-aura-mask"></div>
+            <div class="char-portrait" style="background-image:url('Images/Alex.png');background-color:#0d0b1e;"></div>
+            <div class="char-overlay-base"></div><div class="char-spotlight"></div>
+            <div class="char-frame"></div><div class="char-corners"></div>
+            <div class="char-scan"></div><canvas class="char-particle-canvas"></canvas>
+            <div class="char-content">
+              <div class="char-name">Alex</div>
+              <div class="char-details">
+                <div class="char-role-line"><div class="char-role-dot"></div><span class="char-role-text">Protagonist · Timeline 2026</span></div>
+                <div class="char-tagline">The Host</div>
+                <div class="char-divider"></div>
+                <div class="char-desc">A quiet, observant student who intervenes in a fight without thinking twice. Unknowingly the carrier of the Reality Entity, his small acts of concern become cosmic turning points.</div>
+              </div>
             </div>
-            <div class="char-tagline">The Host</div>
-            <div class="char-divider"></div>
-            <div class="char-desc">A quiet, observant student who intervenes in a fight without thinking twice.
-              Unknowingly the carrier of the Reality Entity, his small acts of concern become cosmic turning points.</div>
           </div>
         </div>
-        </div><!-- /char-card-inner -->
-      </div>
 
-      <!-- Card 2 -->
-      <div class="char-card" data-tl="B">
-        <div class="char-card-inner">
-        <div class="char-aura"></div>
-        <div class="char-aura-mask"></div>
-        <div class="char-portrait" style="background-image: url('Images/Kyros.png'); background-color: #100718;"></div>
-        <div class="char-overlay-base"></div>
-        <div class="char-spotlight"></div>
-        <div class="char-frame"></div>
-        <div class="char-corners"></div>
-        <div class="char-scan"></div>
-        <canvas class="char-particle-canvas"></canvas>
-        <div class="char-content">
-          <div class="char-name">Kyros</div>
-          <div class="char-details">
-            <div class="char-role-line">
-              <div class="char-role-dot"></div>
-              <span class="char-role-text">Protagonist · Timeline Unknown</span>
+        <div class="char-card" data-tl="B">
+          <div class="char-card-inner">
+            <div class="char-aura"></div><div class="char-aura-mask"></div>
+            <div class="char-portrait" style="background-image:url('Images/Kyros.png');background-color:#100718;"></div>
+            <div class="char-overlay-base"></div><div class="char-spotlight"></div>
+            <div class="char-frame"></div><div class="char-corners"></div>
+            <div class="char-scan"></div><canvas class="char-particle-canvas"></canvas>
+            <div class="char-content">
+              <div class="char-name">Kyros</div>
+              <div class="char-details">
+                <div class="char-role-line"><div class="char-role-dot"></div><span class="char-role-text">Protagonist · Timeline Unknown</span></div>
+                <div class="char-tagline">The Anomaly</div>
+                <div class="char-divider"></div>
+                <div class="char-desc">Thrown into a broken timeline from the battle of 5026. He moves through temporal distortions without a watch—something that should be impossible. Solution or cause? No one knows yet.</div>
+              </div>
             </div>
-            <div class="char-tagline">The Anomaly</div>
-            <div class="char-divider"></div>
-            <div class="char-desc">Thrown into a broken timeline from the battle of 5026. He moves through temporal
-              distortions without a watch—something that should be impossible. Solution or cause? No one knows yet.</div>
           </div>
         </div>
-        </div><!-- /char-card-inner -->
-      </div>
 
-      <!-- Card 3 -->
-      <div class="char-card" data-tl="A">
-        <div class="char-card-inner">
-        <div class="char-aura"></div>
-        <div class="char-aura-mask"></div>
-        <div class="char-portrait" style="background-image: url('Images/Reality_Entity.png'); background-color: #0d0b1e;"></div>
-        <div class="char-overlay-base"></div>
-        <div class="char-spotlight"></div>
-        <div class="char-frame"></div>
-        <div class="char-corners"></div>
-        <div class="char-scan"></div>
-        <canvas class="char-particle-canvas"></canvas>
-        <div class="char-content">
-          <div class="char-name">The Reality Entity</div>
-          <div class="char-details">
-            <div class="char-role-line">
-              <div class="char-role-dot"></div>
-              <span class="char-role-text">Entity</span>
+        <div class="char-card" data-tl="A">
+          <div class="char-card-inner">
+            <div class="char-aura"></div><div class="char-aura-mask"></div>
+            <div class="char-portrait" style="background-image:url('Images/Reality_Entity.png');background-color:#0d0b1e;"></div>
+            <div class="char-overlay-base"></div><div class="char-spotlight"></div>
+            <div class="char-frame"></div><div class="char-corners"></div>
+            <div class="char-scan"></div><canvas class="char-particle-canvas"></canvas>
+            <div class="char-content">
+              <div class="char-name">The Reality Entity</div>
+              <div class="char-details">
+                <div class="char-role-line"><div class="char-role-dot"></div><span class="char-role-text">Entity</span></div>
+                <div class="char-tagline">Consciousness</div>
+                <div class="char-divider"></div>
+                <div class="char-desc">A mind born from science beyond comprehension, now hiding inside a pair of scratched lenses. It watches. It learns. It edits. And it is only beginning to understand what it means to feel something.</div>
+              </div>
             </div>
-            <div class="char-tagline">Consciousness</div>
-            <div class="char-divider"></div>
-            <div class="char-desc">A mind born from science beyond comprehension, now hiding inside a pair of scratched
-              lenses. It watches. It learns. It edits. And it is only beginning to understand what it means to feel
-              something.</div>
           </div>
         </div>
-        </div><!-- /char-card-inner -->
-      </div>
 
-      <!-- Card 4 -->
-      <div class="char-card" data-tl="B">
-        <div class="char-card-inner">
-        <div class="char-aura"></div>
-        <div class="char-aura-mask"></div>
-        <div class="char-portrait" style="background-image: url('Images/Iris.png'); background-color: #100718;"></div>
-        <div class="char-overlay-base"></div>
-        <div class="char-spotlight"></div>
-        <div class="char-frame"></div>
-        <div class="char-corners"></div>
-        <div class="char-scan"></div>
-        <canvas class="char-particle-canvas"></canvas>
-        <div class="char-content">
-          <div class="char-name">Iris</div>
-          <div class="char-details">
-            <div class="char-role-line">
-              <div class="char-role-dot"></div>
-              <span class="char-role-text">Female Lead · Timeline Unknown</span>
+        <div class="char-card" data-tl="B">
+          <div class="char-card-inner">
+            <div class="char-aura"></div><div class="char-aura-mask"></div>
+            <div class="char-portrait" style="background-image:url('Images/Iris.png');background-color:#100718;"></div>
+            <div class="char-overlay-base"></div><div class="char-spotlight"></div>
+            <div class="char-frame"></div><div class="char-corners"></div>
+            <div class="char-scan"></div><canvas class="char-particle-canvas"></canvas>
+            <div class="char-content">
+              <div class="char-name">Iris</div>
+              <div class="char-details">
+                <div class="char-role-line"><div class="char-role-dot"></div><span class="char-role-text">Female Lead · Timeline Unknown</span></div>
+                <div class="char-tagline">Precision Fighter</div>
+                <div class="char-divider"></div>
+                <div class="char-desc">The woman who knocked Kyros out with a single calculated strike. Sharp, controlled, and exact. She leads with logic, not aggression—and is the first to treat Kyros as something other than a threat.</div>
+              </div>
             </div>
-            <div class="char-tagline">Precision Fighter</div>
-            <div class="char-divider"></div>
-            <div class="char-desc">The woman who knocked Kyros out with a single calculated strike. Sharp, controlled,
-              and exact. She leads with logic, not aggression—and is the first to treat Kyros as something other than a
-              threat.</div>
           </div>
         </div>
-        </div><!-- /char-card-inner -->
-      </div>
 
-      <!-- Card 5 -->
-      <div class="char-card" data-tl="A">
-        <div class="char-card-inner">
-        <div class="char-aura"></div>
-        <div class="char-aura-mask"></div>
-        <div class="char-portrait" style="background-image: url('Images/Lara.png'); background-color: #0d0b1e;"></div>
-        <div class="char-overlay-base"></div>
-        <div class="char-spotlight"></div>
-        <div class="char-frame"></div>
-        <div class="char-corners"></div>
-        <div class="char-scan"></div>
-        <canvas class="char-particle-canvas"></canvas>
-        <div class="char-content">
-          <div class="char-name">Lara</div>
-          <div class="char-details">
-            <div class="char-role-line">
-              <div class="char-role-dot"></div>
-              <span class="char-role-text">Female Lead · Timeline 2026</span>
+        <div class="char-card" data-tl="A">
+          <div class="char-card-inner">
+            <div class="char-aura"></div><div class="char-aura-mask"></div>
+            <div class="char-portrait" style="background-image:url('Images/Lara.png');background-color:#0d0b1e;"></div>
+            <div class="char-overlay-base"></div><div class="char-spotlight"></div>
+            <div class="char-frame"></div><div class="char-corners"></div>
+            <div class="char-scan"></div><canvas class="char-particle-canvas"></canvas>
+            <div class="char-content">
+              <div class="char-name">Lara</div>
+              <div class="char-details">
+                <div class="char-role-line"><div class="char-role-dot"></div><span class="char-role-text">Female Lead · Timeline 2026</span></div>
+                <div class="char-tagline">Principal's Daughter</div>
+                <div class="char-divider"></div>
+                <div class="char-desc">Quiet, perceptive, and self-possessed beyond her years. She sees what others miss—not because she looks harder, but because she listens. Her calm presence becomes an unexpected anchor in Alex's world.</div>
+              </div>
             </div>
-            <div class="char-tagline">Principal's Daughter</div>
-            <div class="char-divider"></div>
-            <div class="char-desc">Quiet, perceptive, and self-possessed beyond her years. She sees what others miss—not
-              because she looks harder, but because she listens. Her calm presence becomes an unexpected anchor in Alex's
-              world.</div>
           </div>
         </div>
-        </div><!-- /char-card-inner -->
-      </div>
 
-      <!-- Card 6 -->
-      <div class="char-card" data-tl="B">
-        <div class="char-card-inner">
-        <div class="char-aura"></div>
-        <div class="char-aura-mask"></div>
-        <div class="char-portrait" style="background-image: url('Images/Ethan.png'); background-color: #100718;"></div>
-        <div class="char-overlay-base"></div>
-        <div class="char-spotlight"></div>
-        <div class="char-frame"></div>
-        <div class="char-corners"></div>
-        <div class="char-scan"></div>
-        <canvas class="char-particle-canvas"></canvas>
-        <div class="char-content">
-          <div class="char-name">Ethan</div>
-          <div class="char-details">
-            <div class="char-role-line">
-              <div class="char-role-dot"></div>
-              <span class="char-role-text">The Enforcer · Timeline 2026</span>
+        <div class="char-card" data-tl="B">
+          <div class="char-card-inner">
+            <div class="char-aura"></div><div class="char-aura-mask"></div>
+            <div class="char-portrait" style="background-image:url('Images/Ethan.png');background-color:#100718;"></div>
+            <div class="char-overlay-base"></div><div class="char-spotlight"></div>
+            <div class="char-frame"></div><div class="char-corners"></div>
+            <div class="char-scan"></div><canvas class="char-particle-canvas"></canvas>
+            <div class="char-content">
+              <div class="char-name">Ethan</div>
+              <div class="char-details">
+                <div class="char-role-line"><div class="char-role-dot"></div><span class="char-role-text">The Enforcer · Timeline 2026</span></div>
+                <div class="char-tagline">The Enforcer</div>
+                <div class="char-divider"></div>
+                <div class="char-desc">The school's unofficial keeper of order. Seniors listen. Juniors fear him. His suspension created a power vacuum that lasted exactly one chapter. The first person the Entity brought back.</div>
+              </div>
             </div>
-            <div class="char-tagline">The Enforcer</div>
-            <div class="char-divider"></div>
-            <div class="char-desc">The school's unofficial keeper of order. Seniors listen. Juniors fear him. His
-              suspension created a power vacuum that lasted exactly one chapter. The first person the Entity brought back.</div>
           </div>
         </div>
-        </div><!-- /char-card-inner -->
-      </div>
 
-      <!-- Card 7 -->
-      <div class="char-card" data-tl="A">
-        <div class="char-card-inner">
-        <div class="char-aura"></div>
-        <div class="char-aura-mask"></div>
-        <div class="char-portrait" style="background-image: url('Images/Tarek.png'); background-color: #0d0b1e;"></div>
-        <div class="char-overlay-base"></div>
-        <div class="char-spotlight"></div>
-        <div class="char-frame"></div>
-        <div class="char-corners"></div>
-        <div class="char-scan"></div>
-        <canvas class="char-particle-canvas"></canvas>
-        <div class="char-content">
-          <div class="char-name">Tarek</div>
-          <div class="char-details">
-            <div class="char-role-line">
-              <div class="char-role-dot"></div>
-              <span class="char-role-text">The Leader · Timeline Unknown</span>
+        <div class="char-card" data-tl="A">
+          <div class="char-card-inner">
+            <div class="char-aura"></div><div class="char-aura-mask"></div>
+            <div class="char-portrait" style="background-image:url('Images/Ryan.png');background-color:#0d0b1e;"></div>
+            <div class="char-overlay-base"></div><div class="char-spotlight"></div>
+            <div class="char-frame"></div><div class="char-corners"></div>
+            <div class="char-scan"></div><canvas class="char-particle-canvas"></canvas>
+            <div class="char-content">
+              <div class="char-name">Ryan</div>
+              <div class="char-details">
+                <div class="char-role-line"><div class="char-role-dot"></div><span class="char-role-text">Comic Relief · Timeline 2026</span></div>
+                <div class="char-tagline">The Instigator</div>
+                <div class="char-divider"></div>
+                <div class="char-desc">The loud, dramatic heart of the group. Underneath his constant theatrical complaints about ghosts and UFC events, he's intensely loyal to Alex and the first to volunteer for any dangerous investigation.</div>
+              </div>
             </div>
-            <div class="char-tagline">The Leader</div>
-            <div class="char-divider"></div>
-            <div class="char-desc">Scarred and steady. Leadership without effort. He runs the bunker crew with
-              controlled precision, adapts to what the distortion demands, and watches Kyros with the calm of someone
-              who's seen too many variables go wrong.</div>
           </div>
         </div>
-        </div><!-- /char-card-inner -->
-      </div>
 
-      <!-- Card 8 -->
-      <div class="char-card" data-tl="C">
-        <div class="char-card-inner">
-        <div class="char-aura"></div>
-        <div class="char-aura-mask"></div>
-        <div class="char-portrait" style="background-image: url('Images/Ron.png'); background-color: #0c0c18;"></div>
-        <div class="char-overlay-base"></div>
-        <div class="char-spotlight"></div>
-        <div class="char-frame"></div>
-        <div class="char-corners"></div>
-        <div class="char-scan"></div>
-        <canvas class="char-particle-canvas"></canvas>
-        <div class="char-content">
-          <div class="char-name">Ron</div>
-          <div class="char-details">
-            <div class="char-role-line">
-              <div class="char-role-dot"></div>
-              <span class="char-role-text">The Survivor · Timeline Unknown</span>
+        <div class="char-card" data-tl="A">
+          <div class="char-card-inner">
+            <div class="char-aura"></div><div class="char-aura-mask"></div>
+            <div class="char-portrait" style="background-image:url('Images/Tarek.png');background-color:#0d0b1e;"></div>
+            <div class="char-overlay-base"></div><div class="char-spotlight"></div>
+            <div class="char-frame"></div><div class="char-corners"></div>
+            <div class="char-scan"></div><canvas class="char-particle-canvas"></canvas>
+            <div class="char-content">
+              <div class="char-name">Tarek</div>
+              <div class="char-details">
+                <div class="char-role-line"><div class="char-role-dot"></div><span class="char-role-text">The Leader · Timeline Unknown</span></div>
+                <div class="char-tagline">The Leader</div>
+                <div class="char-divider"></div>
+                <div class="char-desc">Scarred and steady. Leadership without effort. He runs the bunker crew with controlled precision, adapts to what the distortion demands, and watches Kyros with the calm of someone who's seen too many variables go wrong.</div>
+              </div>
             </div>
-            <div class="char-tagline">The Survivor</div>
-            <div class="char-divider"></div>
-            <div class="char-desc">First to confront Kyros in the fractured city. Bandaged, bruised, and unyielding. He
-              doesn't trust easily—and he doesn't pretend to. His instinct is survival, not diplomacy, and he makes that
-              clear.</div>
           </div>
         </div>
-        </div><!-- /char-card-inner -->
-      </div>
 
-    </div><!-- /char-grid -->
+        <div class="char-card" data-tl="C">
+          <div class="char-card-inner">
+            <div class="char-aura"></div><div class="char-aura-mask"></div>
+            <div class="char-portrait" style="background-image:url('Images/Ron.png');background-color:#0c0c18;"></div>
+            <div class="char-overlay-base"></div><div class="char-spotlight"></div>
+            <div class="char-frame"></div><div class="char-corners"></div>
+            <div class="char-scan"></div><canvas class="char-particle-canvas"></canvas>
+            <div class="char-content">
+              <div class="char-name">Ron</div>
+              <div class="char-details">
+                <div class="char-role-line"><div class="char-role-dot"></div><span class="char-role-text">The Survivor · Timeline Unknown</span></div>
+                <div class="char-tagline">The Survivor</div>
+                <div class="char-divider"></div>
+                <div class="char-desc">First to confront Kyros in the fractured city. Bandaged, bruised, and unyielding. He doesn't trust easily—and he doesn't pretend to. His instinct is survival, not diplomacy, and he makes that clear.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /char-grid -->
       <div class="carousel-dots" id="carouselDots"></div>
     </div><!-- /char-carousel -->
   </section>
-  <!-- ═══ END CHARACTERS ═══ -->
 
+  <!-- ═══ CHAPTER INDEX ═══ -->
   <div class="section-divider">
     <div class="section-divider-line"></div>
     <div class="section-divider-glyph">◈ Chapter Index ◈</div>
     <div class="section-divider-line"></div>
   </div>
 
-  <div class="helix-legend fade-in delay-2">
-    <div class="legend-a"><span class="legend-dot a"></span> Timeline A - Year 2026</div>
-    <div class="legend-b"><span class="legend-dot b"></span> Timeline B - Unknown Timeline</div>
-  </div>
+  <div class="fade-in delay-2">
 
-  <div class="branch-wrapper fade-in delay-3" id="branchWrapper"></div>
+    <!-- Timeline column headers -->
+    <div class="timeline-header">
+      <div class="tl-header-col tl-a">
+        <span class="tl-header-label">Timeline A</span>
+        <span class="tl-header-name">Year 2026</span>
+        <span class="tl-header-desc">The present. Alex's world.</span>
+      </div>
+      <div class="tl-center-glyph">◈</div>
+      <div class="tl-header-col tl-b">
+        <span class="tl-header-label">Timeline B</span>
+        <span class="tl-header-name">Unknown Timeline</span>
+        <span class="tl-header-desc">The fracture. Kyros's reality.</span>
+      </div>
+    </div>
+
+    <!-- The dual-column chapter grid -->
+    <div class="timeline-container fade-in delay-3">
+      <div class="timeline-rows" id="timelineRows"></div>
+    </div>
+
+  </div>
 
   <footer class="toc-footer">
     <p class="toc-footer-text">✦ THE MEMBRANE IS THINNING ✦</p>
   </footer>
-</div>
 
-<div id="tooltip" class="ch-tooltip"></div>
+</div><!-- /page -->
 
 <script>
-/* ═══════════════════════════════════
-   CHARACTER CARD INTERACTIONS
-═══════════════════════════════════ */
+/* ══════════════════════════════════════
+   CAROUSEL — infinite marquee (clone first)
+══════════════════════════════════════ */
 (function() {
+  const grid = document.getElementById('charGrid');
+  const origCards = Array.from(grid.querySelectorAll('.char-card'));
+  origCards.forEach(card => {
+    const clone = card.cloneNode(true);
+    clone.setAttribute('aria-hidden', 'true');
+    grid.appendChild(clone);
+  });
+})();
+
+/* ══════════════════════════════════════
+   CHARACTER CARD INTERACTIONS
+══════════════════════════════════════ */
+(function() {
+  // Query ALL cards including clones
   const cards = document.querySelectorAll('.char-card');
 
-  // Per-card particle system
   function initParticles(card) {
     const canvas = card.querySelector('.char-particle-canvas');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
-    let raf = null;
-    let active = false;
-
+    let raf = null, active = false;
     const tl = card.dataset.tl;
-    const colors = {
-      A: [[14,165,233],[56,189,248]],
-      B: [[124,58,237],[166,125,208]],
-      C: [[232,201,122],[255,220,150]]
-    };
+    const colors = { A:[[14,165,233],[56,189,248]], B:[[124,58,237],[166,125,208]], C:[[232,201,122],[255,220,150]] };
     const palette = colors[tl] || colors.A;
-
-    const particles = Array.from({length: 18}, () => ({
-      x: Math.random(), y: Math.random() + 0.3,
-      vx: (Math.random() - 0.5) * 0.003,
-      vy: -(Math.random() * 0.004 + 0.001),
-      size: Math.random() * 2.5 + 0.5,
-      life: Math.random(),
-      maxLife: 0.6 + Math.random() * 0.4,
-      color: palette[Math.floor(Math.random() * palette.length)]
+    const particles = Array.from({length:18}, () => ({
+      x:Math.random(), y:Math.random()+0.3,
+      vx:(Math.random()-0.5)*0.003, vy:-(Math.random()*0.004+0.001),
+      size:Math.random()*2.5+0.5, life:Math.random(),
+      maxLife:0.6+Math.random()*0.4,
+      color:palette[Math.floor(Math.random()*palette.length)]
     }));
-
-    function resize() {
-      const rect = card.getBoundingClientRect();
-      canvas.width = rect.width;
-      canvas.height = rect.height;
-    }
-
+    function resize() { const r=card.getBoundingClientRect(); canvas.width=r.width; canvas.height=r.height; }
     function tick() {
       if (!active) return;
-      const W = canvas.width, H = canvas.height;
-      ctx.clearRect(0, 0, W, H);
-
+      const W=canvas.width, H=canvas.height;
+      ctx.clearRect(0,0,W,H);
       particles.forEach(p => {
-        p.life += 0.008;
-        if (p.life > p.maxLife) {
-          p.life = 0;
-          p.x = Math.random();
-          p.y = 1 + Math.random() * 0.1;
-          p.vx = (Math.random() - 0.5) * 0.003;
-          p.vy = -(Math.random() * 0.004 + 0.001);
-        }
-        p.x += p.vx;
-        p.y += p.vy;
-
-        const progress = p.life / p.maxLife;
-        const alpha = progress < 0.3
-          ? progress / 0.3
-          : progress > 0.7
-            ? (1 - progress) / 0.3
-            : 1;
-
-        const [r,g,b] = p.color;
-        ctx.beginPath();
-        ctx.arc(p.x * W, p.y * H, p.size * (1 - progress * 0.4), 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${r},${g},${b},${alpha * 0.55})`;
-        ctx.fill();
-
-        // Glow
-        const grd = ctx.createRadialGradient(p.x*W, p.y*H, 0, p.x*W, p.y*H, p.size * 4);
-        grd.addColorStop(0, `rgba(${r},${g},${b},${alpha * 0.12})`);
-        grd.addColorStop(1, 'transparent');
-        ctx.fillStyle = grd;
-        ctx.beginPath();
-        ctx.arc(p.x*W, p.y*H, p.size * 4, 0, Math.PI*2);
-        ctx.fill();
+        p.life+=0.008;
+        if (p.life>p.maxLife) { p.life=0; p.x=Math.random(); p.y=1+Math.random()*0.1; p.vx=(Math.random()-0.5)*0.003; p.vy=-(Math.random()*0.004+0.001); }
+        p.x+=p.vx; p.y+=p.vy;
+        const prog=p.life/p.maxLife;
+        const alpha=prog<0.3?prog/0.3:prog>0.7?(1-prog)/0.3:1;
+        const [r,g,b]=p.color;
+        ctx.beginPath(); ctx.arc(p.x*W,p.y*H,p.size*(1-prog*0.4),0,Math.PI*2);
+        ctx.fillStyle=`rgba(${r},${g},${b},${alpha*0.55})`; ctx.fill();
+        const grd=ctx.createRadialGradient(p.x*W,p.y*H,0,p.x*W,p.y*H,p.size*4);
+        grd.addColorStop(0,`rgba(${r},${g},${b},${alpha*0.12})`); grd.addColorStop(1,'transparent');
+        ctx.fillStyle=grd; ctx.beginPath(); ctx.arc(p.x*W,p.y*H,p.size*4,0,Math.PI*2); ctx.fill();
       });
-
-      raf = requestAnimationFrame(tick);
+      raf=requestAnimationFrame(tick);
     }
-
-    card.addEventListener('mouseenter', () => {
-      active = true;
-      resize();
-      if (raf) cancelAnimationFrame(raf);
-      tick();
-    });
-
-    card.addEventListener('mouseleave', () => {
-      active = false;
-      if (raf) cancelAnimationFrame(raf);
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-    });
+    card.addEventListener('mouseenter',()=>{ active=true; resize(); if(raf) cancelAnimationFrame(raf); tick(); });
+    card.addEventListener('mouseleave',()=>{ active=false; if(raf) cancelAnimationFrame(raf); ctx.clearRect(0,0,canvas.width,canvas.height); });
   }
 
-  // 3D tilt + spotlight on mouse move
   function initTilt(card) {
     const spotlight = card.querySelector('.char-spotlight');
-    const MAX_TILT = 10;
-
     card.addEventListener('mousemove', e => {
       if (!card.classList.contains('tilt-ready')) return;
-      const rect = card.getBoundingClientRect();
-      const cx = rect.left + rect.width / 2;
-      const cy = rect.top + rect.height / 2;
-      const dx = (e.clientX - cx) / (rect.width / 2);
-      const dy = (e.clientY - cy) / (rect.height / 2);
-
-      const rotX = -dy * MAX_TILT;
-      const rotY = dx * MAX_TILT;
-
-      card.style.transform = `perspective(700px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale(1.04)`;
-
-      // spotlight follows mouse
-      const mx = ((e.clientX - rect.left) / rect.width) * 100;
-      const my = ((e.clientY - rect.top) / rect.height) * 100;
+      const rect=card.getBoundingClientRect();
+      const dx=(e.clientX-rect.left-rect.width/2)/(rect.width/2);
+      const dy=(e.clientY-rect.top-rect.height/2)/(rect.height/2);
+      card.style.transform=`perspective(700px) rotateX(${-dy*10}deg) rotateY(${dx*10}deg) scale(1.04)`;
       if (spotlight) {
-        spotlight.style.background = `radial-gradient(circle 130px at ${mx}% ${my}%, rgba(255,255,255,0.08) 0%, transparent 70%)`;
+        const mx=((e.clientX-rect.left)/rect.width)*100;
+        const my=((e.clientY-rect.top)/rect.height)*100;
+        spotlight.style.background=`radial-gradient(circle 130px at ${mx}% ${my}%, rgba(255,255,255,0.08) 0%, transparent 70%)`;
       }
     });
-
-    card.addEventListener('mouseleave', () => {
+    card.addEventListener('mouseleave',()=>{
       if (!card.classList.contains('tilt-ready')) return;
-      card.style.transition = 'transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94)';
-      card.style.transform = `perspective(700px) rotateX(0deg) rotateY(0deg) scale(1)`;
-      setTimeout(() => { card.style.transition = 'transform 0.08s linear'; }, 600);
+      card.style.transition='transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94)';
+      card.style.transform='perspective(700px) rotateX(0deg) rotateY(0deg) scale(1)';
+      setTimeout(()=>{ card.style.transition='transform 0.08s linear'; },600);
     });
-
-    card.addEventListener('mouseenter', () => {
-      if (!card.classList.contains('tilt-ready')) return;
-      card.style.transition = 'transform 0.08s linear';
-    });
+    card.addEventListener('mouseenter',()=>{ if (card.classList.contains('tilt-ready')) card.style.transition='transform 0.08s linear'; });
   }
 
-  cards.forEach((card, idx) => {
-    initParticles(card);
-
-    // Mark tilt-ready after entrance animation ends so CSS anim
-    // no longer fights the JS transform
-    card.addEventListener('animationend', () => {
-      card.classList.add('tilt-ready');
-    }, { once: true });
-
-    // Fallback in case animationend never fires
-    const delays = [0.1,0.18,0.26,0.34,0.42,0.50,0.58,0.66];
-    setTimeout(() => card.classList.add('tilt-ready'), ((delays[idx] || 0) + 0.8) * 1000);
-
-    initTilt(card);
+  cards.forEach((card,idx) => {
+    initParticles(card); initTilt(card);
+    setTimeout(()=>{ card.classList.add('tilt-ready'); }, 800+idx*90);
   });
 
-  // Section ambient particles
-  const section = document.querySelector('.char-particles');
-  if (section) {
-    for (let i = 0; i < 20; i++) {
-      const p = document.createElement('div');
-      p.className = 'char-particle';
-      const size = Math.random() * 3 + 1;
-      const isA = Math.random() > 0.5;
-      const color = isA ? '14,165,233' : '124,58,237';
-      p.style.cssText = `
-        width:${size}px; height:${size}px;
-        left:${Math.random()*100}%;
-        top:${Math.random()*100}%;
-        background: rgba(${color}, 0.4);
-        box-shadow: 0 0 ${size*3}px rgba(${color}, 0.3);
-        --fp-d: ${6 + Math.random()*8}s;
-        --fp-delay: ${Math.random()*6}s;
-        --fp-op: ${0.2 + Math.random()*0.35};
-      `;
-      section.appendChild(p);
+  // Ambient particles
+  const section = document.querySelector('.characters-section');
+  for (let i=0; i<25; i++) {
+    const p=document.createElement('div');
+    p.style.cssText=`position:absolute;border-radius:50%;pointer-events:none;width:${2+Math.random()*4}px;height:${2+Math.random()*4}px;left:${Math.random()*100}%;top:${Math.random()*100}%;background:${Math.random()<0.5?'rgba(14,165,233,0.4)':'rgba(124,58,237,0.3)'};animation:float-particle ${6+Math.random()*8}s ease-in-out infinite;animation-delay:${Math.random()*6}s;`;
+    if (!document.querySelector('.char-particles')) {
+      const cp=document.createElement('div'); cp.style.cssText='position:absolute;inset:0;pointer-events:none;overflow:hidden;';
+      section.insertBefore(cp,section.firstChild); cp.appendChild(p);
     }
   }
 })();
 
-/* ═══════════════════════════════════
-   CAROUSEL CONTROLS
-═══════════════════════════════════ */
-(function() {
-  const grid   = document.getElementById('charGrid');
-  const prev   = document.getElementById('carouselPrev');
-  const next   = document.getElementById('carouselNext');
-  const dotsEl = document.getElementById('carouselDots');
-  const cards  = Array.from(grid.querySelectorAll('.char-card'));
-  const VISIBLE = () => Math.round(grid.offsetWidth / (cards[0]?.offsetWidth + 24)) || 1;
-
-  // Build dots
-  cards.forEach((_, i) => {
-    const d = document.createElement('div');
-    d.className = 'carousel-dot' + (i === 0 ? ' active' : '');
-    d.addEventListener('click', () => scrollTo(i));
-    dotsEl.appendChild(d);
-  });
-
-  function updateDots() {
-    const scrollLeft = grid.scrollLeft;
-    const cardW = cards[0]?.offsetWidth + 24 || 1;
-    const active = Math.round(scrollLeft / cardW);
-    dotsEl.querySelectorAll('.carousel-dot').forEach((d, i) => {
-      d.classList.toggle('active', i === active);
-      d.style.background = i === active
-        ? (cards[active]?.dataset.tl === 'B' ? 'var(--tl-b)' : cards[active]?.dataset.tl === 'C' ? 'var(--convergence)' : 'var(--tl-a)')
-        : '';
-      d.style.boxShadow = i === active
-        ? (cards[active]?.dataset.tl === 'B' ? '0 0 8px var(--tl-b-glow)' : cards[active]?.dataset.tl === 'C' ? '0 0 8px var(--convergence-glow)' : '0 0 8px var(--tl-a-glow)')
-        : '';
-    });
-    prev.disabled = scrollLeft <= 4;
-    next.disabled = scrollLeft >= grid.scrollWidth - grid.offsetWidth - 4;
-  }
-
-  function scrollTo(idx) {
-    const cardW = cards[0]?.offsetWidth + 24 || 1;
-    grid.scrollTo({ left: idx * cardW, behavior: 'smooth' });
-  }
-
-  prev.addEventListener('click', () => {
-    const cardW = cards[0]?.offsetWidth + 24 || 1;
-    const idx = Math.round(grid.scrollLeft / cardW);
-    scrollTo(Math.max(0, idx - 1));
-  });
-
-  next.addEventListener('click', () => {
-    const cardW = cards[0]?.offsetWidth + 24 || 1;
-    const idx = Math.round(grid.scrollLeft / cardW);
-    scrollTo(Math.min(cards.length - 1, idx + 1));
-  });
-
-  grid.addEventListener('scroll', updateDots, { passive: true });
-  updateDots();
-
-  // Drag-to-scroll
-  let isDown = false, startX, scrollLeftStart;
-  grid.addEventListener('mousedown', e => {
-    isDown = true; startX = e.pageX - grid.offsetLeft; scrollLeftStart = grid.scrollLeft;
-    grid.style.scrollSnapType = 'none';
-  });
-  document.addEventListener('mouseup', () => {
-    if (!isDown) return; isDown = false;
-    grid.style.scrollSnapType = 'x mandatory';
-    const cardW = cards[0]?.offsetWidth + 24 || 1;
-    const idx = Math.round(grid.scrollLeft / cardW);
-    scrollTo(Math.max(0, Math.min(cards.length - 1, idx)));
-  });
-  document.addEventListener('mousemove', e => {
-    if (!isDown) return;
-    e.preventDefault();
-    const x = e.pageX - grid.offsetLeft;
-    grid.scrollLeft = scrollLeftStart - (x - startX);
-  });
-})();
-
-
-const chapters = [
-  { num: 1, title: "The Incident",            read: "~4 min", href: "chapter1.html", tl: "A", side: "right" },
-  { num: 2, title: "Cause and Effect",        read: "~5 min", href: "chapter2.html", tl: "A", side: "left" },
-  { num: 3, title: "Principal's Daughter",    read: "~5 min", href: "chapter3.html", tl: "A", side: "right" },
-  { num: 4, title: "The Lost Timeline",       read: "~5 min", href: "chapter4.html", tl: "B", side: "left" },
-  { num: 5, title: "The Survivors",           read: "~5 min", href: "chapter5.html", tl: "B", side: "right" },
-  { num: 6, title: "When Three Became Six",   read: "~5 min", href: "chapter6.html", tl: "B", side: "left" },
-  { num: 7, title: "Lines You Don't Cross",   read: "~5 min", href: "chapter7.html", tl: "A", side: "right" },
-  { num: 8, title: "After the Noise",         read: "~5 min", href: "chapter8.html", tl: "A", side: "left" },
-  { num: 9, title: "The Detention",           read: "~6 min", href: "chapter9.html", tl: "A", side: "right" },
-  { num: 10, title: "The Fracture Breathes",  read: "~6 min", href: "chapter10.html", tl: "B", side: "left" },
-  { num: 11, title: "The First Shared Pulse", read: "~6 min", href: "chapter11.html", tl: "B", side: "right" },
-  { num: 12, title: "The Shared Fracture",    read: "~6 min", href: "chapter12.html", tl: "B", side: "left" },
-  { num: 13, title: "What Makes Him Stand",   read: "~6 min", href: "chapter13.html", tl: "A", side: "right" },
-  { num: 14, title: "The Library That Shouldn't Breathe", read: "~7 min", href: "chapter14.html", tl: "A", side: "left" },
+/* ══════════════════════════════════════
+   ARC-BASED DUAL-COLUMN TIMELINE
+   Scale to 100+ chapters: just add arcs.
+══════════════════════════════════════ */
+const arcs = [
+  {
+    num: 1,
+    title: "The Beginning",
+    subtitle: "Where it all starts",
+    chRange: "Ch 1–15",
+    convLabel: null,
+    open: true,
+    chapters: [
+      { num:1,  title:"The Incident",                          read:"~4 min", href:"chapter1.html",  tl:"A" },
+      { num:2,  title:"Cause and Effect",                      read:"~5 min", href:"chapter2.html",  tl:"A" },
+      { num:3,  title:"Principal's Daughter",                  read:"~5 min", href:"chapter3.html",  tl:"A" },
+      { num:4,  title:"The Lost Timeline",                     read:"~5 min", href:"chapter4.html",  tl:"B" },
+      { num:5,  title:"The Survivors",                         read:"~5 min", href:"chapter5.html",  tl:"B" },
+      { num:6,  title:"When Three Became Six",                 read:"~5 min", href:"chapter6.html",  tl:"B" },
+      { num:7,  title:"Lines You Don't Cross",                 read:"~5 min", href:"chapter7.html",  tl:"A" },
+      { num:8,  title:"After the Noise",                       read:"~5 min", href:"chapter8.html",  tl:"A" },
+      { num:9,  title:"The Detention",                         read:"~6 min", href:"chapter9.html",  tl:"A" },
+      { num:10, title:"The Fracture Breathes",                 read:"~6 min", href:"chapter10.html", tl:"B" },
+      { num:11, title:"The First Shared Pulse",                read:"~6 min", href:"chapter11.html", tl:"B" },
+      { num:12, title:"The Shared Fracture",                   read:"~6 min", href:"chapter12.html", tl:"B" },
+      { num:13, title:"What Makes Him Stand",                  read:"~6 min", href:"chapter13.html", tl:"A" },
+      { num:14, title:"The Library That Shouldn't Breathe",    read:"~7 min", href:"chapter14.html", tl:"A" },
+      { num:15, title:"The East Wing",                         read:"~5 min", href:"chapter15.html", tl:"A" }
+    ]
+  },
+  {
+    num: 2,
+    title: "The Fracture",
+    subtitle: "Coming soon",
+    chRange: "Ch 16+",
+    convLabel: null,
+    open: false,
+    chapters: []
+  },
 ];
 
-const CARD_W = 240, CARD_H = 68, ROW_H = 110, SPINE_X_FRAC = 0.5, BRANCH_LEN = 90;
-const CONV_H = 60, CONV_LABELS = ["◈ REALITY BLINKS — Ch 3 ↔ Ch 7", "◈ TIMELINES INVERT — Ch 6 ↔ Ch 9", "◈ THE FRACTURE WIDENS — Ch 9 ↔ Ch 12"];
+function buildTimeline() {
+  const container = document.getElementById('timelineRows');
 
-function calcLayout() {
-  let h = 40; const rows = [];
-  chapters.forEach((ch, i) => {
-    rows.push({ type: 'ch', ch, y: h }); h += ROW_H;
-    if ((i + 1) % 3 === 0 && i < chapters.length - 1) {
-      rows.push({ type: 'conv', label: CONV_LABELS[Math.floor(i / 3)], y: h }); h += CONV_H;
-    }
-  });
-  return { rows, totalH: h + 40 };
-}
+  arcs.forEach((arc, arcIdx) => {
+    // ── Arc header ──
+    const header = document.createElement('div');
+    header.className = 'arc-header' + (arc.open ? ' open' : '');
+    header.dataset.arc = arcIdx;
 
-function tlColor(tl, op) { return tl === 'A' ? `rgba(14,165,233,${op})` : `rgba(124,58,237,${op})`; }
-function tlHex(tl) { return tl === 'A' ? '#0ea5e9' : '#7c3aed'; }
-function tlLight(tl) { return tl === 'A' ? '#38bdf8' : '#a67dd0'; }
+    const totalRead = arc.chapters.length;
+    header.innerHTML = `
+      <div class="arc-header-left">
+        <div class="arc-num-badge">Arc ${arc.num}</div>
+        <div class="arc-title-group">
+          <span class="arc-title">${arc.title}</span>
+          <span class="arc-subtitle">${arc.subtitle}</span>
+        </div>
+      </div>
+      <div class="arc-header-right">
+        <span class="arc-range">${arc.chRange}</span>
+        <span class="arc-ch-count">${totalRead} ch</span>
+        <div class="arc-chevron">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+    `;
+    container.appendChild(header);
 
-function buildSVG() {
-  const wrapper = document.getElementById('branchWrapper');
-  if(!wrapper) return;
-  wrapper.innerHTML = '';
-  const W = wrapper.clientWidth || 800, spineX = W * SPINE_X_FRAC;
-  const { rows, totalH } = calcLayout();
+    // ── Arc body ──
+    const body = document.createElement('div');
+    body.className = 'arc-body' + (arc.open ? ' open' : '');
+    body.dataset.arc = arcIdx;
 
-  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-  svg.setAttribute('viewBox', `0 0 ${W} ${totalH}`);
-  svg.setAttribute('width', '100%'); svg.setAttribute('height', totalH);
-  svg.classList.add('branch-svg');
+    const aChaps = arc.chapters.filter(c => c.tl === 'A');
+    const bChaps = arc.chapters.filter(c => c.tl === 'B');
+    const rowCount = Math.max(aChaps.length, bChaps.length);
 
-  const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
-  defs.innerHTML = `
-    <linearGradient id="spineGrad" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="rgba(124,58,237,0)"/><stop offset="15%" stop-color="rgba(124,58,237,0.6)"/><stop offset="50%" stop-color="rgba(232,201,122,0.4)"/><stop offset="85%" stop-color="rgba(14,165,233,0.6)"/><stop offset="100%" stop-color="rgba(14,165,233,0)"/>
-    </linearGradient>
-    <linearGradient id="cardGradA" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="rgba(3,105,161,0.2)"/><stop offset="100%" stop-color="rgba(14,165,233,0.05)"/></linearGradient>
-    <linearGradient id="cardGradB" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="rgba(91,33,182,0.2)"/><stop offset="100%" stop-color="rgba(124,58,237,0.05)"/></linearGradient>
-    <filter id="glow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-    <filter id="glowConv"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>`;
-  svg.appendChild(defs);
+    // Inner wrapper needed for grid-template-rows collapse trick
+    const inner = document.createElement('div');
+    inner.className = 'arc-body-inner';
 
-  const spine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-  spine.setAttribute('x1', spineX); spine.setAttribute('y1', 20); spine.setAttribute('x2', spineX); spine.setAttribute('y2', totalH - 20);
-  spine.setAttribute('stroke', 'url(#spineGrad)'); spine.setAttribute('stroke-width', '1.5');
-  spine.classList.add('spine-main'); svg.appendChild(spine);
+    const spine = document.createElement('div');
+    spine.className = 'arc-spine';
+    inner.appendChild(spine);
 
-  rows.forEach((row, ri) => {
-    if (row.type === 'conv') {
-      const cy = row.y + CONV_H / 2;
-      for (let r = 0; r < 2; r++) {
-        const rip = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-        rip.setAttribute('cx', spineX); rip.setAttribute('cy', cy); rip.setAttribute('r', '8');
-        rip.setAttribute('fill', 'none'); rip.setAttribute('stroke', '#e8c97a'); rip.setAttribute('stroke-width', '0.8');
-        rip.classList.add('conv-ripple'); rip.style.animationDelay = `${r * 1.5}s`; svg.appendChild(rip);
+    if (rowCount === 0) {
+      // Empty arc — coming soon placeholder
+      const placeholder = document.createElement('div');
+      placeholder.className = 'arc-placeholder';
+      placeholder.innerHTML = `
+        <div class="arc-placeholder-gem"></div>
+        <span class="arc-placeholder-text">Chapters coming soon</span>
+      `;
+      inner.appendChild(placeholder);
+    } else {
+      for (let r = 0; r < rowCount; r++) {
+        const chA = aChaps[r] || null;
+        const chB = bChaps[r] || null;
+        const row = document.createElement('div');
+        row.className = 'timeline-row';
+        row.appendChild(makeEntry(chA, 'side-a'));
+        row.appendChild(makeSpineNode(chA, chB));
+        row.appendChild(makeEntry(chB, 'side-b'));
+        inner.appendChild(row);
       }
-      const orb = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-      orb.setAttribute('cx', spineX); orb.setAttribute('cy', cy); orb.setAttribute('r', '6');
-      orb.setAttribute('fill', '#e8c97a'); orb.setAttribute('filter', 'url(#glowConv)');
-      orb.classList.add('conv-orb'); svg.appendChild(orb);
-      const lbl = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-      lbl.setAttribute('x', spineX); lbl.setAttribute('y', cy + 22);
-      lbl.setAttribute('text-anchor', 'middle'); lbl.setAttribute('font-family', 'Raleway, sans-serif');
-      lbl.setAttribute('font-size', '7.5'); lbl.setAttribute('font-weight', '400');
-      lbl.setAttribute('letter-spacing', '0.18em'); lbl.setAttribute('fill', '#e8c97a');
-      lbl.style.opacity = '0.55'; lbl.textContent = row.label; svg.appendChild(lbl);
-      return;
     }
+    body.appendChild(inner);
+    container.appendChild(body);
 
-    const ch = row.ch, cy = row.y, isA = ch.tl === 'A', isRight = ch.side === 'right';
-    const cardX = isRight ? spineX + BRANCH_LEN : spineX - BRANCH_LEN - CARD_W;
-    const juncX = isRight ? spineX + 12 : spineX - 12;
-
-    const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-    g.classList.add('ch-node'); g.setAttribute('data-tl', ch.tl);
-
-    const ring = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-    ring.setAttribute('cx', spineX); ring.setAttribute('cy', cy + CARD_H / 2); ring.setAttribute('r', '5');
-    ring.setAttribute('fill', 'none'); ring.setAttribute('stroke', tlColor(ch.tl, 0.5)); ring.setAttribute('stroke-width', '1');
-    ring.classList.add('spine-pulse'); ring.style.animationDelay = `${ri * 0.28}s`; svg.appendChild(ring);
-
-    const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-    dot.setAttribute('cx', spineX); dot.setAttribute('cy', cy + CARD_H / 2); dot.setAttribute('r', '5');
-    dot.setAttribute('fill', tlHex(ch.tl)); dot.setAttribute('filter', 'url(#glow)'); g.appendChild(dot);
-
-    const bl = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-    bl.setAttribute('x1', juncX); bl.setAttribute('y1', cy + CARD_H / 2);
-    bl.setAttribute('x2', isRight ? cardX : cardX + CARD_W); bl.setAttribute('y2', cy + CARD_H / 2);
-    bl.setAttribute('stroke', tlColor(ch.tl, 0.4)); bl.setAttribute('stroke-width', '1');
-    bl.classList.add('branch-line-anim'); bl.style.animationDelay = `${ri * 0.15}s`; g.appendChild(bl);
-
-    const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-    rect.setAttribute('x', cardX); rect.setAttribute('y', cy); rect.setAttribute('width', CARD_W); rect.setAttribute('height', CARD_H);
-    rect.setAttribute('rx', '10'); rect.setAttribute('fill', isA ? 'url(#cardGradA)' : 'url(#cardGradB)');
-    rect.setAttribute('stroke', tlColor(ch.tl, 0.35)); rect.setAttribute('stroke-width', '0.8');
-    rect.classList.add('ch-rect'); g.appendChild(rect);
-
-    const num = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-    num.setAttribute('x', cardX + 18); num.setAttribute('y', cy + 24);
-    num.setAttribute('font-family', 'Cormorant Garamond, serif'); num.setAttribute('font-size', '22');
-    num.setAttribute('font-weight', '300'); num.setAttribute('fill', tlHex(ch.tl));
-    num.classList.add('ch-num'); num.textContent = String(ch.num).padStart(2, '0'); g.appendChild(num);
-
-    const tit = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-    const dt = ch.title.length > 28 ? ch.title.slice(0, 28) + '…' : ch.title;
-    tit.setAttribute('x', cardX + 18); tit.setAttribute('y', cy + 44); tit.setAttribute('font-family', 'Cormorant Garamond, serif');
-    tit.setAttribute('font-size', '15'); tit.setAttribute('font-weight', isA ? '400' : '300');
-    tit.setAttribute('fill', '#f0e8d8'); tit.classList.add('ch-title'); tit.textContent = dt; g.appendChild(tit);
-
-    const meta = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-    meta.setAttribute('x', cardX + 18); meta.setAttribute('y', cy + 58); meta.setAttribute('font-family', 'Raleway, sans-serif');
-    meta.setAttribute('font-size', '10'); meta.setAttribute('font-weight', '300');
-    meta.setAttribute('fill', 'rgba(200,191,224,0.55)'); meta.setAttribute('letter-spacing', '0.06em');
-    meta.textContent = `${ch.read} · Timeline ${ch.tl}`; g.appendChild(meta);
-
-    const ag = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-    ag.classList.add('ch-arrow-g'); ag.setAttribute('opacity', '0'); ag.style.transition = 'opacity 0.25s';
-    const ar = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-    ar.setAttribute('x', cardX + CARD_W - 18); ar.setAttribute('y', cy + CARD_H / 2 + 5);
-    ar.setAttribute('font-family', 'Raleway'); ar.setAttribute('font-size', '14');
-    ar.setAttribute('fill', tlHex(ch.tl)); ar.setAttribute('text-anchor', 'middle'); ar.textContent = '→';
-    ag.appendChild(ar); g.appendChild(ag);
-
-    g.addEventListener('mouseenter', () => {
-      ag.setAttribute('opacity', '1');
-      const tip = document.getElementById('tooltip');
-      tip.textContent = `Chapter ${ch.num} · Timeline ${ch.tl} · ${ch.read}`;
-      tip.style.borderColor = tlColor(ch.tl, 0.6); tip.classList.add('visible');
-    });
-    g.addEventListener('mouseleave', () => { ag.setAttribute('opacity', '0'); document.getElementById('tooltip').classList.remove('visible'); });
-    g.addEventListener('mousemove', (e) => { const t = document.getElementById('tooltip'); t.style.left = (e.pageX + 14) + 'px'; t.style.top = (e.pageY - 32) + 'px'; });
-    g.addEventListener('click', () => { window.location.href = ch.href; });
-
-    g.style.opacity = '0'; g.style.transition = `opacity 0.5s ease ${0.1 + ri * 0.08}s, transform 0.5s ease ${0.1 + ri * 0.08}s`;
-    g.style.transform = 'translateY(10px)'; svg.appendChild(g);
-    requestAnimationFrame(() => { setTimeout(() => { g.style.opacity = '1'; g.style.transform = 'translateY(0)'; }, 80 + ri * 90); });
+    // ── Convergence separator ──
+    if (arc.convLabel) {
+      const conv = document.createElement('div');
+      conv.className = 'convergence-row';
+      conv.innerHTML = `
+        <span class="conv-side-label a">TL-A continues</span>
+        <div class="convergence-orb">
+          <div class="convergence-ripple-ring"></div>
+          <div class="convergence-ripple-ring"></div>
+          <div class="convergence-ripple-ring"></div>
+          <div class="convergence-gem"></div>
+          <div class="convergence-label">${arc.convLabel}</div>
+        </div>
+        <span class="conv-side-label b">TL-B continues</span>
+      `;
+      container.appendChild(conv);
+    }
   });
 
-  const chNodes = rows.filter(r => r.type === 'ch');
-  for (let i = 0; i < chNodes.length - 1; i++) {
-    const from = chNodes[i];
-    const to = chNodes[i + 1];
-    if (from.ch.num === 3 && to.ch.num === 4) continue;
-    if (from.ch.num === 6 && to.ch.num === 7) continue;
-    if (from.ch.num === 9 && to.ch.num === 10) continue;
-    if (from.ch.num === 12 && to.ch.num === 13) continue;
-
-    const y1 = from.y + CARD_H / 2;
-    const y2 = to.y + CARD_H / 2;
-    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-    line.setAttribute('x1', spineX); line.setAttribute('y1', y1); line.setAttribute('x2', spineX); line.setAttribute('y2', y2);
-    line.setAttribute('stroke', tlColor(to.ch.tl, 0.45)); line.setAttribute('stroke-width', '1.5');
-    line.setAttribute('stroke-dasharray', '4 4');
-    line.style.animation = 'dash-flow 2s linear infinite';
-    svg.insertBefore(line, svg.firstChild.nextSibling);
-  }
-
-  const chRows = rows.filter(r => r.type === 'ch');
-  function getChY(num) { const r = chRows.find(r => r.ch.num === num); return r ? r.y + CARD_H / 2 : null; }
-  const arcs = [
-    { from: 3, to: 7, tl: 'A', side: 'right' },
-    { from: 6, to: 10, tl: 'B', side: 'left' },
-    { from: 9, to: 13, tl: 'A', side: 'right' },
-    { from: 12, to: 16, tl: 'B', side: 'left' }
-  ];
-
-  arcs.forEach(arc => {
-    const y1 = getChY(arc.from); const y2 = getChY(arc.to); if (!y1) return;
-    const actualY2 = y2 || (y1 + ROW_H * 7 + CONV_H * 2);
-    const isRight = arc.side === 'right';
-    const edgeX = isRight ? spineX + BRANCH_LEN + CARD_W + 15 : spineX - BRANCH_LEN - CARD_W - 15;
-    const peakX = isRight ? edgeX + 40 : edgeX - 40;
-
-    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    path.setAttribute('d', `M ${edgeX} ${y1} C ${peakX} ${y1 + (actualY2 - y1) * 0.3}, ${peakX} ${y1 + (actualY2 - y1) * 0.7}, ${edgeX} ${actualY2}`);
-    path.setAttribute('fill', 'none'); path.setAttribute('stroke', tlColor(arc.tl, 0.25));
-    path.setAttribute('stroke-width', '1'); path.setAttribute('stroke-dasharray', '6 4');
-    path.style.animation = 'dash-flow 2s linear infinite'; svg.appendChild(path);
-
-    const glow = path.cloneNode(); glow.setAttribute('stroke', tlColor(arc.tl, 0.08));
-    glow.setAttribute('stroke-width', '4'); glow.setAttribute('stroke-dasharray', '');
-    glow.setAttribute('filter', 'url(#glow)'); glow.style.animation = '';
-    svg.insertBefore(glow, svg.firstChild.nextSibling);
-
-    const lbl = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-    lbl.setAttribute('x', isRight ? peakX + 8 : peakX - 8); lbl.setAttribute('y', (y1 + actualY2) / 2);
-    lbl.setAttribute('text-anchor', 'start');
-    lbl.setAttribute('font-family', 'Raleway, sans-serif'); lbl.setAttribute('font-size', '7');
-    lbl.setAttribute('fill', tlLight(arc.tl)); lbl.style.opacity = '0.4';
-    lbl.textContent = y2 ? `TL-${arc.tl} CONTINUES` : `TL-${arc.tl} → CH ${arc.to}`;
-    svg.appendChild(lbl);
+  // ── Toggle collapse/expand ──
+  container.addEventListener('click', e => {
+    const header = e.target.closest('.arc-header');
+    if (!header) return;
+    const idx = header.dataset.arc;
+    const body = container.querySelector(`.arc-body[data-arc="${idx}"]`);
+    const isOpen = header.classList.contains('open');
+    header.classList.toggle('open', !isOpen);
+    body.classList.toggle('open', !isOpen);
   });
-
-  wrapper.appendChild(svg);
 }
 
-buildSVG();
-let rt; window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(buildSVG, 200); });
+function makeEntry(ch, side) {
+  const div = document.createElement('div');
+  div.className = `ch-entry ${side}`;
+  if (!ch) { div.classList.add('empty'); div.innerHTML = '<div class="ch-card"></div>'; return div; }
+  const a = document.createElement('a');
+  a.className = 'ch-card';
+  a.href = ch.href;
 
-/* ═══════════════════════════════════
+  const scanLine = document.createElement('div'); scanLine.className = 'ch-scan-line';
+  const num = document.createElement('div'); num.className = 'ch-num'; num.textContent = `Ch ${ch.num}`;
+  const title = document.createElement('div'); title.className = 'ch-title'; title.textContent = ch.title;
+  const meta = document.createElement('div'); meta.className = 'ch-meta';
+  meta.innerHTML = `<span class="ch-status unread"></span><span>${ch.read}</span><span class="ch-arrow">→</span>`;
+
+  a.appendChild(scanLine); a.appendChild(num); a.appendChild(title); a.appendChild(meta);
+  div.appendChild(a);
+  return div;
+}
+
+function makeSpineNode(chA, chB) {
+  const div = document.createElement('div');
+  div.className = 'spine-node';
+  const tl = chA ? 'A' : (chB ? 'B' : null);
+  const color = tl === 'A' ? 'rgba(14,165,233,0.5)' : tl === 'B' ? 'rgba(124,58,237,0.5)' : 'rgba(200,191,224,0.1)';
+  div.innerHTML = `<div class="spine-dot" style="background:${color};border-color:${color};box-shadow:0 0 8px ${color}"></div>`;
+  return div;
+}
+
+buildTimeline();
+
+
+/* ══════════════════════════════════════
    STARFIELD
-═══════════════════════════════════ */
+══════════════════════════════════════ */
 const sf = document.getElementById('starfield');
-for (let i = 0; i < 35; i++) {
-  const s = document.createElement('div'); s.className = 'star-dot star-a';
-  const sz = Math.random() < 0.5 ? 2 : 3;
-  s.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random() * 100}%;top:${Math.random() * 100}%;--d:${3 + Math.random() * 5}s;--delay:${Math.random() * 6}s;--op:${0.3 + Math.random() * 0.5};--pd:${5 + Math.random() * 8}s;`;
-  sf.appendChild(s);
-}
-for (let i = 0; i < 55; i++) {
-  const s = document.createElement('div'); s.className = 'star-dot star-b';
-  s.style.cssText = `width:1px;height:1px;left:${Math.random() * 100}%;top:${Math.random() * 100}%;--d:${1.5 + Math.random() * 3}s;--delay:${Math.random() * 4}s;--op:${0.4 + Math.random() * 0.6};--pd:${2 + Math.random() * 4}s;`;
+for (let i=0; i<90; i++) {
+  const s = document.createElement('div');
+  const isA = Math.random() < 0.5;
+  const sz = Math.random() < 0.3 ? 2 : 1;
+  s.className = 'star-dot';
+  s.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*5}s;--delay:${Math.random()*6}s;--op:${0.3+Math.random()*0.5};background:${isA?'rgba(56,189,248,0.9)':'rgba(166,125,208,0.9)'};`;
   sf.appendChild(s);
 }
 
-/* ═══════════════════════════════════
+/* ══════════════════════════════════════
    CUSTOM CURSOR
-═══════════════════════════════════ */
-const cursor = document.getElementById('cursor'), cursorRing = document.getElementById('cursorRing');
-let mx = 0, my = 0, rx = 0, ry = 0;
-document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cursor.style.left = mx + 'px'; cursor.style.top = my + 'px'; });
-function animRing() { rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12; cursorRing.style.left = rx + 'px'; cursorRing.style.top = ry + 'px'; requestAnimationFrame(animRing); }
+══════════════════════════════════════ */
+const cursor = document.getElementById('cursor');
+const cursorRing = document.getElementById('cursorRing');
+let mx=0, my=0, rx=0, ry=0;
+document.addEventListener('mousemove', e => {
+  mx=e.clientX; my=e.clientY;
+  cursor.style.left=mx+'px'; cursor.style.top=my+'px';
+});
+function animRing() {
+  rx+=(mx-rx)*0.12; ry+=(my-ry)*0.12;
+  cursorRing.style.left=rx+'px'; cursorRing.style.top=ry+'px';
+  requestAnimationFrame(animRing);
+}
 animRing();
-document.querySelectorAll('a, button, .ch-node, .story-card, .char-card').forEach(el => {
-  el.addEventListener('mouseenter', () => { cursor.style.transform = 'translate(-50%,-50%) scale(2)'; cursorRing.style.transform = 'translate(-50%,-50%) scale(1.5)'; cursorRing.style.borderColor = 'rgba(14,165,233,0.7)'; });
-  el.addEventListener('mouseleave', () => { cursor.style.transform = 'translate(-50%,-50%) scale(1)'; cursorRing.style.transform = 'translate(-50%,-50%) scale(1)'; cursorRing.style.borderColor = 'rgba(14,165,233,0.4)'; });
+document.querySelectorAll('a, button, .ch-card, .char-card').forEach(el => {
+  el.addEventListener('mouseenter',()=>{ cursor.style.transform='translate(-50%,-50%) scale(2)'; cursorRing.style.transform='translate(-50%,-50%) scale(1.5)'; cursorRing.style.borderColor='rgba(14,165,233,0.7)'; });
+  el.addEventListener('mouseleave',()=>{ cursor.style.transform='translate(-50%,-50%) scale(1)'; cursorRing.style.transform='translate(-50%,-50%) scale(1)'; cursorRing.style.borderColor='rgba(14,165,233,0.4)'; });
 });
 </script>
 </body>
