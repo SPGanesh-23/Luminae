@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flat 17 — Chapters | Luminae</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Cinzel+Decorative:wght@400;700&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0d0a1a;
+    --parchment: #fdf8f0;
+    --cream: #f5ede0;
+    --gold: #dc2626; /* Crimson Red */
+    --gold-light: #ef4444; /* Lighter Red */
+    --gold-glow: #fca5a5;
+    --violet: #6b3fa0;
+    --violet-dark: #3d1f6e;
+    --violet-light: #a67dd0;
+    --rose: #c45a7a;
+    --midnight: #0f0820;
+    --mist: #c8bfe0;
+    --star: #f8f0e3;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--midnight); color: var(--star); font-family: 'Raleway', sans-serif; font-weight: 300; overflow-x: hidden; min-height: 100vh; }
+  .starfield { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .star-dot { position: absolute; border-radius: 50%; background: white; animation: twinkle var(--d, 3s) ease-in-out infinite; animation-delay: var(--delay, 0s); opacity: 0; }
+  @keyframes twinkle { 0%, 100% { opacity: 0; transform: scale(0.5); } 50% { opacity: var(--op, 0.7); transform: scale(1); } }
+  .top-nav { position: relative; z-index: 10; display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 3rem; border-bottom: 1px solid rgba(220,38,38,0.12); }
+  .logo { font-family: 'Cinzel Decorative', cursive; font-size: 1.3rem; color: var(--gold); letter-spacing: 0.08em; text-shadow: 0 0 20px rgba(220,38,38,0.6); text-decoration: none; }
+  .back-link { color: var(--mist); text-decoration: none; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.3s; display: flex; align-items: center; gap: 0.5rem; }
+  .back-link:hover { color: var(--gold-light); }
+  .page { position: relative; z-index: 1; max-width: 1280px; margin: 0 auto; padding: 0 2rem 5rem; }
+  .book-hero { text-align: center; padding: 5rem 0 1rem; }
+  .book-hero-tag { font-size: 0.65rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; display: block; }
+  .book-hero-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 300; line-height: 1.1; color: var(--star); margin-bottom: 0.8rem; }
+  .book-hero-title em { font-style: italic; color: var(--gold-light); text-shadow: 0 0 40px rgba(239,68,68,0.4); }
+  .book-hero-author { font-size: 0.82rem; letter-spacing: 0.15em; color: var(--mist); text-transform: uppercase; margin-bottom: 1rem; }
+  .book-hero-genre { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: #a67dd0; }
+  .hero-divider { display: flex; align-items: center; gap: 1rem; margin: 2.5rem auto; max-width: 240px; }
+  .hero-divider-line { flex: 1; height: 1px; background: linear-gradient(to right, transparent, rgba(220,38,38,0.4), transparent); }
+  .hero-divider-glyph { font-family: 'Cormorant Garamond', serif; color: var(--gold); font-size: 1.1rem; }
+  .chapters-label { font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 2rem; font-weight: 500; }
+  .chapter-list { list-style: none; }
+  .chapter-item { border-bottom: 1px solid rgba(220,38,38,0.1); }
+  .chapter-item:first-child { border-top: 1px solid rgba(220,38,38,0.1); }
+  .chapter-link { display: flex; align-items: center; justify-content: space-between; padding: 1.4rem 1.2rem; text-decoration: none; color: var(--star); transition: all 0.3s; position: relative; }
+  .chapter-link::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(239,68,68,0.08), transparent); opacity: 0; transition: opacity 0.3s; }
+  .chapter-link:hover { background: rgba(255,255,255,0.02); }
+  .chapter-link:hover::before { opacity: 1; }
+  .chapter-link:hover .chapter-arrow { transform: translateX(4px); color: var(--gold); }
+  .chapter-left { display: flex; align-items: center; gap: 1.2rem; position: relative; z-index: 1; }
+  .chapter-num { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 300; color: var(--gold-light); min-width: 32px; }
+  .chapter-name { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 400; margin-bottom: 0.2rem; }
+  .chapter-meta { font-size: 0.7rem; color: var(--mist); letter-spacing: 0.05em; }
+  .chapter-arrow { font-size: 0.9rem; color: var(--mist); transition: all 0.3s; position: relative; z-index: 1; }
+  .fade-in { opacity: 0; transform: translateY(20px); animation: fadeUp 0.8s ease forwards; }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+  .delay-2 { animation-delay: 0.2s; }
+  body { cursor: none; }
+  .cursor { position:fixed; width:8px; height:8px; background:var(--gold); border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:transform 0.1s, background 0.3s; box-shadow:0 0 12px rgba(220,38,38,0.5); }
+  .cursor-ring { position:fixed; width:32px; height:32px; border:1px solid rgba(239,68,68,0.4); border-radius:50%; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:all 0.18s ease; }
+  @media (pointer: coarse) { body { cursor: auto; } .cursor, .cursor-ring { display: none !important; } }
+
+  /* ═══════════════════════════════════════════════════
+     CHARACTERS SECTION
+  ═══════════════════════════════════════════════════ */
+  .characters-section { position: relative; z-index: 2; padding: 1.5rem 0 4rem; overflow: visible; width: 100%; margin-bottom: 4rem; }
+  .characters-header { text-align: center; margin-bottom: 3.5rem; }
+  .characters-eyebrow { font-size: 0.55rem; letter-spacing: 0.5em; text-transform: uppercase; color: var(--gold); display: flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 1rem; }
+  .characters-eyebrow::before, .characters-eyebrow::after { content: ''; display: block; width: 40px; height: 1px; background: linear-gradient(to right, transparent, var(--gold)); opacity: 0.5; }
+  .characters-eyebrow::after { transform: scaleX(-1); }
+  .characters-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 300; color: var(--star); letter-spacing: 0.05em; margin-bottom: 0.6rem; }
+  .characters-subtitle { font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase; color: rgba(200,191,224,0.4); }
+  
+  .char-particles { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+  .char-particle { position: absolute; border-radius: 50%; pointer-events: none; animation: float-particle var(--fp-d, 8s) ease-in-out infinite; animation-delay: var(--fp-delay, 0s); }
+  @keyframes float-particle { 0%, 100% { transform: translateY(0) scale(1); opacity: var(--fp-op, 0.3); } 50% { transform: translateY(-20px) scale(1.2); opacity: calc(var(--fp-op, 0.3) * 1.6); } }
+  
+  .char-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; position: relative; z-index: 1; max-width: 600px; margin: 0 auto; padding: 0 1rem; }
+  @media (max-width: 600px) { .char-grid { grid-template-columns: 1fr; max-width: 340px; } }
+  
+  .char-card { position: relative; aspect-ratio: 2/3; min-height: 320px; border-radius: 18px; overflow: hidden; cursor: pointer; transform-style: preserve-3d; transition: transform 0.08s linear; will-change: transform; background: #0a071a; box-shadow: 0 4px 30px rgba(0,0,0,0.5), 0 0 1px rgba(255,255,255,0.05); }
+  .char-portrait { position: absolute; inset: 0; background-size: cover; background-position: center top; transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.5s ease; filter: saturate(0.7) brightness(0.65); will-change: transform, filter; }
+  .char-card:hover .char-portrait { transform: scale(1.08); filter: saturate(1) brightness(0.5); }
+  .char-overlay-base { position: absolute; inset: 0; background: linear-gradient(to top, rgba(7,4,15,0.98) 0%, rgba(7,4,15,0.85) 30%, rgba(7,4,15,0.4) 55%, transparent 100%); z-index: 1; transition: opacity 0.5s ease; }
+  .char-card:hover .char-overlay-base { opacity: 0.9; }
+  .char-frame { position: absolute; inset: 0; z-index: 2; border-radius: 18px; border: 1px solid rgba(255,255,255,0.08); transition: border-color 0.5s ease, box-shadow 0.5s ease; pointer-events: none; }
+  
+  .char-card[data-tl="A"]:hover .char-frame { border-color: rgba(220,38,38,0.35); box-shadow: inset 0 0 30px rgba(220,38,38,0.08), 0 0 40px rgba(220,38,38,0.25); }
+  .char-card[data-tl="B"]:hover .char-frame { border-color: rgba(166,125,208,0.35); box-shadow: inset 0 0 30px rgba(166,125,208,0.08), 0 0 40px rgba(166,125,208,0.25); }
+  
+  .char-corners { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
+  .char-corners::before, .char-corners::after { content: ''; position: absolute; width: 24px; height: 24px; opacity: 0; transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  .char-corners::before { top: 12px; left: 12px; border-top: 2px solid currentColor; border-left: 2px solid currentColor; transform: translate(-6px, -6px); }
+  .char-corners::after { bottom: 12px; right: 12px; border-bottom: 2px solid currentColor; border-right: 2px solid currentColor; transform: translate(6px, 6px); }
+  .char-card[data-tl="A"] .char-corners { color: var(--gold-light); }
+  .char-card[data-tl="B"] .char-corners { color: var(--mist); }
+  .char-card:hover .char-corners::before, .char-card:hover .char-corners::after { opacity: 1; transform: translate(0, 0); }
+  
+  .char-spotlight { position: absolute; inset: 0; z-index: 2; border-radius: 16px; opacity: 0; transition: opacity 0.3s ease; pointer-events: none; background: radial-gradient(circle 120px at var(--mx, 50%) var(--my, 30%), rgba(255,255,255,0.07) 0%, transparent 70%); }
+  .char-card:hover .char-spotlight { opacity: 1; }
+  .char-content { position: absolute; bottom: 0; left: 0; right: 0; z-index: 4; padding: 0 1.5rem 1.5rem; display: flex; flex-direction: column; gap: 0.5rem; transform: translateY(0); transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+  .char-card:hover .char-content { transform: translateY(-12px); }
+  .char-details { display: flex; flex-direction: column; gap: 0.45rem; max-height: 0; overflow: hidden; opacity: 0; transition: max-height 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.4s ease 0.1s; }
+  .char-card:hover .char-details { max-height: 220px; opacity: 1; }
+  .char-role-line { display: flex; align-items: center; gap: 0.5rem; opacity: 0; transform: translateY(6px); transition: opacity 0.35s ease 0.08s, transform 0.35s ease 0.08s; }
+  .char-role-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  .char-card[data-tl="A"] .char-role-dot { background: var(--gold); box-shadow: 0 0 6px var(--gold-glow); }
+  .char-card[data-tl="B"] .char-role-dot { background: var(--violet-light); box-shadow: 0 0 6px var(--mist); }
+  .char-role-text { font-size: 0.58rem; letter-spacing: 0.25em; text-transform: uppercase; }
+  .char-card[data-tl="A"] .char-role-text { color: var(--gold-light); }
+  .char-card[data-tl="B"] .char-role-text { color: var(--mist); }
+  .char-card:hover .char-role-line { opacity: 1; transform: translateY(0); }
+  .char-name { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.5rem, 3.5vw, 2rem); font-weight: 600; color: var(--star); line-height: 1.1; letter-spacing: 0.04em; text-shadow: 0 2px 20px rgba(0,0,0,0.95), 0 0 40px rgba(0,0,0,0.6); transition: text-shadow 0.4s ease, letter-spacing 0.4s ease; position: relative; padding-bottom: 0.5rem; }
+  .char-name::after { content: ''; position: absolute; bottom: 0; left: 0; width: 32px; height: 2px; border-radius: 1px; transition: width 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s ease; }
+  .char-card[data-tl="A"] .char-name::after { background: var(--gold); box-shadow: 0 0 8px var(--gold-glow); }
+  .char-card[data-tl="B"] .char-name::after { background: var(--violet-light); box-shadow: 0 0 8px var(--mist); }
+  .char-card:hover .char-name { text-shadow: 0 0 24px rgba(255,255,255,0.35), 0 2px 16px rgba(0,0,0,0.95); letter-spacing: 0.06em; }
+  .char-card:hover .char-name::after { width: 60px; box-shadow: 0 0 14px currentColor; }
+  .char-tagline { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: clamp(0.8rem, 1.8vw, 1rem); font-weight: 300; opacity: 0; transform: translateY(8px); transition: opacity 0.4s ease 0.15s, transform 0.4s ease 0.15s; line-height: 1.3; }
+  .char-card[data-tl="A"] .char-tagline { color: var(--gold-light); }
+  .char-card[data-tl="B"] .char-tagline { color: var(--mist); }
+  .char-card:hover .char-tagline { opacity: 1; transform: translateY(0); }
+  .char-divider { height: 1px; background: linear-gradient(to right, transparent, currentColor, transparent); opacity: 0; transform: scaleX(0); transform-origin: left; transition: opacity 0.3s ease 0.2s, transform 0.4s ease 0.2s; margin: 0.15rem 0; }
+  .char-card[data-tl="A"] .char-divider { color: rgba(220,38,38,0.3); }
+  .char-card[data-tl="B"] .char-divider { color: rgba(166,125,208,0.3); }
+  .char-card:hover .char-divider { opacity: 1; transform: scaleX(1); }
+  .char-desc { font-size: clamp(0.7rem, 1.4vw, 0.82rem); font-weight: 300; color: rgba(200,191,224,0.8); line-height: 1.6; letter-spacing: 0.02em; opacity: 0; transform: translateY(8px); transition: opacity 0.4s ease 0.25s, transform 0.4s ease 0.25s; }
+  .char-card:hover .char-desc { opacity: 1; transform: translateY(0); }
+  .char-particle-canvas { position: absolute; inset: 0; z-index: 3; border-radius: 16px; pointer-events: none; opacity: 0; transition: opacity 0.4s ease; }
+  .char-card:hover .char-particle-canvas { opacity: 1; }
+  .char-aura { position: absolute; inset: -1px; border-radius: 17px; pointer-events: none; z-index: 0; opacity: 0; transition: opacity 0.4s ease; }
+  .char-card[data-tl="A"] .char-aura { background: conic-gradient(from var(--aura-angle, 0deg), transparent 0%, rgba(220,38,38,0.5) 20%, transparent 40%, rgba(220,38,38,0.2) 60%, transparent 80%); animation: spin-aura 3s linear infinite; }
+  .char-card[data-tl="B"] .char-aura { background: conic-gradient(from var(--aura-angle, 0deg), transparent 0%, rgba(166,125,208,0.5) 20%, transparent 40%, rgba(166,125,208,0.2) 60%, transparent 80%); animation: spin-aura 4s linear infinite reverse; }
+  @property --aura-angle { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
+  @keyframes spin-aura { from { --aura-angle: 0deg; } to { --aura-angle: 360deg; } }
+  .char-card:hover .char-aura { opacity: 1; }
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="starfield" id="starfield"></div>
+
+<nav class="top-nav">
+  <a href="../index.html" class="logo">Luminae</a>
+  <a href="../index.html" class="back-link">&larr; Back to Home</a>
+</nav>
+
+<div class="page">
+  <section class="book-hero fade-in">
+    <span class="book-hero-tag">✦ Now Reading ✦</span>
+    <h1 class="book-hero-title">Flat <em>17</em></h1>
+    <p class="book-hero-author">by Luna Elaris</p>
+    <p class="book-hero-genre">Horror · Mystery · Thriller</p>
+    <div class="hero-divider">
+      <div class="hero-divider-line"></div>
+      <span class="hero-divider-glyph">✦</span>
+      <div class="hero-divider-line"></div>
+    </div>
+  </section>
+  <!-- ═══ CHARACTERS SECTION ═══ -->
+  <section class="characters-section fade-in delay-1">
+    <div class="char-particles" id="sectionParticles"></div>
+
+    <div class="characters-header">
+      <div class="characters-eyebrow">The Tenants</div>
+      <h2 class="characters-title">Souls in <em>The Dark</em></h2>
+      <p class="characters-subtitle">One searching for a home. One watching from the shadows.</p>
+    </div>
+
+    <div class="char-grid" id="charGrid">
+
+      <!-- Eris -->
+      <div class="char-card" data-tl="A">
+        <div class="char-aura"></div>
+        <div class="char-portrait" style="background-image: url('Images/Eris.jpg'); background-color: #100a1a;"></div>
+        <div class="char-overlay-base"></div>
+        <div class="char-spotlight"></div>
+        <div class="char-frame"></div>
+        <div class="char-corners"></div>
+        <canvas class="char-particle-canvas"></canvas>
+        <div class="char-content">
+          <div class="char-name">Eris Vale</div>
+          <div class="char-details">
+            <div class="char-role-line">
+              <div class="char-role-dot"></div>
+              <span class="char-role-text">Protagonist · Tenant 18</span>
+            </div>
+            <div class="char-tagline">"Maybe this wouldn't be so bad after all."</div>
+            <div class="char-divider"></div>
+            <div class="char-desc">A young editor trying to build a new life in Ravenfall. Drawn to the cheap rent, she ignores the warnings and the strange rules, completely unaware of what waits for her behind closed doors.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Kate -->
+      <div class="char-card" data-tl="B">
+        <div class="char-aura"></div>
+        <div class="char-portrait" style="background-image: url('Images/Kate.jpg'); background-color: #100a1a;"></div>
+        <div class="char-overlay-base"></div>
+        <div class="char-spotlight"></div>
+        <div class="char-frame"></div>
+        <div class="char-corners"></div>
+        <canvas class="char-particle-canvas"></canvas>
+        <div class="char-content">
+          <div class="char-name">Kate</div>
+          <div class="char-details">
+            <div class="char-role-line">
+              <div class="char-role-dot"></div>
+              <span class="char-role-text">Best Friend · Confidante</span>
+            </div>
+            <div class="char-tagline">"I TOLD you not to choose the cheapest option!"</div>
+            <div class="char-divider"></div>
+            <div class="char-desc">Eris's wealthy, dramatic best friend. Safe in her comfortable life miles away, she offers comedic relief and endless worrying through late-night phone calls while Eris navigates the horrors of Blackthorne.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <section class="fade-in delay-2">
+    <p class="chapters-label">Chapters</p>
+    <ol class="chapter-list" id="chapterList">
+      <li class="chapter-item">
+        <a href="chapter1.html" class="chapter-link">
+          <div class="chapter-left">
+            <span class="chapter-num">1</span>
+            <div class="chapter-info">
+              <div class="chapter-name">Flat 17</div>
+              <div class="chapter-meta">~3 min read</div>
+            </div>
+          </div>
+          <span class="chapter-arrow">→</span>
+        </a>
+      </li>
+      <li class="chapter-item">
+        <a href="chapter2.html" class="chapter-link">
+          <div class="chapter-left">
+            <span class="chapter-num">2</span>
+            <div class="chapter-info">
+              <div class="chapter-name">Keep The Curtains Closed</div>
+              <div class="chapter-meta">~3 min read</div>
+            </div>
+          </div>
+          <span class="chapter-arrow">→</span>
+        </a>
+      </li>
+      <li class="chapter-item">
+        <a href="chapter3.html" class="chapter-link">
+          <div class="chapter-left">
+            <span class="chapter-num">3</span>
+            <div class="chapter-info">
+              <div class="chapter-name">Strange Neighbors</div>
+              <div class="chapter-meta">~3 min read</div>
+            </div>
+          </div>
+          <span class="chapter-arrow">→</span>
+        </a>
+      </li>
+      <li class="chapter-item">
+        <a href="chapter4.html" class="chapter-link">
+          <div class="chapter-left">
+            <span class="chapter-num">4</span>
+            <div class="chapter-info">
+              <div class="chapter-name">Apartment 15</div>
+              <div class="chapter-meta">~3 min read</div>
+            </div>
+          </div>
+          <span class="chapter-arrow">→</span>
+        </a>
+      </li>
+
+    </ol>
+  </section>
+</div>
+
+<script>
+const starfield = document.getElementById('starfield');
+for (let i = 0; i < 60; i++) {
+  const s = document.createElement('div');
+  s.className = 'star-dot';
+  const size = Math.random() < 0.7 ? 1 : 2;
+  s.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*4}s;--delay:${Math.random()*5}s;--op:${0.2+Math.random()*0.5};`;
+  starfield.appendChild(s);
+}
+const cursor=document.getElementById('cursor'),cursorRing=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+function animRing(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;cursorRing.style.left=rx+'px';cursorRing.style.top=ry+'px';requestAnimationFrame(animRing);}
+animRing();
+
+/* ═══════════════════════════════════
+     CHARACTER CARD INTERACTIONS
+  ═══════════════════════════════════ */
+  (function() {
+    const cards = document.querySelectorAll('.char-card');
+
+    function initParticles(card) {
+      const canvas = card.querySelector('.char-particle-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let raf = null;
+      let active = false;
+
+      const tl = card.dataset.tl;
+      const colors = {
+        A: [[220,38,38],[239,68,68]],
+        B: [[166,125,208],[200,191,224]]
+      };
+      const palette = colors[tl] || colors.A;
+
+      const particles = Array.from({length: 15}, () => ({
+        x: Math.random(), y: Math.random() + 0.3,
+        vx: (Math.random() - 0.5) * 0.003,
+        vy: -(Math.random() * 0.004 + 0.001),
+        size: Math.random() * 2.5 + 0.5,
+        life: Math.random(),
+        maxLife: 0.6 + Math.random() * 0.4,
+        color: palette[Math.floor(Math.random() * palette.length)]
+      }));
+
+      function resize() {
+        const rect = card.getBoundingClientRect();
+        canvas.width = rect.width;
+        canvas.height = rect.height;
+      }
+
+      function tick() {
+        if (!active) return;
+        const W = canvas.width, H = canvas.height;
+        ctx.clearRect(0, 0, W, H);
+        particles.forEach(p => {
+          p.life += 0.008;
+          if (p.life > p.maxLife) {
+            p.life = 0; p.x = Math.random(); p.y = 1 + Math.random() * 0.1;
+          }
+          p.x += p.vx; p.y += p.vy;
+          const progress = p.life / p.maxLife;
+          const alpha = progress < 0.3 ? progress / 0.3 : progress > 0.7 ? (1 - progress) / 0.3 : 1;
+          const [r,g,b] = p.color;
+          ctx.beginPath();
+          ctx.arc(p.x * W, p.y * H, p.size * (1 - progress * 0.4), 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${r},${g},${b},${alpha * 0.55})`;
+          ctx.fill();
+        });
+        raf = requestAnimationFrame(tick);
+      }
+
+      card.addEventListener('mouseenter', () => { active = true; resize(); tick(); });
+      card.addEventListener('mouseleave', () => { active = false; if (raf) cancelAnimationFrame(raf); ctx.clearRect(0, 0, canvas.width, canvas.height); });
+    }
+
+    function initTilt(card) {
+      const spotlight = card.querySelector('.char-spotlight');
+      card.addEventListener('mousemove', e => {
+        const rect = card.getBoundingClientRect();
+        const dx = (e.clientX - (rect.left + rect.width/2)) / (rect.width/2);
+        const dy = (e.clientY - (rect.top + rect.height/2)) / (rect.height/2);
+        card.style.transform = `perspective(700px) rotateX(${-dy * 10}deg) rotateY(${dx * 10}deg) scale(1.04)`;
+        const mx = ((e.clientX - rect.left) / rect.width) * 100;
+        const my = ((e.clientY - rect.top) / rect.height) * 100;
+        if (spotlight) spotlight.style.background = `radial-gradient(circle 130px at ${mx}% ${my}%, rgba(255,255,255,0.08) 0%, transparent 70%)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = `perspective(700px) rotateX(0deg) rotateY(0deg) scale(1)`;
+        card.style.transition = 'transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94)';
+        setTimeout(() => { card.style.transition = 'transform 0.08s linear'; }, 600);
+      });
+    }
+
+    cards.forEach(card => { initParticles(card); initTilt(card); });
+
+    const section = document.querySelector('.char-particles');
+    if (section) {
+      for (let i = 0; i < 15; i++) {
+        const p = document.createElement('div');
+        p.className = 'char-particle';
+        const size = Math.random() * 3 + 1;
+        const color = Math.random() > 0.5 ? '220,38,38' : '166,125,208';
+        p.style.cssText = `width:${size}px; height:${size}px; left:${Math.random()*100}%; top:${Math.random()*100}%; background: rgba(${color}, 0.4); box-shadow: 0 0 ${size*3}px rgba(${color}, 0.3); --fp-d: ${6+Math.random()*8}s; --fp-delay: ${Math.random()*6}s; --fp-op: ${0.2+Math.random()*0.35};`;
+        section.appendChild(p);
+      }
+    }
+  })();
+</script>
+</body>
+</html>
