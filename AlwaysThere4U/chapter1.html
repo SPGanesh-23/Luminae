@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 1 — Always There 4U | Luminae</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Cinzel+Decorative:wght@400;700&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0d0a1a; --parchment: #fdf8f0; --cream: #f5ede0;
+    --gold: #c9933a; --gold-light: #e8c97a; --gold-glow: #f0d898;
+    --violet: #6b3fa0; --violet-dark: #3d1f6e; --violet-light: #a67dd0;
+    --rose: #c45a7a; --midnight: #0f0820; --mist: #c8bfe0; --star: #f8f0e3;
+    --accent: #f97316; --accent-glow: rgba(249,115,22,0.4);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--midnight); color: var(--star); font-family: 'Raleway', sans-serif; font-weight: 300; overflow-x: hidden; min-height: 100vh; }
+  .starfield { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .star-dot { position: absolute; border-radius: 50%; background: white; animation: twinkle var(--d, 3s) ease-in-out infinite; animation-delay: var(--delay, 0s); opacity: 0; }
+  @keyframes twinkle { 0%, 100% { opacity: 0; transform: scale(0.5); } 50% { opacity: var(--op, 0.7); transform: scale(1); } }
+  .top-nav { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; padding: 1rem 3rem; background: linear-gradient(to bottom, rgba(15,8,32,0.98), rgba(15,8,32,0.9)); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(236,72,153,0.2); }
+  .logo { font-family: 'Cinzel Decorative', cursive; font-size: 1.1rem; color: var(--accent); letter-spacing: 0.08em; text-shadow: 0 0 20px var(--accent-glow); text-decoration: none; }
+  .nav-chapter-info { font-size: 0.7rem; color: var(--mist); letter-spacing: 0.1em; text-transform: uppercase; }
+  .toc-link { color: var(--accent); text-decoration: none; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.3s; }
+  .toc-link:hover { color: #ec4899; }
+  .reader-page { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; padding: 4rem 2rem 3rem; }
+  .ch-header { text-align: center; margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid rgba(236,72,153,0.2); }
+  .ch-number { font-size: 0.65rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.2rem; display: block; }
+  .ch-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 300; line-height: 1.15; color: var(--star); margin-bottom: 0.8rem; }
+  .ch-title em { font-style: italic; color: #ec4899; text-shadow: 0 0 30px rgba(236,72,153,0.4); }
+  .ch-divider { display: flex; align-items: center; gap: 0.8rem; margin: 1.5rem auto 0; max-width: 160px; }
+  .ch-divider-line { flex: 1; height: 1px; background: linear-gradient(to right, transparent, rgba(236,72,153,0.5), transparent); }
+  .ch-divider-glyph { color: var(--accent); font-size: 0.8rem; }
+  .ch-content { font-family: 'Cormorant Garamond', serif; font-size: 1.18rem; color: var(--mist); line-height: 2; font-weight: 400; }
+  .ch-content p { margin-bottom: 1.5rem; }
+  .ch-content p.first::first-letter { font-family: 'Cinzel Decorative', cursive; font-size: 3.8rem; float: left; line-height: 1; margin: 0.05em 0.12em -0.1em 0; color: var(--accent); text-shadow: 0 0 20px var(--accent-glow); }
+  .ch-content em { color: #ec4899; font-style: italic; }
+  .ch-content .dialogue { color: var(--star); }
+  .ch-content .thought { color: #06b6d4; font-style: italic; }
+  .ch-content hr { border: none; text-align: center; margin: 2.5rem 0; }
+  .ch-content hr::after { content: '✦ ✦ ✦'; color: var(--accent); font-size: 0.7rem; letter-spacing: 0.5em; }
+
+  /* ═══ Chat / Text Message Bubbles ═══ */
+  .chat-container {
+    position: relative;
+    margin: 2rem 0;
+    padding: 1.5rem 1.2rem;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(249, 115, 22, 0.12);
+    border-radius: 16px;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255,255,255,0.03);
+  }
+  .chat-container::before {
+    content: '💬';
+    position: absolute;
+    top: -10px;
+    left: 20px;
+    font-size: 0.7rem;
+    background: var(--midnight);
+    padding: 0 0.5rem;
+    color: rgba(249, 115, 22, 0.6);
+    letter-spacing: 0.15em;
+  }
+  .chat-bubble {
+    font-family: 'Raleway', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 400;
+    line-height: 1.6;
+    padding: 0.7rem 1rem;
+    border-radius: 14px;
+    margin-bottom: 0.5rem;
+    max-width: 80%;
+    position: relative;
+    animation: bubbleIn 0.3s ease forwards;
+    word-wrap: break-word;
+  }
+  @keyframes bubbleIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  .chat-received {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: var(--mist);
+    border-bottom-left-radius: 4px;
+    margin-right: auto;
+  }
+  .chat-sent {
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.15), rgba(236, 72, 153, 0.1));
+    border: 1px solid rgba(249, 115, 22, 0.2);
+    color: var(--star);
+    border-bottom-right-radius: 4px;
+    margin-left: auto;
+    text-align: right;
+  }
+  .chat-typing {
+    font-family: 'Raleway', sans-serif;
+    font-size: 0.75rem;
+    color: rgba(200, 191, 224, 0.4);
+    font-style: italic;
+    padding: 0.3rem 0;
+    margin-bottom: 0.3rem;
+    letter-spacing: 0.05em;
+  }
+  .author-note { background: rgba(0, 0, 0, 0.15); border: 1px solid rgba(236, 72, 153, 0.15); border-radius: 4px; padding: 2.5rem; margin-top: 4rem; }
+  .author-note .note-label { font-family: 'Raleway', sans-serif; font-size: 0.65rem; font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase; color: #a67dd0; margin-bottom: 1.5rem; }
+  .author-note p { font-size: 1.15rem; color: var(--mist); line-height: 2; margin-bottom: 1rem; }
+  .author-note p:last-child { margin-bottom: 0; }
+  .ch-end { text-align: center; padding: 3rem 0 0; margin-top: 3rem; border-top: 1px solid rgba(236,72,153,0.2); }
+  .ch-end-text { font-family: 'Cormorant Garamond', serif; font-size: 0.85rem; font-style: italic; color: rgba(200,191,224,0.4); letter-spacing: 0.1em; margin-bottom: 2rem; }
+  .ch-nav { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
+  .ch-nav-btn { display: inline-flex; align-items: center; gap: 0.6rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(236,72,153,0.3); color: var(--star); padding: 0.8rem 1.8rem; font-family: 'Raleway', sans-serif; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; transition: all 0.3s; border-radius: 2px; }
+  .ch-nav-btn:hover { background: rgba(236,72,153,0.15); border-color: rgba(249,115,22,0.5); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.4); }
+  .ch-nav-btn.disabled { opacity: 0.3; pointer-events: none; }
+  .ch-nav-toc { color: var(--accent); text-decoration: none; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.3s; }
+  .ch-nav-toc:hover { color: #ec4899; }
+  .progress-wrap { position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 100; background: rgba(0,0,0,0.3); }
+  .progress-fill { height: 100%; width: 0; background: linear-gradient(to right, #ec4899, #f97316); transition: width 0.1s; }
+  .fade-in { opacity: 0; transform: translateY(20px); animation: fadeUp 0.8s ease forwards; }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+  .delay-1 { animation-delay: 0.15s; }
+  .delay-2 { animation-delay: 0.3s; }
+  body { cursor: none; }
+  .cursor { position:fixed; width:8px; height:8px; background:#f97316; border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:transform 0.1s, background 0.3s; box-shadow:0 0 12px rgba(249,115,22,0.6); }
+  .cursor-ring { position:fixed; width:32px; height:32px; border:1px solid rgba(249,115,22,0.4); border-radius:50%; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:all 0.18s ease; }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<div class="progress-wrap"><div class="progress-fill" id="progressFill"></div></div>
+<div class="starfield" id="starfield"></div>
+
+<nav class="top-nav">
+  <a href="../index.html" class="logo">Luminae</a>
+  <span class="nav-chapter-info">Chapter 1 of 1</span>
+  <a href="index.html" class="toc-link">☰ Chapters</a>
+</nav>
+
+<div class="reader-page">
+
+  <header class="ch-header fade-in">
+    <span class="ch-number">✦ Chapter 1 ✦</span>
+    <h1 class="ch-title">Invisible <em>IRL</em></h1>
+    <div class="ch-divider">
+      <div class="ch-divider-line"></div>
+      <span class="ch-divider-glyph">✦</span>
+      <div class="ch-divider-line"></div>
+    </div>
+  </header>
+
+  <article class="ch-content fade-in delay-1">
+    <p class="first">Monday mornings made everyone louder.</p>
+    <p>Lockers slammed shut.</p>
+    <p>Someone was skateboarding through the hallway even though it was definitely not allowed.</p>
+    <p>Someone yelled about a football game. Someone else laughed loud enough for three classrooms to hear.</p>
+    <p>And in the middle of all that noise, Ethan Parker walked through the hallway unnoticed.</p>
+    <p>Gray hoodie under his school jacket.Headphones around his neck.One hand in pocket.</p>
+    <p>Nobody stopped him.</p>
+    <p>Nobody called his name.</p>
+    <p>A few people moved aside automatically without really looking at who they were making space for.</p>
+    <p>That was normal.</p>
+    <p>Ethan wasn’t bullied.Wasn’t hated.</p>
+    <p>People just… forgot him easily.</p>
+    <p>He reached Classroom 214 and quietly stepped inside.</p>
+    <p>The room was already chaos.</p>
+    <p>“Bro, she literally blocked me.”</p>
+    <p>“That’s insane.”</p>
+    <p>Laughter got silenced near the center of the room.</p>
+    <p>Ethan looked up instinctively.</p>
+    <p>Of course.</p>
+    <p>Chloe Hopper.</p>
+    <p>Even sitting down, she somehow became the center of the classroom naturally.</p>
+    <p>Phone in hand with Instagram still open.</p>
+    <p>10.4K followers.</p>
+    <p>Not influencer-famous.</p>
+    <p>School-famous.</p>
+    <p>The kind of famous where:</p>
+    <p>freshmen whispered when she walked by</p>
+    <p>athletes flirted with her constantly</p>
+    <p>random guys suddenly started caring about poetry if she mentioned liking poetry once</p>
+    <p>And somehow, Chloe looked bored by all of it.</p>
+    <p>A tall guy from the basketball team leaned against her desk.</p>
+    <p>“So are you coming Friday or not?”</p>
+    <p>Chloe barely looked up from her phone.“Depends.”</p>
+    <p>“On what?”</p>
+    <p>“If I decide I like people by then.”</p>
+    <p>The class laughed instantly.</p>
+    <p>The guy grinned anyway like rejection from her still counted as attention.</p>
+    <p>“You reject everyone,” Claire muttered beside her.</p>
+    <p>Chloe finally looked up.“Because everyone talks like they learned flirting from TikTok.”</p>
+    <p>“That is NOT true.”</p>
+    <p>“No. That’s how everyone is. No one is literally my TYPE here. “</p>
+    <p>The classroom exploded.</p>
+    <p>Even Mr. Bennett laughed while entering.</p>
+    <p>“Good morning, emotionally unstable people.”</p>
+    <p>“Morning, Mr. Bennett,” the class replied unevenly.</p>
+    <p>Ethan quietly moved toward his usual seat near the windows while conversations continued around him like background noise.</p>
+    <p>As he sat down, Chloe glanced across the room briefly.</p>
+    <p>Her eyes passed over Ethan for less than a second.</p>
+    <p>Then moved on.</p>
+    <p>Not rude.</p>
+    <p>Not intentional.</p>
+    <p>Just automatic.</p>
+    <p>Like looking past a stranger at a bus stop.</p>
+    <p>Ethan looked away toward the rain outside.</p>
+    <p>The lecture started.</p>
+    <p>Pens scratched paper.</p>
+    <p>Someone whispered through the entire lesson.</p>
+    <p>Mr. Bennett threatened to quit teaching twice before first period even ended.</p>
+    <p>And slowly, naturally, Ethan disappeared into another ordinary school day.</p>
+    <hr>
+    <p>By 7:12 PM, rain hammered against Ethan’s apartment windows hard enough to shake them slightly.</p>
+    <p>The apartment was empty when he got home.</p>
+    <p>Again.</p>
+    <p>His mom had texted earlier:</p>
+    <p>double shift tonight.food’s in the fridge ❤️</p>
+    <p>Ethan microwaved leftover pasta, carried it upstairs, and dropped into the chair beside his desk.</p>
+    <p>For a moment, the room stayed silent except for thunder outside.</p>
+    <p>Then he turned on his monitor.</p>
+    <p>Everything changed instantly.</p>
+    <p>Notifications flooded the screen.</p>
+    <p>Instagram DMs.Comments.Mentions.Unread requests.</p>
+    <p>Hundreds of them.</p>
+    <p>At the center of the screen sat the account name:</p>
+    <p>AlwaysThere4U</p>
+    <p>Followers:104,823</p>
+    <p>The blue glow from the monitor reflected softly across Ethan’s tired face.</p>
+    <p>Funny.</p>
+    <p>At school, nobody waited for him.</p>
+    <p>Online, people searched for him every night.</p>
+    <p>His newest post filled the screen:</p>
+    <p>“Some people only text when they’re lonely.Some text because they thought of you first.There’s a difference.”</p>
+    <p>61,000 likes.</p>
+    <p>Thousands of comments.</p>
+    <p>He opened the first unread message.</p>
+    <div class="chat-container">
+    <div class="chat-bubble chat-received">hey.</div>
+    <div class="chat-bubble chat-received">are you awake?</div>
+    </div>
+    <p>Ethan typed calmly.</p>
+    <div class="chat-container">
+    <div class="chat-bubble chat-sent">yeah.</div>
+    <div class="chat-bubble chat-sent">what happened?</div>
+    </div>
+    <div class="chat-typing">Typing bubbles appeared instantly.</div>
+    <p>His followers always trust him more than real people.</p>
+    <div class="chat-container">
+    <div class="chat-bubble chat-received">I think my friends only tolerate me because I’m useful to them</div>
+    </div>
+    <p>Ethan leaned back slightly.</p>
+    <p>Then typed:</p>
+    <div class="chat-container">
+    <div class="chat-bubble chat-sent">people who only value usefulness usually disappear the second you stop giving.</div>
+    <div class="chat-bubble chat-sent">the ones worth keeping stay even during the quiet versions of you.</div>
+    </div>
+    <div class="chat-typing">Seen.</div>
+    <div class="chat-typing">Typing…</div>
+    <div class="chat-container">
+    <div class="chat-bubble chat-received">how do you always know exactly what to say</div>
+    </div>
+    <p>Ethan stared at the question quietly.</p>
+    <p>Because honestly?</p>
+    <p>He didn’t.</p>
+    <p>He just spent most of his life observing people while they overlooked him.</p>
+    <p>Eventually you start noticing things:fake laughs,forced confidence,sadness hidden behind “lol.”</p>
+    <p>Still, he replied:</p>
+    <div class="chat-container">
+    <div class="chat-bubble chat-sent">maybe lonely people become good at understanding loneliness.</div>
+    </div>
+    <div class="chat-typing">Three dots appeared again.</div>
+    <div class="chat-container">
+    <div class="chat-bubble chat-received">Wow.</div>
+    <div class="chat-bubble chat-received">that sounded kinda sad 😭</div>
+    </div>
+    <p>A small smile crossed Ethan’s face.</p>
+    <p>Tiny.Brief.</p>
+    <p>Gone a second later.</p>
+    <p>More messages arrived.</p>
+    <p>A breakup.</p>
+    <div class="chat-container">
+    <div class="chat-bubble chat-received">he said I was "too much" and then just… left</div>
+    </div>
+    <p>Ethan read it twice.</p>
+    <div class="chat-container">
+    <div class="chat-bubble chat-sent">too much how?</div>
+    </div>
+    <div class="chat-container">
+    <div class="chat-bubble chat-sent">too emotional. too needy. too everything apparently</div>
+    </div>
+    <div class="chat-container">
+    <div class="chat-bubble chat-sent">idk maybe he was right</div>
+    </div>
+    <p>Ethan exhaled slowly.</p>
+    <div class="chat-container">
+    <div class="chat-bubble chat-sent">someone calling you "too much" usually means they weren't enough.</div>
+    </div>
+    <p>She replied,</p>
+    <div class="chat-container">
+    <div class="chat-bubble chat-received">what?</div>
+    </div>
+    <p>Then Ethan typed,</p>
+    <div class="chat-container">
+    <div class="chat-bubble chat-sent">people who can actually handle you don't use that phrase. they just… stay.</div>
+    </div>
+    <div class="chat-typing">Long pause.</div>
+    <div class="chat-typing">Typing bubbles appeared, disappeared, appeared again.</div>
+    <div class="chat-container">
+    <div class="chat-bubble chat-received">i never thought about it that way</div>
+    </div>
+    <div class="chat-container">
+    <div class="chat-bubble chat-sent">you okay right now?</div>
+    </div>
+    <div class="chat-container">
+    <div class="chat-bubble chat-received">not really</div>
+    </div>
+    <div class="chat-container">
+    <div class="chat-bubble chat-sent">not really is honest. that's more than most people manage tonight.</div>
+    </div>
+    <p>Then a girl showing him pictures of a stray dog she rescued.</p>
+    <div class="chat-container">
+    <div class="chat-bubble chat-received">OKAY I NEED TO SHOW SOMEONE THIS RIGHT NOW</div>
+    </div>
+    <p>Three photos loaded slowly.</p>
+    <p>A small dog. Muddy. One ear flopped sideways like it hadn't figured out ears yet. Sitting in what looked like a laundromat, wrapped in someone's jacket.</p>
+    <div class="chat-container">
+    <div class="chat-bubble chat-received">i found him outside the convenience store. he was just sitting in the rain looking confused about everything</div>
+    </div>
+    <div class="chat-container">
+    <div class="chat-bubble chat-received">i named him Biscuit</div>
+    </div>
+    <div class="chat-container">
+    <div class="chat-bubble chat-sent">you named him already?</div>
+    </div>
+    <div class="chat-container">
+    <div class="chat-bubble chat-received">i named him in the first thirty seconds yes</div>
+    </div>
+    <div class="chat-container">
+    <div class="chat-bubble chat-sent">so he's yours now</div>
+    </div>
+    <div class="chat-container">
+    <div class="chat-bubble chat-received">my landlord is going to actually kill me but YES he's mine now. look at his little face. LOOK</div>
+    </div>
+    <p>Ethan looked.</p>
+    <p>He typed:</p>
+    <div class="chat-container">
+    <div class="chat-bubble chat-sent">he does look like a Biscuit.</div>
+    </div>
+    <div class="chat-container">
+    <div class="chat-bubble chat-received">RIGHT??? he has biscuit energy</div>
+    </div>
+    <div class="chat-container">
+    <div class="chat-bubble chat-sent">are you keeping him warm</div>
+    </div>
+    <div class="chat-container">
+    <div class="chat-bubble chat-received">i bought him a hot dog from the gas station and he ate it in like 0.4 seconds and now he's asleep on my foot and i genuinely cannot move and i don't even care</div>
+    </div>
+    <p>Ethan smiled at that.</p>
+    <p>Actually smiled.</p>
+    <p>Not the small, brief kind.</p>
+    <p>The kind that stayed.</p>
+    <p>Another guy terrified of disappointing his parents.</p>
+    <div class="chat-container">
+    <div class="chat-bubble chat-received">i got a B+ on the exam</div>
+    </div>
+    <div class="chat-container">
+    <div class="chat-bubble chat-sent">that's solid</div>
+    </div>
+    <div class="chat-container">
+    <div class="chat-bubble chat-received">not for my dad it isn't</div>
+    </div>
+    <div class="chat-container">
+    <div class="chat-bubble chat-sent">what does he say?</div>
+    </div>
+    <div class="chat-container">
+    <div class="chat-bubble chat-received">nothing. that's worse. he just goes quiet and nods and then asks if i studied enough. and i did. i studied every night for two weeks.</div>
+    </div>
+    <div class="chat-container">
+    <div class="chat-bubble chat-sent">and the B+ still felt like failing?</div>
+    </div>
+    <div class="chat-container">
+    <div class="chat-bubble chat-received">it felt like i failed HIM. which is different.</div>
+    </div>
+    <p>Ethan sat with that for a second.</p>
+    <div class="chat-container">
+    <div class="chat-bubble chat-sent">yeah. that one's harder.</div>
+    </div>
+    <div class="chat-container">
+    <div class="chat-bubble chat-received">does it get easier?</div>
+    </div>
+    <p>He typed honestly:</p>
+    <div class="chat-container">
+    <div class="chat-bubble chat-sent">i don't know. but i think at some point you have to decide whose version of you actually fits.</div>
+    </div>
+    <div class="chat-container">
+    <div class="chat-bubble chat-received">what if his version is what pushes me forward though</div>
+    </div>
+    <div class="chat-container">
+    <div class="chat-bubble chat-sent">then keep it. just make sure it's a tool and not a sentence.</div>
+    </div>
+    <div class="chat-typing">Long pause.</div>
+    <div class="chat-container">
+    <div class="chat-bubble chat-received">that's going in my notes app</div>
+    </div>
+    <div class="chat-container">
+    <div class="chat-bubble chat-sent">go sleep. B+ means you showed up. that matters.</div>
+    </div>
+    <p>Ethan answered every single one carefully.</p>
+    <p>Like the messages mattered.</p>
+    <p>Because they did.</p>
+    <p>The clock crawled past midnight unnoticed.</p>
+    <p>Rain continued pouring outside.</p>
+    <p>And then—</p>
+    <p>At 1:13 am,</p>
+    <p>A new notification appeared.</p>
+    <p>Message from:</p>
+    <p>Chloe Hopper</p>
+    <p>Ethan froze slightly.</p>
+    <p>The verified-like glow of her profile picture filled the corner of the screen.</p>
+    <p>10.4K followers.</p>
+    <p>Same Chloe Hopper.</p>
+    <p>Same girl from his classroom.</p>
+    <p>Same girl half the school was obsessed with.</p>
+    <p>Message:</p>
+    <div class="chat-container">
+    <div class="chat-bubble chat-received">hey.</div>
+    <div class="chat-bubble chat-received">this is probably random but…</div>
+    <div class="chat-bubble chat-received">how do you stop feeling lonely even when you’re surrounded by people all day?</div>
+    </div>
+
+  </article>
+
+  <div class="ch-end fade-in delay-2">
+    <p class="ch-end-text">— End of Chapter 1 —</p>
+    <div class="ch-nav">
+      <a href="#" class="ch-nav-btn disabled">← Previous</a>
+      <a href="index.html" class="ch-nav-toc">All Chapters</a>
+      <a href="#" class="ch-nav-btn disabled">Next →</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const starfield = document.getElementById('starfield');
+for (let i = 0; i < 60; i++) {
+  const s = document.createElement('div');
+  s.className = 'star-dot';
+  const size = Math.random() < 0.7 ? 1 : 2;
+  s.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*4}s;--delay:${Math.random()*5}s;--op:${0.2+Math.random()*0.5};`;
+  starfield.appendChild(s);
+}
+const progressFill = document.getElementById('progressFill');
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  progressFill.style.width = Math.min(pct, 100) + '%';
+});
+
+const cursor = document.getElementById('cursor'), cursorRing = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cursor.style.left = mx + 'px'; cursor.style.top = my + 'px'; });
+function animRing() { rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12; cursorRing.style.left = rx + 'px'; cursorRing.style.top = ry + 'px'; requestAnimationFrame(animRing); }
+animRing();
+document.querySelectorAll('a, button, .ch-nav-btn').forEach(el => {
+  el.addEventListener('mouseenter', () => { cursor.style.transform = 'translate(-50%,-50%) scale(2)'; cursorRing.style.transform = 'translate(-50%,-50%) scale(1.5)'; cursorRing.style.borderColor = 'rgba(249,115,22,0.7)'; });
+  el.addEventListener('mouseleave', () => { cursor.style.transform = 'translate(-50%,-50%) scale(1)'; cursorRing.style.transform = 'translate(-50%,-50%) scale(1)'; cursorRing.style.borderColor = 'rgba(249,115,22,0.4)'; });
+});
+</script>
+</body>
+</html>

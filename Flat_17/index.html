@@ -78,7 +78,8 @@
   .char-particle { position: absolute; border-radius: 50%; pointer-events: none; animation: float-particle var(--fp-d, 8s) ease-in-out infinite; animation-delay: var(--fp-delay, 0s); }
   @keyframes float-particle { 0%, 100% { transform: translateY(0) scale(1); opacity: var(--fp-op, 0.3); } 50% { transform: translateY(-20px) scale(1.2); opacity: calc(var(--fp-op, 0.3) * 1.6); } }
   
-  .char-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; position: relative; z-index: 1; max-width: 600px; margin: 0 auto; padding: 0 1rem; }
+  .char-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+  @media (max-width: 900px) { .char-grid { grid-template-columns: repeat(2, 1fr); max-width: 700px; } }
   @media (max-width: 600px) { .char-grid { grid-template-columns: 1fr; max-width: 340px; } }
   
   .char-card { position: relative; aspect-ratio: 2/3; min-height: 320px; border-radius: 18px; overflow: hidden; cursor: pointer; transform-style: preserve-3d; transition: transform 0.08s linear; will-change: transform; background: #0a071a; box-shadow: 0 4px 30px rgba(0,0,0,0.5), 0 0 1px rgba(255,255,255,0.05); }
@@ -196,6 +197,52 @@
         </div>
       </div>
 
+      <!-- Adrian -->
+      <div class="char-card" data-tl="B">
+        <div class="char-aura"></div>
+        <div class="char-portrait" style="background-image: url('Images/Adrian.jpg'); background-color: #100a1a;"></div>
+        <div class="char-overlay-base"></div>
+        <div class="char-spotlight"></div>
+        <div class="char-frame"></div>
+        <div class="char-corners"></div>
+        <canvas class="char-particle-canvas"></canvas>
+        <div class="char-content">
+          <div class="char-name">Adrian</div>
+          <div class="char-details">
+            <div class="char-role-line">
+              <div class="char-role-dot"></div>
+              <span class="char-role-text">Mysterious Man · Tenant 17</span>
+            </div>
+            <div class="char-tagline">"You shouldn't have moved here."</div>
+            <div class="char-divider"></div>
+            <div class="char-desc">The enigmatic resident of Flat 17. Shrouded in mystery and rarely seen during the day, his very presence seems tied to the dark, unsettling secrets hidden within the walls of Blackthorne Apartments.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Noah -->
+      <div class="char-card" data-tl="A">
+        <div class="char-aura"></div>
+        <div class="char-portrait" style="background-image: url('Images/Noah.jpg'); background-color: #100a1a;"></div>
+        <div class="char-overlay-base"></div>
+        <div class="char-spotlight"></div>
+        <div class="char-frame"></div>
+        <div class="char-corners"></div>
+        <canvas class="char-particle-canvas"></canvas>
+        <div class="char-content">
+          <div class="char-name">Noah Carter</div>
+          <div class="char-details">
+            <div class="char-role-line">
+              <div class="char-role-dot"></div>
+              <span class="char-role-text">Neighbor · Tenant 15</span>
+            </div>
+            <div class="char-tagline">"Professional annoyance."</div>
+            <div class="char-divider"></div>
+            <div class="char-desc">Eris's enigmatic neighbor from down the hall. Despite his casual jokes and relaxed demeanor, he seems to know more about the building's secrets than he lets on.</div>
+          </div>
+        </div>
+      </div>
+
       <!-- Kate -->
       <div class="char-card" data-tl="B">
         <div class="char-aura"></div>
@@ -218,7 +265,6 @@
           </div>
         </div>
       </div>
-
     </div>
   </section>
 
