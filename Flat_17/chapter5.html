@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flat 17 — Flat 17 | Luminae</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Cinzel+Decorative:wght@400;700&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0d0a1a; --parchment: #fdf8f0; --cream: #f5ede0;
+    --gold: #dc2626; --gold-light: #ef4444; --gold-glow: #fca5a5;
+    --violet: #6b3fa0; --violet-dark: #3d1f6e; --violet-light: #a67dd0;
+    --rose: #c45a7a; --midnight: #0f0820; --mist: #c8bfe0; --star: #f8f0e3;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--midnight); color: var(--star); font-family: 'Raleway', sans-serif; font-weight: 300; overflow-x: hidden; min-height: 100vh; }
+  .starfield { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .star-dot { position: absolute; border-radius: 50%; background: white; animation: twinkle var(--d, 3s) ease-in-out infinite; animation-delay: var(--delay, 0s); opacity: 0; }
+  @keyframes twinkle { 0%, 100% { opacity: 0; transform: scale(0.5); } 50% { opacity: var(--op, 0.7); transform: scale(1); } }
+  .top-nav { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; padding: 1rem 3rem; background: linear-gradient(to bottom, rgba(15,8,32,0.98), rgba(15,8,32,0.9)); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(220,38,38,0.3); }
+  .logo { font-family: 'Cinzel Decorative', cursive; font-size: 1.1rem; color: #dc2626; letter-spacing: 0.08em; text-shadow: 0 0 20px rgba(220,38,38,0.6); text-decoration: none; }
+  .nav-chapter-info { font-size: 0.7rem; color: var(--mist); letter-spacing: 0.1em; text-transform: uppercase; }
+  .toc-link { color: #dc2626; text-decoration: none; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.3s; }
+  .toc-link:hover { color: #ef4444; }
+  .reader-page { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; padding: 4rem 2rem 3rem; }
+  .ch-header { text-align: center; margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid rgba(239,68,68,0.3); }
+  .ch-number { font-size: 0.65rem; letter-spacing: 0.4em; text-transform: uppercase; color: #dc2626; margin-bottom: 1.2rem; display: block; }
+  .ch-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 300; line-height: 1.15; color: var(--star); margin-bottom: 0.8rem; }
+  .ch-title em { font-style: italic; color: #ef4444; text-shadow: 0 0 30px rgba(239,68,68,0.3); }
+  .ch-divider { display: flex; align-items: center; gap: 0.8rem; margin: 1.5rem auto 0; max-width: 160px; }
+  .ch-divider-line { flex: 1; height: 1px; background: linear-gradient(to right, transparent, rgba(220,38,38,0.3), transparent); }
+  .ch-divider-glyph { color: #dc2626; font-size: 0.8rem; }
+  .ch-content { font-family: 'Cormorant Garamond', serif; font-size: 1.18rem; color: var(--mist); line-height: 2; font-weight: 400; }
+  .ch-content p { margin-bottom: 1.5rem; }
+  .ch-content p.first::first-letter { font-family: 'Cinzel Decorative', cursive; font-size: 3.8rem; float: left; line-height: 1; margin: 0.05em 0.12em -0.1em 0; color: #dc2626; text-shadow: 0 0 20px rgba(220,38,38,0.4); }
+  .ch-content em { color: #ef4444; font-style: italic; }
+  .ch-content .dialogue { color: var(--star); }
+  .ch-content .thought { color: var(--violet-light); font-style: italic; }
+  .ch-content .pause { text-align: center; color: var(--gold); font-size: 0.8rem; letter-spacing: 0.5em; margin: 2rem 0; }
+  .ch-content hr { border: none; text-align: center; margin: 2.5rem 0; }
+  .ch-content hr::after { content: '✦ ✦'; color: var(--gold); font-size: 0.7rem; letter-spacing: 0.5em; }
+
+  .ch-end { text-align: center; padding: 3rem 0 0; margin-top: 3rem; border-top: 1px solid rgba(239,68,68,0.3); }
+  .ch-end-text { font-family: 'Cormorant Garamond', serif; font-size: 0.85rem; font-style: italic; color: rgba(200,191,224,0.4); letter-spacing: 0.1em; margin-bottom: 2rem; }
+  .ch-nav { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
+  .ch-nav-btn { display: inline-flex; align-items: center; gap: 0.6rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(220,38,38,0.3); color: var(--star); padding: 0.8rem 1.8rem; font-family: 'Raleway', sans-serif; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; transition: all 0.3s; border-radius: 2px; }
+  .ch-nav-btn:hover { background: rgba(239,68,68,0.1); border-color: rgba(220,38,38,0.6); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.3); }
+  .ch-nav-btn.disabled { opacity: 0.3; pointer-events: none; }
+  .ch-nav-toc { color: #dc2626; text-decoration: none; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.3s; }
+
+  .progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: rgba(255,255,255,0.1); width: 100%; z-index: 100; }
+  .progress-fill { height: 100%; background: linear-gradient(to right, #dc2626, #ef4444); width: 0%; transition: width 0.1s; }
+
+  body { cursor: none; }
+  .cursor { position:fixed; width:8px; height:8px; background:var(--gold); border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:transform 0.1s, background 0.3s; box-shadow:0 0 12px rgba(220,38,38,0.5); }
+  .cursor-ring { position:fixed; width:32px; height:32px; border:1px solid rgba(239,68,68,0.4); border-radius:50%; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:all 0.18s ease; }
+  @media (pointer: coarse) { body { cursor: auto; } .cursor, .cursor-ring { display: none !important; } }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="starfield" id="starfield"></div>
+
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+<nav class="top-nav">
+  <a href="../index.html" class="logo">Luminae</a>
+  <span class="nav-chapter-info">Flat 17 • Chapter 5</span>
+  <a href="index.html" class="toc-link">Index</a>
+</nav>
+
+<div class="reader-page">
+  <header class="ch-header">
+    <span class="ch-number">Chapter V</span>
+    <h1 class="ch-title">Flat 17</h1>
+    <div class="ch-divider">
+      <div class="ch-divider-line"></div>
+      <span class="ch-divider-glyph">✦</span>
+      <div class="ch-divider-line"></div>
+    </div>
+  </header>
+
+  <article class="ch-content">
+    <p class="first">Then from somewhere inside the apartment—</p>
+    <p>Eris heard breathing.</p>
+    <p>Slow.</p>
+    <p>Steady.</p>
+    <p>Too close.</p>
+    <p>Her heartbeat instantly lost rhythm.</p>
+    <p>The hallway suddenly felt freezing cold as she stood outside the slightly open door of Flat 17.</p>
+    <p>Every instinct screamed at her to walk away.</p>
+    <p>Go inside apartment 18.</p>
+    <p>Lock the door.</p>
+    <p>Pretend none of this was happening.</p>
+    <p>Instead—</p>
+    <p>She stayed.</p>
+    <p>Because curiosity had always been stronger than common sense.</p>
+    <p class="dialogue">“Hello?” Eris called softly.</p>
+    <p>Silence answered her.</p>
+    <p>The darkness inside the apartment remained completely still.</p>
+    <p>Rain tapped softly against the hallway windows nearby while lights flickered overhead.</p>
+    <p>Eris swallowed nervously.</p>
+    <p class="dialogue">“This is how people die in horror movies,” she muttered to herself.</p>
+    <p>Still—</p>
+    <p>She stepped closer.</p>
+    <p>The door opened slightly wider under her hand.</p>
+    <p>Flat 17 smelled faintly like smoke, rain, and something expensive she couldn’t explain.</p>
+    <p>The inside looked strange.</p>
+    <p>Too clean.</p>
+    <p>Too empty.</p>
+    <p>Like nobody truly lived there.</p>
+    <p>Only one dim lamp glowed weakly somewhere deeper inside the apartment.</p>
+    <p>Eris hesitated near the entrance.</p>
+    <p class="dialogue">“Okay… if you’re a murderer, this is officially terrifying.”</p>
+    <p>A low voice suddenly answered from the darkness.</p>
+    <p class="dialogue">“You talk too much.”</p>
+    <p>Eris gasped sharply.</p>
+    <p>Before she could react, someone stepped out from the shadows.</p>
+    <p>Tall.</p>
+    <p>Dressed completely in black.</p>
+    <p>A dark hoodie covered most of his face while dim lighting hid the rest.</p>
+    <p>But even without seeing him properly—</p>
+    <p>Eris felt it immediately.</p>
+    <p>Danger.</p>
+    <p>The stranger leaned casually against the wall near the hallway inside the apartment.</p>
+    <p>Watching her silently.</p>
+    <p>And somehow—</p>
+    <p>That felt worse than if he had threatened her.</p>
+    <p>Eris’s pulse quickened painfully.</p>
+    <p class="dialogue">“You scared me,” she whispered.</p>
+    <p>A quiet sound escaped him.</p>
+    <p>Almost amusement.</p>
+    <p class="dialogue">“You were standing outside my apartment.”</p>
+    <p class="dialogue">“That’s because your door was open.”</p>
+    <p class="dialogue">“And yet you still came closer.”</p>
+    <p>Heat rushed into Eris’s face instantly.</p>
+    <p>Annoyingly true.</p>
+    <p>The stranger’s gaze moved slowly over her expression.</p>
+    <p>Observing.</p>
+    <p>Careful.</p>
+    <p>Like he was memorizing every reaction she made.</p>
+    <p>The silence between them became strangely heavy.</p>
+    <p>Dangerous.</p>
+    <p>Eris crossed her arms nervously.</p>
+    <p class="dialogue">“So… do you normally scare your neighbors for entertainment?”</p>
+    <p>Another soft almost-laugh came from him.</p>
+    <p>Then:</p>
+    <p class="dialogue">“Only the curious ones.”</p>
+    <p>Her stomach twisted unexpectedly.</p>
+    <p>God.</p>
+    <p>Even his voice sounded unfairly attractive.</p>
+    <p>Eris hated that.</p>
+    <p>Thunder crashed outside loudly.</p>
+    <p>For a brief second, hallway light spilled across part of his face.</p>
+    <p>Not enough to fully see him.</p>
+    <p>Just enough to notice sharp features and dark eyes watching her intensely beneath the hood.</p>
+    <p>Then darkness swallowed him again.</p>
+    <p>Frustration flickered inside her immediately.</p>
+    <p>She still couldn’t properly see him.</p>
+    <p class="dialogue">“Do you ever show your face,” she asked carefully, “or is the mysterious psychopath thing permanent?”</p>
+    <p>Silence.</p>
+    <p>Then slowly—</p>
+    <p>He stepped closer.</p>
+    <p>Eris stopped breathing instantly.</p>
+    <p>The distance between them disappeared too fast.</p>
+    <p>Now she could smell rain on his clothes.</p>
+    <p>Feel warmth radiating from him.</p>
+    <p>Her heartbeat became embarrassing.</p>
+    <p>The stranger tilted his head slightly while staring down at her.</p>
+    <p class="dialogue">“You should stop talking to apartment 15.”</p>
+    <p>Eris blinked in shock.</p>
+    <p class="dialogue">“Noah?”</p>
+    <p>The stranger said nothing.</p>
+    <p>Which somehow answered everything.</p>
+    <p>Fear curled slowly through her chest.</p>
+    <p class="dialogue">“How do you know about Noah?”</p>
+    <p>Another step closer.</p>
+    <p>Now her back nearly touched the apartment door behind her.</p>
+    <p class="dialogue">“You laugh too much around him,” he said quietly.</p>
+    <p>Eris’s breath caught instantly.</p>
+    <p>That wasn’t normal jealousy.</p>
+    <p>That meant—</p>
+    <p class="dialogue">“You’ve been watching me.”</p>
+    <p>For the first time, the stranger went silent for too long.</p>
+    <p>Then finally—</p>
+    <p class="dialogue">“I watch everyone in this building.”</p>
+    <p>Lie.</p>
+    <p>Eris somehow knew it was a lie immediately.</p>
+    <p>Because the way he looked at her felt too personal.</p>
+    <p>Too focused.</p>
+    <p>Too intense.</p>
+    <p>Thunder crashed again outside.</p>
+    <p>And this time—</p>
+    <p>The stranger suddenly reached past her.</p>
+    <p>Eris flinched slightly when his hand brushed near her waist.</p>
+    <p>But he only pushed the apartment door shut behind her softly.</p>
+    <p>Still—</p>
+    <p>The closeness destroyed her ability to think properly.</p>
+    <p class="dialogue">“Who are you?” she whispered again.</p>
+    <p>Silence filled Flat 17.</p>
+    <p>Then quietly—</p>
+    <p class="dialogue">“Someone you should stay away from, Eris.”</p>
+
+  </article>
+
+  <footer class="ch-end">
+    <div class="ch-end-text">✦ To Be Continued ✦</div>
+    <div class="ch-nav">
+      <a href="chapter4.html" class="ch-nav-btn">← Previous</a>
+      <a href="index.html" class="ch-nav-toc">All Chapters</a>
+      <a href="chapter6.html" class="ch-nav-btn ">Next →</a>
+    </div>
+  </footer>
+</div>
+
+<script>
+const starfield = document.getElementById('starfield');
+for (let i = 0; i < 60; i++) {
+  const s = document.createElement('div');
+  s.className = 'star-dot';
+  const size = Math.random() < 0.7 ? 1 : Math.random() < 0.5 ? 2 : 3;
+  s.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*4}s;--delay:${Math.random()*5}s;--op:${0.2+Math.random()*0.5};`;
+  starfield.appendChild(s);
+}
+const progressFill = document.getElementById('progressFill');
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  progressFill.style.width = Math.min(pct, 100) + '%';
+});
+
+const cursor = document.getElementById('cursor'), cursorRing = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cursor.style.left = mx + 'px'; cursor.style.top = my + 'px'; });
+function animRing() { rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12; cursorRing.style.left = rx + 'px'; cursorRing.style.top = ry + 'px'; requestAnimationFrame(animRing); }
+animRing();
+document.querySelectorAll('a, button, .ch-nav-btn').forEach(el => {
+  el.addEventListener('mouseenter', () => { cursor.style.transform = 'translate(-50%,-50%) scale(2)'; cursorRing.style.transform = 'translate(-50%,-50%) scale(1.5)'; cursorRing.style.borderColor = 'rgba(239,68,68,0.7)'; });
+  el.addEventListener('mouseleave', () => { cursor.style.transform = 'translate(-50%,-50%) scale(1)'; cursorRing.style.transform = 'translate(-50%,-50%) scale(1)'; cursorRing.style.borderColor = 'rgba(239,68,68,0.4)'; });
+});
+</script>
+</body>
+</html>

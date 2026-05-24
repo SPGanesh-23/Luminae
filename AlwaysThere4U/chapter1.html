@@ -101,6 +101,60 @@
     margin-bottom: 0.3rem;
     letter-spacing: 0.05em;
   }
+
+  /* ═══ Mystery notification card ═══ */
+  .notif-card {
+    margin: 2.5rem 0;
+    padding: 1.8rem 1.6rem;
+    background: rgba(0,0,0,0.35);
+    border: 1px solid rgba(249,115,22,0.18);
+    border-radius: 16px;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 0 40px rgba(249,115,22,0.06), inset 0 1px 0 rgba(255,255,255,0.03);
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+  }
+  .notif-avatar {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+    color: rgba(200,191,224,0.3);
+  }
+  .notif-body { flex: 1; }
+  .notif-username {
+    font-family: 'Raleway', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: rgba(200,191,224,0.5);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.25rem;
+  }
+  .notif-meta {
+    font-family: 'Raleway', sans-serif;
+    font-size: 0.68rem;
+    color: rgba(200,191,224,0.25);
+    letter-spacing: 0.08em;
+    font-style: italic;
+  }
+  .notif-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent-glow);
+    flex-shrink: 0;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.7); } }
+
   .author-note { background: rgba(0, 0, 0, 0.15); border: 1px solid rgba(236, 72, 153, 0.15); border-radius: 4px; padding: 2.5rem; margin-top: 4rem; }
   .author-note .note-label { font-family: 'Raleway', sans-serif; font-size: 0.65rem; font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase; color: #a67dd0; margin-bottom: 1.5rem; }
   .author-note p { font-size: 1.15rem; color: var(--mist); line-height: 2; margin-bottom: 1rem; }
@@ -156,17 +210,17 @@
     <p>Someone was skateboarding through the hallway even though it was definitely not allowed.</p>
     <p>Someone yelled about a football game. Someone else laughed loud enough for three classrooms to hear.</p>
     <p>And in the middle of all that noise, Ethan Parker walked through the hallway unnoticed.</p>
-    <p>Gray hoodie under his school jacket.Headphones around his neck.One hand in pocket.</p>
+    <p>Gray hoodie under his school jacket. Headphones around his neck. One hand in pocket.</p>
     <p>Nobody stopped him.</p>
     <p>Nobody called his name.</p>
     <p>A few people moved aside automatically without really looking at who they were making space for.</p>
     <p>That was normal.</p>
-    <p>Ethan wasn’t bullied.Wasn’t hated.</p>
+    <p>Ethan wasn't bullied. Wasn't hated.</p>
     <p>People just… forgot him easily.</p>
     <p>He reached Classroom 214 and quietly stepped inside.</p>
     <p>The room was already chaos.</p>
-    <p>“Bro, she literally blocked me.”</p>
-    <p>“That’s insane.”</p>
+    <p>"Bro, she literally blocked me."</p>
+    <p>"That's insane."</p>
     <p>Laughter got silenced near the center of the room.</p>
     <p>Ethan looked up instinctively.</p>
     <p>Of course.</p>
@@ -176,26 +230,23 @@
     <p>10.4K followers.</p>
     <p>Not influencer-famous.</p>
     <p>School-famous.</p>
-    <p>The kind of famous where:</p>
-    <p>freshmen whispered when she walked by</p>
-    <p>athletes flirted with her constantly</p>
-    <p>random guys suddenly started caring about poetry if she mentioned liking poetry once</p>
+    <p>The kind of famous where freshmen whispered when she walked by, athletes flirted with her constantly, and random guys suddenly started caring about poetry if she mentioned liking poetry once.</p>
     <p>And somehow, Chloe looked bored by all of it.</p>
     <p>A tall guy from the basketball team leaned against her desk.</p>
-    <p>“So are you coming Friday or not?”</p>
-    <p>Chloe barely looked up from her phone.“Depends.”</p>
-    <p>“On what?”</p>
-    <p>“If I decide I like people by then.”</p>
+    <p>"So are you coming Friday or not?"</p>
+    <p>Chloe barely looked up from her phone. "Depends."</p>
+    <p>"On what?"</p>
+    <p>"If I decide I like people by then."</p>
     <p>The class laughed instantly.</p>
     <p>The guy grinned anyway like rejection from her still counted as attention.</p>
-    <p>“You reject everyone,” Claire muttered beside her.</p>
-    <p>Chloe finally looked up.“Because everyone talks like they learned flirting from TikTok.”</p>
-    <p>“That is NOT true.”</p>
-    <p>“No. That’s how everyone is. No one is literally my TYPE here. “</p>
+    <p>"You reject everyone," Claire muttered beside her.</p>
+    <p>Chloe finally looked up. "Because everyone talks like they learned flirting from TikTok."</p>
+    <p>"That is NOT true."</p>
+    <p>"No. That's how everyone is. No one is literally my TYPE here."</p>
     <p>The classroom exploded.</p>
     <p>Even Mr. Bennett laughed while entering.</p>
-    <p>“Good morning, emotionally unstable people.”</p>
-    <p>“Morning, Mr. Bennett,” the class replied unevenly.</p>
+    <p>"Good morning, emotionally unstable people."</p>
+    <p>"Morning, Mr. Bennett," the class replied unevenly.</p>
     <p>Ethan quietly moved toward his usual seat near the windows while conversations continued around him like background noise.</p>
     <p>As he sat down, Chloe glanced across the room briefly.</p>
     <p>Her eyes passed over Ethan for less than a second.</p>
@@ -211,203 +262,191 @@
     <p>Mr. Bennett threatened to quit teaching twice before first period even ended.</p>
     <p>And slowly, naturally, Ethan disappeared into another ordinary school day.</p>
     <hr>
-    <p>By 7:12 PM, rain hammered against Ethan’s apartment windows hard enough to shake them slightly.</p>
+    <p>By 7:12 PM, rain hammered against Ethan's apartment windows hard enough to shake them slightly.</p>
     <p>The apartment was empty when he got home.</p>
     <p>Again.</p>
     <p>His mom had texted earlier:</p>
     <div class="chat-container">
-    <div class="chat-bubble chat-received">double shift tonight.food’s in the fridge ❤️</div>
+      <div class="chat-bubble chat-received">double shift tonight. food's in the fridge ❤️</div>
     </div>
-    <p></p>
     <p>Ethan microwaved leftover pasta, carried it upstairs, and dropped into the chair beside his desk.</p>
     <p>For a moment, the room stayed silent except for thunder outside.</p>
     <p>Then he turned on his monitor.</p>
     <p>Everything changed instantly.</p>
     <p>Notifications flooded the screen.</p>
-    <p>Instagram DMs.Comments.Mentions.Unread requests.</p>
+    <p>Instagram DMs. Comments. Mentions. Unread requests.</p>
     <p>Hundreds of them.</p>
     <p>At the center of the screen sat the account name:</p>
-    <p>AlwaysThere4U</p>
-    <p>Followers:104,823</p>
-    <p>The blue glow from the monitor reflected softly across Ethan’s tired face.</p>
+    <p><strong>AlwaysThere4U</strong></p>
+    <p>Followers: 104,823</p>
+    <p>The blue glow from the monitor reflected softly across Ethan's tired face.</p>
     <p>Funny.</p>
     <p>At school, nobody waited for him.</p>
     <p>Online, people searched for him every night.</p>
     <p>His newest post filled the screen:</p>
-    <p>“Some people only text when they’re lonely.Some text because they thought of you first.There’s a difference.”</p>
+    <p><em>"Some people only text when they're lonely. Some text because they thought of you first. There's a difference."</em></p>
     <p>61,000 likes.</p>
     <p>Thousands of comments.</p>
     <p>He opened the first unread message.</p>
     <div class="chat-container">
-    <div class="chat-bubble chat-received">hey.</div>
-    <div class="chat-bubble chat-received">are you awake?</div>
+      <div class="chat-bubble chat-received">hey.</div>
+      <div class="chat-bubble chat-received">are you awake?</div>
     </div>
     <p>Ethan typed calmly.</p>
     <div class="chat-container">
-    <div class="chat-bubble chat-sent">yeah.</div>
-    <div class="chat-bubble chat-sent">what happened?</div>
+      <div class="chat-bubble chat-sent">yeah.</div>
+      <div class="chat-bubble chat-sent">what happened?</div>
     </div>
     <div class="chat-typing">Typing bubbles appeared instantly.</div>
-    <p>His followers always trust him more than real people.</p>
+    <p>His followers always trusted him more than real people.</p>
     <div class="chat-container">
-    <div class="chat-bubble chat-received">I think my friends only tolerate me because I’m useful to them</div>
+      <div class="chat-bubble chat-received">I think my friends only tolerate me because I'm useful to them</div>
     </div>
-    <p>Ethan leaned back slightly.</p>
-    <p>Then typed:</p>
+    <p>Ethan leaned back slightly. Then typed:</p>
     <div class="chat-container">
-    <div class="chat-bubble chat-sent">people who only value usefulness usually disappear the second you stop giving.</div>
-    <div class="chat-bubble chat-sent">the ones worth keeping stay even during the quiet versions of you.</div>
+      <div class="chat-bubble chat-sent">people who only value usefulness usually disappear the second you stop giving.</div>
+      <div class="chat-bubble chat-sent">the ones worth keeping stay even during the quiet versions of you.</div>
     </div>
-    <div class="chat-typing">Seen.</div>
-    <div class="chat-typing">Typing…</div>
+    <div class="chat-typing">Seen. Typing…</div>
     <div class="chat-container">
-    <div class="chat-bubble chat-received">how do you always know exactly what to say</div>
+      <div class="chat-bubble chat-received">how do you always know exactly what to say</div>
     </div>
     <p>Ethan stared at the question quietly.</p>
     <p>Because honestly?</p>
-    <p>He didn’t.</p>
+    <p>He didn't.</p>
     <p>He just spent most of his life observing people while they overlooked him.</p>
-    <p>Eventually you start noticing things:fake laughs,forced confidence,sadness hidden behind “lol.”</p>
+    <p>Eventually you start noticing things: fake laughs, forced confidence, sadness hidden behind "lol."</p>
     <p>Still, he replied:</p>
     <div class="chat-container">
-    <div class="chat-bubble chat-sent">maybe lonely people become good at understanding loneliness.</div>
+      <div class="chat-bubble chat-sent">maybe lonely people become good at understanding loneliness.</div>
     </div>
     <div class="chat-typing">Three dots appeared again.</div>
     <div class="chat-container">
-    <div class="chat-bubble chat-received">Wow.</div>
-    <div class="chat-bubble chat-received">that sounded kinda sad 😭</div>
+      <div class="chat-bubble chat-received">Wow.</div>
+      <div class="chat-bubble chat-received">that sounded kinda sad 😭</div>
     </div>
-    <p>A small smile crossed Ethan’s face.</p>
-    <p>Tiny.Brief.</p>
+    <p>A small smile crossed Ethan's face.</p>
+    <p>Tiny. Brief.</p>
     <p>Gone a second later.</p>
     <p>More messages arrived.</p>
     <p>A breakup.</p>
     <div class="chat-container">
-    <div class="chat-bubble chat-received">he said I was "too much" and then just… left</div>
-    </div>
-    <p>Ethan read it twice.</p>
-    <div class="chat-container">
-    <div class="chat-bubble chat-sent">too much how?</div>
+      <div class="chat-bubble chat-received">he said I was "too much" and then just… left</div>
     </div>
     <div class="chat-container">
-    <div class="chat-bubble chat-sent">too emotional. too needy. too everything apparently</div>
+      <div class="chat-bubble chat-sent">too much how?</div>
     </div>
     <div class="chat-container">
-    <div class="chat-bubble chat-sent">idk maybe he was right</div>
+      <div class="chat-bubble chat-received">too emotional. too needy. too everything apparently</div>
+      <div class="chat-bubble chat-received">idk maybe he was right</div>
     </div>
     <p>Ethan exhaled slowly.</p>
     <div class="chat-container">
-    <div class="chat-bubble chat-sent">someone calling you "too much" usually means they weren't enough.</div>
-    </div>
-    <p>She replied,</p>
-    <div class="chat-container">
-    <div class="chat-bubble chat-received">what?</div>
-    </div>
-    <p>Then Ethan typed,</p>
-    <div class="chat-container">
-    <div class="chat-bubble chat-sent">people who can actually handle you don't use that phrase. they just… stay.</div>
-    </div>
-    <div class="chat-typing">Long pause.</div>
-    <div class="chat-typing">Typing bubbles appeared, disappeared, appeared again.</div>
-    <div class="chat-container">
-    <div class="chat-bubble chat-received">i never thought about it that way</div>
+      <div class="chat-bubble chat-sent">someone calling you "too much" usually means they weren't enough.</div>
     </div>
     <div class="chat-container">
-    <div class="chat-bubble chat-sent">you okay right now?</div>
+      <div class="chat-bubble chat-received">what?</div>
     </div>
     <div class="chat-container">
-    <div class="chat-bubble chat-received">not really</div>
+      <div class="chat-bubble chat-sent">people who can actually handle you don't use that phrase. they just… stay.</div>
+    </div>
+    <div class="chat-typing">Long pause. Typing bubbles appeared, disappeared, appeared again.</div>
+    <div class="chat-container">
+      <div class="chat-bubble chat-received">i never thought about it that way</div>
     </div>
     <div class="chat-container">
-    <div class="chat-bubble chat-sent">not really is honest. that's more than most people manage tonight.</div>
+      <div class="chat-bubble chat-sent">you okay right now?</div>
+    </div>
+    <div class="chat-container">
+      <div class="chat-bubble chat-received">not really</div>
+    </div>
+    <div class="chat-container">
+      <div class="chat-bubble chat-sent">not really is honest. that's more than most people manage tonight.</div>
     </div>
     <p>Then a girl showing him pictures of a stray dog she rescued.</p>
     <div class="chat-container">
-    <div class="chat-bubble chat-received">OKAY I NEED TO SHOW SOMEONE THIS RIGHT NOW</div>
+      <div class="chat-bubble chat-received">OKAY I NEED TO SHOW SOMEONE THIS RIGHT NOW</div>
     </div>
     <p>Three photos loaded slowly.</p>
     <p>A small dog. Muddy. One ear flopped sideways like it hadn't figured out ears yet. Sitting in what looked like a laundromat, wrapped in someone's jacket.</p>
     <div class="chat-container">
-    <div class="chat-bubble chat-received">i found him outside the convenience store. he was just sitting in the rain looking confused about everything</div>
+      <div class="chat-bubble chat-received">i found him outside the convenience store. he was just sitting in the rain looking confused about everything</div>
+      <div class="chat-bubble chat-received">i named him Biscuit</div>
     </div>
     <div class="chat-container">
-    <div class="chat-bubble chat-received">i named him Biscuit</div>
+      <div class="chat-bubble chat-sent">you named him already?</div>
     </div>
     <div class="chat-container">
-    <div class="chat-bubble chat-sent">you named him already?</div>
+      <div class="chat-bubble chat-received">i named him in the first thirty seconds yes</div>
     </div>
     <div class="chat-container">
-    <div class="chat-bubble chat-received">i named him in the first thirty seconds yes</div>
+      <div class="chat-bubble chat-sent">so he's yours now</div>
     </div>
     <div class="chat-container">
-    <div class="chat-bubble chat-sent">so he's yours now</div>
+      <div class="chat-bubble chat-received">my landlord is going to actually kill me but YES he's mine now. look at his little face. LOOK</div>
+    </div>
+    <p>Ethan looked. He typed:</p>
+    <div class="chat-container">
+      <div class="chat-bubble chat-sent">he does look like a Biscuit.</div>
     </div>
     <div class="chat-container">
-    <div class="chat-bubble chat-received">my landlord is going to actually kill me but YES he's mine now. look at his little face. LOOK</div>
-    </div>
-    <p>Ethan looked.</p>
-    <p>He typed:</p>
-    <div class="chat-container">
-    <div class="chat-bubble chat-sent">he does look like a Biscuit.</div>
+      <div class="chat-bubble chat-received">RIGHT??? he has biscuit energy</div>
     </div>
     <div class="chat-container">
-    <div class="chat-bubble chat-received">RIGHT??? he has biscuit energy</div>
+      <div class="chat-bubble chat-sent">are you keeping him warm</div>
     </div>
     <div class="chat-container">
-    <div class="chat-bubble chat-sent">are you keeping him warm</div>
-    </div>
-    <div class="chat-container">
-    <div class="chat-bubble chat-received">i bought him a hot dog from the gas station and he ate it in like 0.4 seconds and now he's asleep on my foot and i genuinely cannot move and i don't even care</div>
+      <div class="chat-bubble chat-received">i bought him a hot dog from the gas station and he ate it in like 0.4 seconds and now he's asleep on my foot and i genuinely cannot move and i don't even care</div>
     </div>
     <p>Ethan smiled at that.</p>
     <p>Actually smiled.</p>
     <p>Not the small, brief kind.</p>
     <p>The kind that stayed.</p>
-    <p>Another guy terrified of disappointing his parents.</p>
+    <p>A guy terrified of disappointing his parents.</p>
     <div class="chat-container">
-    <div class="chat-bubble chat-received">i got a B+ on the exam</div>
+      <div class="chat-bubble chat-received">i got a B+ on the exam</div>
     </div>
     <div class="chat-container">
-    <div class="chat-bubble chat-sent">that's solid</div>
+      <div class="chat-bubble chat-sent">that's solid</div>
     </div>
     <div class="chat-container">
-    <div class="chat-bubble chat-received">not for my dad it isn't</div>
+      <div class="chat-bubble chat-received">not for my dad it isn't</div>
     </div>
     <div class="chat-container">
-    <div class="chat-bubble chat-sent">what does he say?</div>
+      <div class="chat-bubble chat-sent">what does he say?</div>
     </div>
     <div class="chat-container">
-    <div class="chat-bubble chat-received">nothing. that's worse. he just goes quiet and nods and then asks if i studied enough. and i did. i studied every night for two weeks.</div>
+      <div class="chat-bubble chat-received">nothing. that's worse. he just goes quiet and nods and then asks if i studied enough. and i did. i studied every night for two weeks.</div>
     </div>
     <div class="chat-container">
-    <div class="chat-bubble chat-sent">and the B+ still felt like failing?</div>
+      <div class="chat-bubble chat-sent">and the B+ still felt like failing?</div>
     </div>
     <div class="chat-container">
-    <div class="chat-bubble chat-received">it felt like i failed HIM. which is different.</div>
+      <div class="chat-bubble chat-received">it felt like i failed HIM. which is different.</div>
     </div>
     <p>Ethan sat with that for a second.</p>
     <div class="chat-container">
-    <div class="chat-bubble chat-sent">yeah. that one's harder.</div>
+      <div class="chat-bubble chat-sent">yeah. that one's harder.</div>
     </div>
     <div class="chat-container">
-    <div class="chat-bubble chat-received">does it get easier?</div>
+      <div class="chat-bubble chat-received">does it get easier?</div>
     </div>
     <p>He typed honestly:</p>
     <div class="chat-container">
-    <div class="chat-bubble chat-sent">i don't know. but i think at some point you have to decide whose version of you actually fits.</div>
+      <div class="chat-bubble chat-sent">i don't know. but i think at some point you have to decide whose version of you actually fits.</div>
     </div>
     <div class="chat-container">
-    <div class="chat-bubble chat-received">what if his version is what pushes me forward though</div>
+      <div class="chat-bubble chat-received">what if his version is what pushes me forward though</div>
     </div>
     <div class="chat-container">
-    <div class="chat-bubble chat-sent">then keep it. just make sure it's a tool and not a sentence.</div>
+      <div class="chat-bubble chat-sent">then keep it. just make sure it's a tool and not a sentence.</div>
     </div>
     <div class="chat-typing">Long pause.</div>
     <div class="chat-container">
-    <div class="chat-bubble chat-received">that's going in my notes app</div>
+      <div class="chat-bubble chat-received">that's going in my notes app</div>
     </div>
     <div class="chat-container">
-    <div class="chat-bubble chat-sent">go sleep. B+ means you showed up. that matters.</div>
+      <div class="chat-bubble chat-sent">go sleep. B+ means you showed up. that matters.</div>
     </div>
     <p>Ethan answered every single one carefully.</p>
     <p>Like the messages mattered.</p>
@@ -415,22 +454,35 @@
     <p>The clock crawled past midnight unnoticed.</p>
     <p>Rain continued pouring outside.</p>
     <p>And then—</p>
-    <p>At 1:13 am,</p>
-    <p>A new notification appeared.</p>
+    <p>At 1:13 AM, a new notification appeared.</p>
     <p>Message from:</p>
-    <p>Chloe Hopper</p>
-    <p>Ethan froze slightly.</p>
-    <p>The verified-like glow of her profile picture filled the corner of the screen.</p>
-    <p>10.4K followers.</p>
-    <p>Same Chloe Hopper.</p>
-    <p>Same girl from his classroom.</p>
-    <p>Same girl half the school was obsessed with.</p>
-    <p>Message:</p>
-    <div class="chat-container">
-    <div class="chat-bubble chat-received">hey.</div>
-    <div class="chat-bubble chat-received">this is probably random but…</div>
-    <div class="chat-bubble chat-received">how do you stop feeling lonely even when you’re surrounded by people all day?</div>
+
+    <div class="notif-card">
+      <div class="notif-avatar">?</div>
+      <div class="notif-body">
+        <div class="notif-username">just.a.nobody00</div>
+        <div class="notif-meta">0 followers &nbsp;·&nbsp; no posts &nbsp;·&nbsp; no profile picture</div>
+      </div>
+      <div class="notif-dot"></div>
     </div>
+
+    <p>Ethan stared at the username for a second.</p>
+    <p>Blank account. No trace of a person. Just a question floating in from somewhere in the dark.</p>
+
+    <div class="chat-container">
+      <div class="chat-bubble chat-received">hey.</div>
+      <div class="chat-bubble chat-received">this is probably random but…</div>
+      <div class="chat-bubble chat-received">how do you stop feeling lonely even when you're surrounded by people all day?</div>
+    </div>
+
+    <p>Ethan read it once.</p>
+    <p>Then again.</p>
+    <p>Something about it sat differently from the others tonight.</p>
+    <p>Not the question itself — he'd gotten versions of it before.</p>
+    <p>It was the specificity. <em>Surrounded by people all day.</em> Like whoever wrote this wasn't describing loneliness in general.</p>
+    <p>They were describing their exact life.</p>
+    <p>His fingers hovered over the keyboard.</p>
+    <p>Outside, the rain kept falling.</p>
 
   </article>
 
@@ -439,7 +491,7 @@
     <div class="ch-nav">
       <a href="#" class="ch-nav-btn disabled">← Previous</a>
       <a href="index.html" class="ch-nav-toc">All Chapters</a>
-      <a href="#" class="ch-nav-btn disabled">Next →</a>
+      <a href="chapter2.html" class="ch-nav-btn">Next →</a>
     </div>
   </div>
 

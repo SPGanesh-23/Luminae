@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Don’t Look Back — Flat 17 | Luminae</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Cinzel+Decorative:wght@400;700&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0d0a1a; --parchment: #fdf8f0; --cream: #f5ede0;
+    --gold: #dc2626; --gold-light: #ef4444; --gold-glow: #fca5a5;
+    --violet: #6b3fa0; --violet-dark: #3d1f6e; --violet-light: #a67dd0;
+    --rose: #c45a7a; --midnight: #0f0820; --mist: #c8bfe0; --star: #f8f0e3;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--midnight); color: var(--star); font-family: 'Raleway', sans-serif; font-weight: 300; overflow-x: hidden; min-height: 100vh; }
+  .starfield { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .star-dot { position: absolute; border-radius: 50%; background: white; animation: twinkle var(--d, 3s) ease-in-out infinite; animation-delay: var(--delay, 0s); opacity: 0; }
+  @keyframes twinkle { 0%, 100% { opacity: 0; transform: scale(0.5); } 50% { opacity: var(--op, 0.7); transform: scale(1); } }
+  .top-nav { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; padding: 1rem 3rem; background: linear-gradient(to bottom, rgba(15,8,32,0.98), rgba(15,8,32,0.9)); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(220,38,38,0.3); }
+  .logo { font-family: 'Cinzel Decorative', cursive; font-size: 1.1rem; color: #dc2626; letter-spacing: 0.08em; text-shadow: 0 0 20px rgba(220,38,38,0.6); text-decoration: none; }
+  .nav-chapter-info { font-size: 0.7rem; color: var(--mist); letter-spacing: 0.1em; text-transform: uppercase; }
+  .toc-link { color: #dc2626; text-decoration: none; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.3s; }
+  .toc-link:hover { color: #ef4444; }
+  .reader-page { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; padding: 4rem 2rem 3rem; }
+  .ch-header { text-align: center; margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid rgba(239,68,68,0.3); }
+  .ch-number { font-size: 0.65rem; letter-spacing: 0.4em; text-transform: uppercase; color: #dc2626; margin-bottom: 1.2rem; display: block; }
+  .ch-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 300; line-height: 1.15; color: var(--star); margin-bottom: 0.8rem; }
+  .ch-title em { font-style: italic; color: #ef4444; text-shadow: 0 0 30px rgba(239,68,68,0.3); }
+  .ch-divider { display: flex; align-items: center; gap: 0.8rem; margin: 1.5rem auto 0; max-width: 160px; }
+  .ch-divider-line { flex: 1; height: 1px; background: linear-gradient(to right, transparent, rgba(220,38,38,0.3), transparent); }
+  .ch-divider-glyph { color: #dc2626; font-size: 0.8rem; }
+  .ch-content { font-family: 'Cormorant Garamond', serif; font-size: 1.18rem; color: var(--mist); line-height: 2; font-weight: 400; }
+  .ch-content p { margin-bottom: 1.5rem; }
+  .ch-content p.first::first-letter { font-family: 'Cinzel Decorative', cursive; font-size: 3.8rem; float: left; line-height: 1; margin: 0.05em 0.12em -0.1em 0; color: #dc2626; text-shadow: 0 0 20px rgba(220,38,38,0.4); }
+  .ch-content em { color: #ef4444; font-style: italic; }
+  .ch-content .dialogue { color: var(--star); }
+  .ch-content .thought { color: var(--violet-light); font-style: italic; }
+  .ch-content .pause { text-align: center; color: var(--gold); font-size: 0.8rem; letter-spacing: 0.5em; margin: 2rem 0; }
+  .ch-content hr { border: none; text-align: center; margin: 2.5rem 0; }
+  .ch-content hr::after { content: '✦ ✦'; color: var(--gold); font-size: 0.7rem; letter-spacing: 0.5em; }
+
+  .ch-end { text-align: center; padding: 3rem 0 0; margin-top: 3rem; border-top: 1px solid rgba(239,68,68,0.3); }
+  .ch-end-text { font-family: 'Cormorant Garamond', serif; font-size: 0.85rem; font-style: italic; color: rgba(200,191,224,0.4); letter-spacing: 0.1em; margin-bottom: 2rem; }
+  .ch-nav { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
+  .ch-nav-btn { display: inline-flex; align-items: center; gap: 0.6rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(220,38,38,0.3); color: var(--star); padding: 0.8rem 1.8rem; font-family: 'Raleway', sans-serif; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; transition: all 0.3s; border-radius: 2px; }
+  .ch-nav-btn:hover { background: rgba(239,68,68,0.1); border-color: rgba(220,38,38,0.6); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.3); }
+  .ch-nav-btn.disabled { opacity: 0.3; pointer-events: none; }
+  .ch-nav-toc { color: #dc2626; text-decoration: none; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.3s; }
+
+  .progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: rgba(255,255,255,0.1); width: 100%; z-index: 100; }
+  .progress-fill { height: 100%; background: linear-gradient(to right, #dc2626, #ef4444); width: 0%; transition: width 0.1s; }
+
+  body { cursor: none; }
+  .cursor { position:fixed; width:8px; height:8px; background:var(--gold); border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:transform 0.1s, background 0.3s; box-shadow:0 0 12px rgba(220,38,38,0.5); }
+  .cursor-ring { position:fixed; width:32px; height:32px; border:1px solid rgba(239,68,68,0.4); border-radius:50%; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:all 0.18s ease; }
+  @media (pointer: coarse) { body { cursor: auto; } .cursor, .cursor-ring { display: none !important; } }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="starfield" id="starfield"></div>
+
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+<nav class="top-nav">
+  <a href="../index.html" class="logo">Luminae</a>
+  <span class="nav-chapter-info">Chapter 9 of 16</span>
+  <a href="index.html" class="toc-link">☰ Chapters</a>
+</nav>
+
+<div class="reader-page">
+  <header class="ch-header">
+    <span class="ch-number">Chapter IX</span>
+    <h1 class="ch-title">Don’t Look Back</h1>
+    <div class="ch-divider">
+      <div class="ch-divider-line"></div>
+      <span class="ch-divider-glyph">✦</span>
+      <div class="ch-divider-line"></div>
+    </div>
+  </header>
+
+  <article class="ch-content">
+    <p class="first">For the first time since meeting him—</p>
+    <p>Adrian actually sounded angry.</p>
+    <p>That scared Eris more than anything else.</p>
+    <p>Because until now, he had always been calm.</p>
+    <p>Controlled.</p>
+    <p>Like nothing affected him.</p>
+    <p>But this?</p>
+    <p>This felt different.</p>
+    <p>Dangerous.</p>
+    <p>Eris stared at him for one frozen second while rain thundered outside the lobby windows.</p>
+    <p>The stranger near the entrance still watched them silently.</p>
+    <p>Waiting.</p>
+    <p>Then Adrian stepped slightly closer to her.</p>
+    <p>Blocking the man’s view completely.</p>
+    <p class="dialogue">“Go upstairs, Eris.”</p>
+    <p>Low.</p>
+    <p>Sharp.</p>
+    <p>Not a request anymore.</p>
+    <p>Her heartbeat stumbled painfully.</p>
+    <p class="dialogue">“What’s happening?” she whispered.</p>
+    <p>No answer.</p>
+    <p>Adrian never looked away from the stranger.</p>
+    <p>The atmosphere inside the lobby tightened heavily.</p>
+    <p>Like something terrible was seconds away from happening.</p>
+    <p>Eris swallowed hard.</p>
+    <p class="dialogue">“Adrian—”</p>
+    <p class="dialogue">“Don’t argue with me right now.”</p>
+    <p>The coldness in his voice shocked her instantly.</p>
+    <p>Fear curled through her chest.</p>
+    <p>Not because she thought he would hurt her—</p>
+    <p>But because he genuinely sounded worried.</p>
+    <p>For her.</p>
+    <p>The realization confused her even more.</p>
+    <p>Slowly, Eris turned toward the stairwell.</p>
+    <p>But before leaving—</p>
+    <p>She glanced back once.</p>
+    <p>Big mistake.</p>
+    <p>The stranger smiled at her again.</p>
+    <p>Small.</p>
+    <p>Calm.</p>
+    <p>Wrong.</p>
+    <p>Then quietly—</p>
+    <p>He spoke for the first time.</p>
+    <p class="dialogue">“You should stay away from dangerous boys, Miss Eris.”</p>
+    <p>Ice slid down her spine immediately.</p>
+    <p>How did he know my name?</p>
+    <p>Eris stopped breathing for a second.</p>
+    <p>Adrían’s entire expression darkened instantly.</p>
+    <p>Something terrifying flashed through his eyes.</p>
+    <p>The stranger noticed too.</p>
+    <p>But instead of fear—</p>
+    <p>He looked amused.</p>
+    <p>That somehow made everything worse.</p>
+    <p>Then Adrían took one slow step toward him.</p>
+    <p>And the entire lobby suddenly felt deadly quiet.</p>
+    <p class="dialogue">“You shouldn’t have come here, Lucien.”</p>
+    <p>Lucien.</p>
+    <p>The stranger smiled slightly wider.</p>
+    <p class="dialogue">“Your father disagrees.”</p>
+    <p>Eris frowned immediately.</p>
+    <p>Father?</p>
+    <p>What the hell was happening?</p>
+    <p>Lucien’s gaze moved toward her briefly again.</p>
+    <p class="dialogue">“You’ve created a problem for yourself, Adrian.”</p>
+    <p>Wrong move.</p>
+    <p>Very wrong move.</p>
+    <p>Because the second Lucien looked at her—</p>
+    <p>Adrian completely lost the last bit of calmness left in him.</p>
+    <p>The air itself felt dangerous now.</p>
+    <p>Cold.</p>
+    <p>Violent.</p>
+    <p>Protective.</p>
+    <p class="dialogue">“Don’t look at her.”</p>
+    <p>The warning came out terrifyingly quiet.</p>
+    <p>Lucien raised an eyebrow slowly.</p>
+    <p>Interesting.</p>
+    <p>Like he had just discovered something important.</p>
+    <p>Something about Eris.</p>
+    <p>Oh no.</p>
+    <p>Adrían realized it too.</p>
+    <p>And somehow—</p>
+    <p>That scared him.</p>
+    <p>Eris saw it clearly for the first time.</p>
+    <p>Not fear for himself.</p>
+    <p>Fear for her.</p>
+    <p>Lucien smiled knowingly.</p>
+    <p>Then softly—</p>
+    <p class="dialogue">“Now I understand.”</p>
+    <p>Adrian moved instantly.</p>
+    <p>Fast enough to make Eris gasp.</p>
+    <p>One second he stood beside her.</p>
+    <p>The next—</p>
+    <p>He had grabbed Lucien violently by the collar and slammed him hard against the lobby wall.</p>
+    <p>The sound echoed brutally through the building.</p>
+    <p class="dialogue">“Adrian!” Eris shouted in shock.</p>
+    <p>Lucien barely reacted.</p>
+    <p>Which somehow made him scarier.</p>
+    <p>Even pinned against the wall—</p>
+    <p>He looked calm.</p>
+    <p>Amused even.</p>
+    <p>Rain hammered violently outside while the two men stared at each other like enemies who already knew how dangerous the other could become.</p>
+    <p>Then Adrian spoke quietly near Lucien’s face.</p>
+    <p class="dialogue">“If you involve her in this… I’ll kill you.”</p>
+    <p>Eris’s heartbeat stopped completely.</p>
+
+  </article>
+
+  <footer class="ch-end">
+    <div class="ch-end-text">✦ To Be Continued ✦</div>
+    <div class="ch-nav">
+      <a href="chapter8.html" class="ch-nav-btn">← Previous</a>
+      <a href="index.html" class="ch-nav-toc">All Chapters</a>
+      <a href="chapter10.html" class="ch-nav-btn ">Next →</a>
+    </div>
+  </footer>
+</div>
+
+<script>
+const starfield = document.getElementById('starfield');
+for (let i = 0; i < 60; i++) {
+  const s = document.createElement('div');
+  s.className = 'star-dot';
+  const size = Math.random() < 0.7 ? 1 : Math.random() < 0.5 ? 2 : 3;
+  s.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*4}s;--delay:${Math.random()*5}s;--op:${0.2+Math.random()*0.5};`;
+  starfield.appendChild(s);
+}
+const progressFill = document.getElementById('progressFill');
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  progressFill.style.width = Math.min(pct, 100) + '%';
+});
+
+const cursor = document.getElementById('cursor'), cursorRing = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cursor.style.left = mx + 'px'; cursor.style.top = my + 'px'; });
+function animRing() { rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12; cursorRing.style.left = rx + 'px'; cursorRing.style.top = ry + 'px'; requestAnimationFrame(animRing); }
+animRing();
+document.querySelectorAll('a, button, .ch-nav-btn').forEach(el => {
+  el.addEventListener('mouseenter', () => { cursor.style.transform = 'translate(-50%,-50%) scale(2)'; cursorRing.style.transform = 'translate(-50%,-50%) scale(1.5)'; cursorRing.style.borderColor = 'rgba(239,68,68,0.7)'; });
+  el.addEventListener('mouseleave', () => { cursor.style.transform = 'translate(-50%,-50%) scale(1)'; cursorRing.style.transform = 'translate(-50%,-50%) scale(1)'; cursorRing.style.borderColor = 'rgba(239,68,68,0.4)'; });
+});
+</script>
+</body>
+</html>

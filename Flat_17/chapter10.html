@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>You're My Weakness — Flat 17 | Luminae</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Cinzel+Decorative:wght@400;700&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0d0a1a; --parchment: #fdf8f0; --cream: #f5ede0;
+    --gold: #dc2626; --gold-light: #ef4444; --gold-glow: #fca5a5;
+    --violet: #6b3fa0; --violet-dark: #3d1f6e; --violet-light: #a67dd0;
+    --rose: #c45a7a; --midnight: #0f0820; --mist: #c8bfe0; --star: #f8f0e3;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--midnight); color: var(--star); font-family: 'Raleway', sans-serif; font-weight: 300; overflow-x: hidden; min-height: 100vh; }
+  .starfield { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .star-dot { position: absolute; border-radius: 50%; background: white; animation: twinkle var(--d, 3s) ease-in-out infinite; animation-delay: var(--delay, 0s); opacity: 0; }
+  @keyframes twinkle { 0%, 100% { opacity: 0; transform: scale(0.5); } 50% { opacity: var(--op, 0.7); transform: scale(1); } }
+  .top-nav { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; padding: 1rem 3rem; background: linear-gradient(to bottom, rgba(15,8,32,0.98), rgba(15,8,32,0.9)); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(220,38,38,0.3); }
+  .logo { font-family: 'Cinzel Decorative', cursive; font-size: 1.1rem; color: #dc2626; letter-spacing: 0.08em; text-shadow: 0 0 20px rgba(220,38,38,0.6); text-decoration: none; }
+  .nav-chapter-info { font-size: 0.7rem; color: var(--mist); letter-spacing: 0.1em; text-transform: uppercase; }
+  .toc-link { color: #dc2626; text-decoration: none; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.3s; }
+  .toc-link:hover { color: #ef4444; }
+  .reader-page { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; padding: 4rem 2rem 3rem; }
+  .ch-header { text-align: center; margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid rgba(239,68,68,0.3); }
+  .ch-number { font-size: 0.65rem; letter-spacing: 0.4em; text-transform: uppercase; color: #dc2626; margin-bottom: 1.2rem; display: block; }
+  .ch-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 300; line-height: 1.15; color: var(--star); margin-bottom: 0.8rem; }
+  .ch-title em { font-style: italic; color: #ef4444; text-shadow: 0 0 30px rgba(239,68,68,0.3); }
+  .ch-divider { display: flex; align-items: center; gap: 0.8rem; margin: 1.5rem auto 0; max-width: 160px; }
+  .ch-divider-line { flex: 1; height: 1px; background: linear-gradient(to right, transparent, rgba(220,38,38,0.3), transparent); }
+  .ch-divider-glyph { color: #dc2626; font-size: 0.8rem; }
+  .ch-content { font-family: 'Cormorant Garamond', serif; font-size: 1.18rem; color: var(--mist); line-height: 2; font-weight: 400; }
+  .ch-content p { margin-bottom: 1.5rem; }
+  .ch-content p.first::first-letter { font-family: 'Cinzel Decorative', cursive; font-size: 3.8rem; float: left; line-height: 1; margin: 0.05em 0.12em -0.1em 0; color: #dc2626; text-shadow: 0 0 20px rgba(220,38,38,0.4); }
+  .ch-content em { color: #ef4444; font-style: italic; }
+  .ch-content .dialogue { color: var(--star); }
+  .ch-content .thought { color: var(--violet-light); font-style: italic; }
+  .ch-content .pause { text-align: center; color: var(--gold); font-size: 0.8rem; letter-spacing: 0.5em; margin: 2rem 0; }
+  .ch-content hr { border: none; text-align: center; margin: 2.5rem 0; }
+  .ch-content hr::after { content: '✦ ✦'; color: var(--gold); font-size: 0.7rem; letter-spacing: 0.5em; }
+
+  .ch-end { text-align: center; padding: 3rem 0 0; margin-top: 3rem; border-top: 1px solid rgba(239,68,68,0.3); }
+  .ch-end-text { font-family: 'Cormorant Garamond', serif; font-size: 0.85rem; font-style: italic; color: rgba(200,191,224,0.4); letter-spacing: 0.1em; margin-bottom: 2rem; }
+  .ch-nav { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
+  .ch-nav-btn { display: inline-flex; align-items: center; gap: 0.6rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(220,38,38,0.3); color: var(--star); padding: 0.8rem 1.8rem; font-family: 'Raleway', sans-serif; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; transition: all 0.3s; border-radius: 2px; }
+  .ch-nav-btn:hover { background: rgba(239,68,68,0.1); border-color: rgba(220,38,38,0.6); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.3); }
+  .ch-nav-btn.disabled { opacity: 0.3; pointer-events: none; }
+  .ch-nav-toc { color: #dc2626; text-decoration: none; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.3s; }
+
+  .progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: rgba(255,255,255,0.1); width: 100%; z-index: 100; }
+  .progress-fill { height: 100%; background: linear-gradient(to right, #dc2626, #ef4444); width: 0%; transition: width 0.1s; }
+
+  body { cursor: none; }
+  .cursor { position:fixed; width:8px; height:8px; background:var(--gold); border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:transform 0.1s, background 0.3s; box-shadow:0 0 12px rgba(220,38,38,0.5); }
+  .cursor-ring { position:fixed; width:32px; height:32px; border:1px solid rgba(239,68,68,0.4); border-radius:50%; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:all 0.18s ease; }
+  @media (pointer: coarse) { body { cursor: auto; } .cursor, .cursor-ring { display: none !important; } }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="starfield" id="starfield"></div>
+
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+<nav class="top-nav">
+  <a href="../index.html" class="logo">Luminae</a>
+  <span class="nav-chapter-info">Chapter 10 of 16</span>
+  <a href="index.html" class="toc-link">☰ Chapters</a>
+</nav>
+
+<div class="reader-page">
+  <header class="ch-header">
+    <span class="ch-number">Chapter X</span>
+    <h1 class="ch-title">You're My Weakness</h1>
+    <div class="ch-divider">
+      <div class="ch-divider-line"></div>
+      <span class="ch-divider-glyph">✦</span>
+      <div class="ch-divider-line"></div>
+    </div>
+  </header>
+
+  <article class="ch-content">
+    <p class="first">The lobby fell completely silent after Adrían’s threat.</p>
+    <p>Rain hammered violently outside the glass doors while Lucien remained pinned against the wall.</p>
+    <p>And somehow—</p>
+    <p>The terrifying part wasn’t Adrían.</p>
+    <p>It was Lucien smiling through it.</p>
+    <p>Like this amused him.</p>
+    <p>Like he had just confirmed something important.</p>
+    <p>Slowly, Lucien looked past Adrían’s shoulder toward Eris.</p>
+    <p>That smile never disappeared.</p>
+    <p class="dialogue">“Interesting.”</p>
+    <p>Adrían’s grip tightened instantly.</p>
+    <p class="dialogue">“Stop looking at her.”</p>
+    <p>Cold.</p>
+    <p>Sharp.</p>
+    <p>Possessive.</p>
+    <p>Lucien only chuckled softly.</p>
+    <p class="dialogue">“You disappeared for months,” he said calmly. “And this is what finally breaks your control?”</p>
+    <p>Eris frowned immediately.</p>
+    <p>What did that mean?</p>
+    <p>Adrían’s jaw tightened dangerously.</p>
+    <p>For the first time—</p>
+    <p>He actually looked close to losing control.</p>
+    <p>Lucien noticed too.</p>
+    <p>Which only made his expression darker with amusement.</p>
+    <p>Then quietly—</p>
+    <p>Too quietly—</p>
+    <p class="dialogue">“That girl is your weakness now.”</p>
+    <p>Eris’s heartbeat stumbled painfully.</p>
+    <p>Adrían shoved Lucien away immediately.</p>
+    <p>Hard.</p>
+    <p class="dialogue">“Leave.”</p>
+    <p>Lucien straightened his jacket slowly.</p>
+    <p>Completely calm again.</p>
+    <p>Then his eyes moved toward Eris one final time.</p>
+    <p class="dialogue">“Be careful who you trust, Miss Eris.”</p>
+    <p>Something about his tone made fear crawl slowly down her spine.</p>
+    <p>Then Lucien walked out of Blackthorne Apartments without another word.</p>
+    <p>The black car outside disappeared into the rain seconds later.</p>
+    <p>Silence returned.</p>
+    <p>Heavy.</p>
+    <p>Uncomfortable.</p>
+    <p>Eris slowly looked toward Adrían.</p>
+    <p class="dialogue">“What the hell was that?”</p>
+    <p>No answer.</p>
+    <p>Adrían stared toward the rain-covered entrance silently.</p>
+    <p>Expression unreadable again.</p>
+    <p>Like the violent moment earlier never happened.</p>
+    <p>Eris stepped closer angrily.</p>
+    <p class="dialogue">“No seriously, who IS he?”</p>
+    <p>Still nothing.</p>
+    <p>God.</p>
+    <p>This man was impossible.</p>
+    <p class="dialogue">“You threatened to kill someone!”</p>
+    <p>Finally—</p>
+    <p>Adrían looked at her.</p>
+    <p>Dark eyes steady.</p>
+    <p>Cold.</p>
+    <p class="dialogue">“I meant it.”</p>
+    <p>The honesty in his voice scared her instantly.</p>
+    <p>Not dramatic.</p>
+    <p>Not emotional.</p>
+    <p>Just fact.</p>
+    <p>Eris crossed her arms tightly.</p>
+    <p class="dialogue">“You don’t get to say terrifying things and then go silent!”</p>
+    <p>Adrían rubbed tiredly across his jaw before walking toward the stairwell.</p>
+    <p class="dialogue">“Go upstairs, Eris.”</p>
+    <p class="dialogue">“Oh no,” she snapped immediately while following him. “You are NOT disappearing again after whatever THAT was.”</p>
+    <p>To her surprise—</p>
+    <p>He didn’t stop her.</p>
+    <p>The hallway outside Flat 17 felt colder than usual.</p>
+    <p>Lights flickered weakly overhead while thunder shook the building softly.</p>
+    <p>Adrían unlocked his apartment door silently.</p>
+    <p>Eris noticed blood dripping faintly from his knuckles now.</p>
+    <p>Her anger disappeared instantly.</p>
+    <p class="dialogue">“You’re hurt.”</p>
+    <p class="dialogue">“It’s nothing.”</p>
+    <p class="dialogue">“That is literally blood.”</p>
+    <p>Adrían barely looked at his hand.</p>
+    <p>Like pain didn’t matter anymore.</p>
+    <p>That bothered her more than it should have.</p>
+    <p>Without thinking, Eris grabbed his wrist before he could enter the apartment.</p>
+    <p>The second she touched him—</p>
+    <p>Adrían froze.</p>
+    <p>Completely.</p>
+    <p>His eyes slowly moved toward her hand around his wrist.</p>
+    <p>The atmosphere shifted immediately.</p>
+    <p>Too intense.</p>
+    <p>Too aware.</p>
+    <p>Eris swallowed nervously but forced herself to continue.</p>
+    <p class="dialogue">“You need to clean that.”</p>
+    <p class="dialogue">“I’ve had worse.”</p>
+    <p class="dialogue">“Congratulations. Still cleaning it.”</p>
+    <p>For one long second—</p>
+    <p>Adrían simply stared at her.</p>
+    <p>Then quietly:</p>
+    <p class="dialogue">“You should stop doing that.”</p>
+    <p>Eris frowned slightly.</p>
+    <p class="dialogue">“Doing what?”</p>
+    <p class="dialogue">“Acting like I’m safe to be around.”</p>
+    <p>The low warning in his voice sent chills down her spine.</p>
+    <p>But somehow—</p>
+    <p>She didn’t let go.</p>
+    <p>Bad decision probably.</p>
+    <p>Still—</p>
+    <p>She pulled him toward apartment 18 anyway.</p>
+    <p class="dialogue">“Sit down before you bleed on my floor.”</p>
+    <p>Shockingly—</p>
+    <p>Adrían listened.</p>
+    <p>A few minutes later, silence filled Eris’s kitchen.</p>
+    <p>Rain tapped softly against the windows while she cleaned blood from Adrían’s knuckles carefully.</p>
+    <p>The entire situation felt unreal.</p>
+    <p>Adrían Noir—</p>
+    <p>missing billionaire heir—</p>
+    <p>sat inside her apartment while she patched up his injuries like this was normal.</p>
+    <p>His gaze never left her face once.</p>
+    <p>Not once.</p>
+    <p>It made concentrating impossible.</p>
+    <p>Finally, Eris sighed softly.</p>
+    <p class="dialogue">“You’re staring.”</p>
+    <p class="dialogue">“You’re nervous.”</p>
+    <p class="dialogue">“That’s because you threatened murder an hour ago.”</p>
+    <p>A faint almost-smirk appeared briefly near his mouth.</p>
+    <p>Gone too quickly.</p>
+    <p>Eris hated how unfairly attractive that looked.</p>
+    <p class="dialogue">“You still didn’t answer me,” she muttered while wrapping bandages around his hand carefully. “Who was Lucien?”</p>
+    <p>Silence.</p>
+    <p>Then finally—</p>
+    <p class="dialogue">“Someone my father trusts.”</p>
+    <p class="dialogue">“And your father sent him after you?”</p>
+    <p>Adrían leaned back slightly in the chair.</p>
+    <p>Dark eyes unreadable again.</p>
+    <p class="dialogue">“My family doesn’t like losing control of things.”</p>
+    <p>The way he said things instead of people made unease twist inside her chest.</p>
+    <p>Eris slowly looked up at him.</p>
+    <p class="dialogue">“Why are they searching for you?”</p>
+    <p>Long silence.</p>
+    <p>Thunder crashed outside softly.</p>
+    <p>Then quietly—</p>
+    <p class="dialogue">“Because I left.”</p>
+    <p>That wasn’t the full truth.</p>
+    <p>She knew it immediately.</p>
+    <p>But before she could push further—</p>
+    <p>Adrían suddenly reached toward her face.</p>
+    <p>Eris froze instantly.</p>
+    <p>His fingers brushed lightly near her cheek.</p>
+    <p>Slow.</p>
+    <p>Careful.</p>
+    <p>Her heartbeat lost rhythm immediately.</p>
+    <p>Adrían’s eyes darkened slightly.</p>
+    <p>Then he pulled away holding something small between his fingers.</p>
+    <p>A tiny black device.</p>
+    <p>Eris stared in confusion.</p>
+    <p class="dialogue">“What is that?”</p>
+    <p>Adrían’s expression turned terrifyingly cold.</p>
+    <p class="dialogue">“Tracker.”</p>
+    <p>Fear hit instantly.</p>
+    <p class="dialogue">“What?”</p>
+    <p>His jaw tightened.</p>
+    <p class="dialogue">“Lucien put it on you downstairs.”</p>
+    <p>Eris stopped breathing.</p>
+    <p>Suddenly every part of the apartment felt unsafe.</p>
+    <p>Adrían crushed the tracker easily inside his hand.</p>
+    <p>Then his eyes lifted toward her again.</p>
+    <p>Darker now.</p>
+    <p>Protective.</p>
+    <p>Dangerous.</p>
+    <p class="dialogue">“They know about you now.”</p>
+    <p>Silence filled the kitchen.</p>
+    <p>Eris’s pulse pounded painfully.</p>
+    <p>Slowly—</p>
+    <p>She whispered:</p>
+    <p class="dialogue">“Can I trust you?”</p>
+    <p>Adrían stared at her for a long moment.</p>
+    <p>Then quietly—</p>
+    <p class="dialogue">“No.”</p>
+
+  </article>
+
+  <footer class="ch-end">
+    <div class="ch-end-text">✦ To Be Continued ✦</div>
+    <div class="ch-nav">
+      <a href="chapter9.html" class="ch-nav-btn">← Previous</a>
+      <a href="index.html" class="ch-nav-toc">All Chapters</a>
+      <a href="#" class="ch-nav-btn disabled">Next →</a>
+    </div>
+  </footer>
+</div>
+
+<script>
+const starfield = document.getElementById('starfield');
+for (let i = 0; i < 60; i++) {
+  const s = document.createElement('div');
+  s.className = 'star-dot';
+  const size = Math.random() < 0.7 ? 1 : Math.random() < 0.5 ? 2 : 3;
+  s.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*4}s;--delay:${Math.random()*5}s;--op:${0.2+Math.random()*0.5};`;
+  starfield.appendChild(s);
+}
+const progressFill = document.getElementById('progressFill');
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  progressFill.style.width = Math.min(pct, 100) + '%';
+});
+
+const cursor = document.getElementById('cursor'), cursorRing = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cursor.style.left = mx + 'px'; cursor.style.top = my + 'px'; });
+function animRing() { rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12; cursorRing.style.left = rx + 'px'; cursorRing.style.top = ry + 'px'; requestAnimationFrame(animRing); }
+animRing();
+document.querySelectorAll('a, button, .ch-nav-btn').forEach(el => {
+  el.addEventListener('mouseenter', () => { cursor.style.transform = 'translate(-50%,-50%) scale(2)'; cursorRing.style.transform = 'translate(-50%,-50%) scale(1.5)'; cursorRing.style.borderColor = 'rgba(239,68,68,0.7)'; });
+  el.addEventListener('mouseleave', () => { cursor.style.transform = 'translate(-50%,-50%) scale(1)'; cursorRing.style.transform = 'translate(-50%,-50%) scale(1)'; cursorRing.style.borderColor = 'rgba(239,68,68,0.4)'; });
+});
+</script>
+</body>
+</html>

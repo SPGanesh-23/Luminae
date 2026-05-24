@@ -6,3 +6,6 @@
 
 # VS Code settings
 .vscode/
+
+# Build scripts
+scratch/
