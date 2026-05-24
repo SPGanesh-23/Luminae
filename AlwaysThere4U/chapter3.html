@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 3 — The Clinic | Luminae</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Cinzel+Decorative:wght@400;700&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0d0a1a; --parchment: #fdf8f0; --cream: #f5ede0;
+    --gold: #c9933a; --gold-light: #e8c97a; --gold-glow: #f0d898;
+    --violet: #6b3fa0; --violet-dark: #3d1f6e; --violet-light: #a67dd0;
+    --rose: #c45a7a; --midnight: #0f0820; --mist: #c8bfe0; --star: #f8f0e3;
+    --accent: #f97316; --accent-glow: rgba(249,115,22,0.4);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--midnight); color: var(--star); font-family: 'Raleway', sans-serif; font-weight: 300; overflow-x: hidden; min-height: 100vh; }
+  .starfield { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .star-dot { position: absolute; border-radius: 50%; background: white; animation: twinkle var(--d, 3s) ease-in-out infinite; animation-delay: var(--delay, 0s); opacity: 0; }
+  @keyframes twinkle { 0%, 100% { opacity: 0; transform: scale(0.5); } 50% { opacity: var(--op, 0.7); transform: scale(1); } }
+  .top-nav { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; padding: 1rem 3rem; background: linear-gradient(to bottom, rgba(15,8,32,0.98), rgba(15,8,32,0.9)); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(236,72,153,0.2); }
+  .logo { font-family: 'Cinzel Decorative', cursive; font-size: 1.1rem; color: var(--accent); letter-spacing: 0.08em; text-shadow: 0 0 20px var(--accent-glow); text-decoration: none; }
+  .nav-chapter-info { font-size: 0.7rem; color: var(--mist); letter-spacing: 0.1em; text-transform: uppercase; }
+  .toc-link { color: var(--accent); text-decoration: none; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.3s; }
+  .toc-link:hover { color: #ec4899; }
+  .reader-page { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; padding: 4rem 2rem 3rem; }
+  .ch-header { text-align: center; margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid rgba(236,72,153,0.2); }
+  .ch-number { font-size: 0.65rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.2rem; display: block; }
+  .ch-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 300; line-height: 1.15; color: var(--star); margin-bottom: 0.8rem; }
+  .ch-title em { font-style: italic; color: #ec4899; text-shadow: 0 0 30px rgba(236,72,153,0.4); }
+  .ch-divider { display: flex; align-items: center; gap: 0.8rem; margin: 1.5rem auto 0; max-width: 160px; }
+  .ch-divider-line { flex: 1; height: 1px; background: linear-gradient(to right, transparent, rgba(236,72,153,0.5), transparent); }
+  .ch-divider-glyph { color: var(--accent); font-size: 0.8rem; }
+  .ch-content { font-family: 'Cormorant Garamond', serif; font-size: 1.18rem; color: var(--mist); line-height: 2; font-weight: 400; }
+  .ch-content p { margin-bottom: 1.5rem; }
+  .ch-content p.first::first-letter { font-family: 'Cinzel Decorative', cursive; font-size: 3.8rem; float: left; line-height: 1; margin: 0.05em 0.12em -0.1em 0; color: var(--accent); text-shadow: 0 0 20px var(--accent-glow); }
+  .ch-content em { color: #ec4899; font-style: italic; }
+  .ch-content hr { border: none; text-align: center; margin: 2.5rem 0; }
+  .ch-content hr::after { content: '✦ ✦ ✦'; color: var(--accent); font-size: 0.7rem; letter-spacing: 0.5em; }
+  .scene-label { font-family: 'Raleway', sans-serif; font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(200,191,224,0.35); text-align: center; margin: 2.5rem 0 1.5rem; font-style: italic; }
+
+  
+  .ch-content .dialogue { color: var(--star); }
+  .ch-content .thought { color: #06b6d4; font-style: italic; }
+  /* ═══ Chat Bubbles ═══ */
+  .chat-container {
+    position: relative;
+    margin: 2rem 0;
+    padding: 1.5rem 1.2rem;
+    background: rgba(0,0,0,0.25);
+    border: 1px solid rgba(249,115,22,0.12);
+    border-radius: 16px;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.03);
+  }
+  .chat-container::before {
+    content: '💬';
+    position: absolute;
+    top: -10px;
+    left: 20px;
+    font-size: 0.7rem;
+    background: var(--midnight);
+    padding: 0 0.5rem;
+    color: rgba(249,115,22,0.6);
+  }
+  .chat-bubble {
+    font-family: 'Raleway', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 400;
+    line-height: 1.6;
+    padding: 0.7rem 1rem;
+    border-radius: 14px;
+    margin-bottom: 0.5rem;
+    max-width: 80%;
+    word-wrap: break-word;
+    animation: bubbleIn 0.3s ease forwards;
+  }
+  @keyframes bubbleIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  .chat-received {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: var(--mist);
+    border-bottom-left-radius: 4px;
+    margin-right: auto;
+  }
+  .chat-sent {
+    background: linear-gradient(135deg, rgba(249,115,22,0.15), rgba(236,72,153,0.1));
+    border: 1px solid rgba(249,115,22,0.2);
+    color: var(--star);
+    border-bottom-right-radius: 4px;
+    margin-left: auto;
+    text-align: right;
+  }
+  .chat-typing {
+    font-family: 'Raleway', sans-serif;
+    font-size: 0.75rem;
+    color: rgba(200,191,224,0.4);
+    font-style: italic;
+    padding: 0.3rem 0;
+    margin-bottom: 0.3rem;
+    letter-spacing: 0.05em;
+  }
+
+  .ch-end { text-align: center; padding: 3rem 0 0; margin-top: 3rem; border-top: 1px solid rgba(236,72,153,0.2); }
+  .ch-end-text { font-family: 'Cormorant Garamond', serif; font-size: 0.85rem; font-style: italic; color: rgba(200,191,224,0.4); letter-spacing: 0.1em; margin-bottom: 2rem; }
+  .ch-nav { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
+  .ch-nav-btn { display: inline-flex; align-items: center; gap: 0.6rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(236,72,153,0.3); color: var(--star); padding: 0.8rem 1.8rem; font-family: 'Raleway', sans-serif; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; transition: all 0.3s; border-radius: 2px; }
+  .ch-nav-btn:hover { background: rgba(236,72,153,0.15); border-color: rgba(249,115,22,0.5); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.4); }
+  .ch-nav-btn.disabled { opacity: 0.3; pointer-events: none; }
+  .ch-nav-toc { color: var(--accent); text-decoration: none; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.3s; }
+  .ch-nav-toc:hover { color: #ec4899; }
+  .progress-wrap { position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 100; background: rgba(0,0,0,0.3); }
+  .progress-fill { height: 100%; width: 0; background: linear-gradient(to right, #ec4899, #f97316); transition: width 0.1s; }
+  .fade-in { opacity: 0; transform: translateY(20px); animation: fadeUp 0.8s ease forwards; }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+  .delay-1 { animation-delay: 0.15s; }
+  .delay-2 { animation-delay: 0.3s; }
+  body { cursor: none; }
+  .cursor { position:fixed; width:8px; height:8px; background:#f97316; border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:transform 0.1s, background 0.3s; box-shadow:0 0 12px rgba(249,115,22,0.6); }
+  .cursor-ring { position:fixed; width:32px; height:32px; border:1px solid rgba(249,115,22,0.4); border-radius:50%; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:all 0.18s ease; }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="progress-wrap"><div class="progress-fill" id="progressFill"></div></div>
+<div class="starfield" id="starfield"></div>
+
+<nav class="top-nav">
+  <a href="../index.html" class="logo">Luminae</a>
+  <span class="nav-chapter-info">Chapter 3 of 3</span>
+  <a href="index.html" class="toc-link">☰ Chapters</a>
+</nav>
+
+<div class="reader-page">
+
+  <header class="ch-header fade-in">
+    <span class="ch-number">✦ Chapter 3 ✦</span>
+    <h1 class="ch-title">The <em>Clinic</em></h1>
+    <div class="ch-divider">
+      <div class="ch-divider-line"></div>
+      <span class="ch-divider-glyph">✦</span>
+      <div class="ch-divider-line"></div>
+    </div>
+  </header>
+
+  <article class="ch-content fade-in delay-1">
+
+    <p class="first">School ended the way it always did.</p>
+    <p class="scene-label">3:48 PM — Westwood High, front steps</p>
+    <p>Lockers slamming. Someone yelling about practice. The parking lot filling up with cars that belonged to people who had places to be.</p>
+    <p>Ethan had his headphones on and his bag over one shoulder and was three minutes from the bus stop when his phone rang.</p>
+    <p>His mom never called. She texted.</p>
+    <p>He picked up immediately.</p>
+    <p class="dialogue">"Ethan. I need you to come to the clinic."</p>
+    <p>Her voice was tired in a way that went deeper than one shift.</p>
+    <p class="dialogue">"What happened?"</p>
+    <p class="dialogue">"I have a patient who came in this afternoon. Exhaustion, low blood pressure, stress collapse. She's stable now but she needs monitoring for a few more hours and I have to go home, shower, eat something, and get back for the night shift or I'm going to end up in a bed next to her."</p>
+    <p class="dialogue">"I need someone to sit with her. Check vitals at the times I write down. Make sure she takes the 5 o'clock medication. Talk to her if she's awake. She shouldn't be alone."</p>
+    <p>A pause.</p>
+    <p class="dialogue">"You know what you're doing. I wouldn't ask if I had another option."</p>
+    <p>Ethan was already walking in the opposite direction from the bus stop.</p>
+    <p class="dialogue">"I'm on my way."</p>
+    <p class="scene-label">4:10 PM — Westwood Community Clinic</p>
+    <p>The clinic smelled the way it always had — antiseptic and old coffee and something faintly floral from the diffuser his mom kept at the front desk despite the head nurse's complaints.</p>
+    <p>Ethan had spent more hours here than he could count. After-school hours when his mom had late appointments and couldn't get a sitter. Summers when there was nowhere else to go. He knew which chairs in the waiting room had broken armrests, which supply cabinet stuck on the left side, where the good pens were hidden.</p>
+    <p>His mom met him at the door looking exactly as tired as she'd sounded.</p>
+    <p class="dialogue">"Room four."</p>
+        <p>she said, pressing a handwritten sheet into his palm. 
+    <p class=</p>
+    <p class="dialogue">"dialogue"</p>
+    <p>></p>
+    <p class="dialogue">"Vitals every thirty minutes, just BP and pulse, the cuff's already set up. Five o'clock is the important one — two tablets, the white ones, with water. She hasn't eaten much so make sure she drinks the electrolyte drink on the side table first."</p>
+    <p>She paused and looked at him properly for the first time.</p>
+    <p class="dialogue">"She's a little disoriented. Stressed about something. Just — be calm. You're good at calm."</p>
+    <p>Ethan nodded.</p>
+    <p>His mom squeezed his shoulder once — her version of a long hug when time didn't allow it — and was out the door.</p>
+    <p class="scene-label">Room four</p>
+    <p>The woman in the bed looked like someone who had been running on empty for a very long time and had finally, simply, stopped.</p>
+    <p>Late thirties maybe. Dark circles that no amount of sleep was going to fix in one afternoon. Her hands rested on top of the blanket with the particular stillness of someone too tired to even fidget.</p>
+    <p>She opened her eyes when Ethan came in.</p>
+    <p class="dialogue">"You're not Dr. Parker."</p>
+    <p>she said. Her voice was dry but not unkind.</p>
+        <p class="dialogue">"I'm her son"</p>
+    <p><p>
+    <p>Ethan said.</p>
+    <p class="dialogue">"She'll be back in a few hours. I'm just here to check on you and make sure you take your medication on time."</p>
+    <p>The woman looked at him for a moment — assessing, the way adults sometimes did when they weren't sure whether to trust a teenager with something.</p>
+    <p>Then she seemed to decide.</p>
+    <p class="dialogue">"Okay."</p>
+    <p>she said, and closed her eyes again.</p>
+    <p>Ethan set his bag down quietly, pulled the chair closer to the side table, and checked the medication sheet his mom had written. Clear handwriting, precise times, everything labeled.</p>
+    <p>He checked the BP cuff. Checked the electrolyte drink. Looked at the clock on the wall.</p>
+    <p>4:14 PM.</p>
+    <p>He sat down, opened his notebook, and waited.</p>
+    <p>By 4:30 she was awake again.</p>
+    <p>He took her vitals — blood pressure slightly low but better than the reading his mom had scribbled at the top of the sheet, pulse steady — and wrote the numbers down carefully.</p>
+    <p class="dialogue">"You actually know what you're doing"</p>
+    <p>she said, watching him.</p>
+    <p class="dialogue">"My mom's been a nurse practitioner since before I could walk. Some of it seeped in."</p>
+    <p>Ethan said. </p>
+    <p>A faint smile crossed her face.</p>
+    <p class="dialogue">"Smart woman, your mother."</p>
+    <p class="dialogue">"Yeah, She is."</p>
+    <p>Ethan said simply. </p>
+    <p>The room was quiet for a moment. Outside, rain had started again — it always rained in Westwood, like the sky had a quota to meet.</p>
+        <p class="dialogue">"What's your name?"</p>
+    <p>she asked.</p>
+    <p class="dialogue">"Ethan."</p>
+        <p class="dialogue">"I'm Diana."</p>
+    <p>She shifted slightly against the pillow.</p>
+    <p class="dialogue">"How old are you, Ethan?"</p>
+    <p class="dialogue">"Sixteen."</p>
+        <p class="dialogue">"Sixteen and playing nurse."</p>
+    <p>She said it without mockery. More like she was turning the fact over, finding it interesting.</p>
+    <p class="dialogue">"What school do you go to?"</p>
+    <p class="dialogue">"Westwood High."</p>
+    <p>Diana went quiet for a moment. Something moved across her face that Ethan couldn't read.</p>
+        <p class="dialogue">"My daughter goes there."</p>
+    <p>she said.</p>
+        <p class="dialogue">"Oh."</p>
+    <p>Ethan looked up from the chart.</p>
+    <p class="dialogue">"What year?"</p>
+    <p class="dialogue">"Junior."</p>
+    <p>He nodded. Two hundred or so juniors. Could be anyone.</p>
+        <p class="dialogue">"She doesn't know I'm here."</p>
+    <p>Diana added, and the way she said it — the flatness of it — made it clear this wasn't a simple logistical detail. It was something heavier.</p>
+    <p class="dialogue">"I didn't want to worry her."</p>
+    <p>Ethan didn't push. He just nodded and wrote down the 4:30 vitals.</p>
+    <p>By 4:50 Diana was more awake and, it turned out, more talkative.</p>
+    <p>She asked about his classes. He answered briefly and honestly — he was better at some than others, he liked English, he found most of it manageable but not particularly exciting.</p>
+    <p>She asked if he had many friends at school.</p>
+    <p>He paused just a half-second too long.</p>
+        <p class="dialogue">"I'm more of a background person."</p>
+    <p>he said.</p>
+        <p>Diana looked at him steadily.</p>
+    <p class="dialogue">"Background people notice everything."</p>
+    <p>she said.</p>
+    <p class="dialogue">"The loud ones never do."</p>
+    <p>Ethan looked down at the chart.</p>
+        <p class="dialogue">"Your daughter."</p>
+    <p>he said after a moment.</p>
+    <p class="dialogue">"Is she loud or background?"</p>
+    <p>Diana made a sound that was almost a laugh.</p>
+        <p class="dialogue">"She performs loud."</p>
+    <p>she said carefully.</p>
+    <p class="dialogue">"But at home, late at night when she thinks I'm asleep — she's very quiet."</p>
+    <p>A pause.</p>
+    <p class="dialogue">"I worry about that gap."</p>
+    <p>Ethan said nothing. He thought about just.a.nobody00 and the message from the night before — i've been playing a character for so long i don't know what i'm like when no one's watching — and felt something press quietly against his chest.</p>
+    <p>He gave her the 5 o'clock medication exactly on time.</p>
+    <p>Two white tablets. A full glass of electrolyte drink that she made a face at but finished.</p>
+        <p class="dialogue">"Thank you, Ethan."</p>
+    <p>she said, and meant it in a way that landed differently from politeness.</p>
+    <p class="scene-label">5:22 PM</p>
+    <p>The door opened without a knock.</p>
+    <p>Chloe Hopper stood in the doorway of room four still wearing her school jacket, backpack on one shoulder, and the specific expression of someone who had been scared for the last forty minutes and was trying very hard not to show it.</p>
+    <p>She saw her mother first.</p>
+    <p>Her whole body exhaled.</p>
+        <p class="dialogue">"Mom."</p>
+    <p>It came out quieter than anything Ethan had ever heard from her in a classroom.</p>
+    <p class="dialogue">"You said you were fine."</p>
+        <p class="dialogue">"I am fine."</p>
+    <p>Diana said.</p>
+    <p class="dialogue">"I'm finer now."</p>
+    <p class="dialogue">"You collapsed."</p>
+    <p class="dialogue">"I sat down heavily."</p>
+    <p class="dialogue">"The clinic called me, Mom."</p>
+    <p>Then Chloe's eyes moved across the room and found Ethan sitting in the chair by the side table with a blood pressure chart in his hand, and she stopped.</p>
+    <p>He watched her process it — the confusion first, then the recognition that there was a boy from approximately her age group sitting next to her mother's hospital bed like it was something he did regularly.</p>
+        <p class="dialogue">"Who are you?"</p>
+    <p>she asked. Not rude. Just direct.</p>
+        <p class="dialogue">"Ethan Parker."</p>
+    <p>he said.</p>
+    <p class="dialogue">"My mom is the nurse practitioner here. She had to go home for a few hours so I've been sitting with your mom."</p>
+    <p>A beat.</p>
+    <p class="dialogue">"You've been taking care of her?"</p>
+        <p class="dialogue">"Vitals and medication."</p>
+    <p>he said.</p>
+    <p class="dialogue">"Nothing complicated."</p>
+    <p>Chloe looked at her mother. Diana gave her a look that said he's been perfectly fine, stop interrogating the boy.</p>
+    <p>Chloe dropped her bag near the door and came to the other side of the bed. She looked at her mom properly — the color returning to her face, the steadier breathing, the finished drink on the side table — and something in her shoulders came down by about three degrees.</p>
+        <p class="dialogue">"How long has she been on the medication?"</p>
+    <p>she asked Ethan.</p>
+        <p class="dialogue">"Since five exactly."</p>
+    <p>he said.</p>
+    <p class="dialogue">"Her blood pressure's been climbing back up since 4:30. It was 94 over 60 when I got here, it's 108 over 72 now."</p>
+    <p>Chloe stared at him.</p>
+    <p class="dialogue">"You just know that."</p>
+    <p class="dialogue">"My mom wrote it on the sheet."</p>
+    <p class="dialogue">"But you understood it."</p>
+        <p>He shrugged slightly.</p>
+    <p class="dialogue">"I've been coming here since I was eight."</p>
+        <p>Diana, from the pillow, said,</p>
+    <p class="dialogue">"He goes to your school."</p>
+    <p>Chloe turned to her mom.</p>
+        <p class="dialogue">"He's a junior."</p>
+    <p>Diana continued, with the particular calm of someone who had decided to be helpful.</p>
+    <p class="dialogue">"Westwood High. Like you."</p>
+    <p>Chloe looked at Ethan again. Properly this time — not the way she'd looked at him in the hallway for half a second before looking away. Actually looked.</p>
+        <p class="dialogue">"What class are you in?"</p>
+    <p>she asked.</p>
+        <p class="dialogue">"214."</p>
+    <p>Ethan said.</p>
+    <p class="dialogue">"Mr. Bennett."</p>
+    <p>The silence that followed was the specific kind that happens when someone realizes they've been sitting three meters away from a person for months without ever learning their name.</p>
+        <p class="dialogue">"We're in the same class."</p>
+    <p>Chloe said.</p>
+    <p class="dialogue">"Yeah."</p>
+        <p class="dialogue">"I've never—"</p>
+    <p>She stopped.</p>
+        <p class="dialogue">"It's fine."</p>
+    <p>Ethan said, and meant it genuinely, not bitterly.</p>
+    <p class="dialogue">"I'm easy to miss."</p>
+    <p>Diana made a small sound from the bed. Not quite a laugh. More like quiet disagreement.</p>
+    <p>They stayed like that for a while — Chloe sitting on the edge of her mom's bed, Ethan in his chair, Diana drifting in and out of light sleep between them.</p>
+    <p>It should have been awkward. Somehow it wasn't.</p>
+    <p>Maybe it was the room — something about clinic rooms stripped the usual social architecture away. There was no crowd to perform for, no hallway dynamic to maintain. Just two people and a sleeping woman and rain against a small window.</p>
+        <p class="dialogue">"Does she do this a lot?"</p>
+    <p>Ethan asked quietly.</p>
+    <p class="dialogue">"Push herself until she collapses."</p>
+    <p>Chloe looked at her mom.</p>
+        <p class="dialogue">"She doesn't think I notice."</p>
+    <p>she said.</p>
+    <p class="dialogue">"She always says she's fine before I can ask."</p>
+    <p>A pause.</p>
+        <p class="dialogue">"She's been doing double shifts for three years."</p>
+    <p>Chloe said.</p>
+    <p class="dialogue">"Since my dad died. She won't let me get a part-time job. Says I should focus on school."</p>
+    <p>She said it without self-pity — more like she'd turned the fact over so many times it had worn smooth.</p>
+    <p class="dialogue">"So I focus on school and she runs herself into the ground and neither of us says anything about it."</p>
+    <p>Ethan absorbed that quietly.</p>
+        <p class="dialogue">"My mom does double shifts too."</p>
+    <p>he said.</p>
+    <p class="dialogue">"Different reason but — same silence about it."</p>
+    <p>Chloe looked at him.</p>
+    <p>Not the way you look at a stranger. The way you look at someone who just said something you didn't expect.</p>
+        <p class="dialogue">"How do you handle it?"</p>
+    <p>she asked.</p>
+    <p class="dialogue">"The quiet apartment. Coming home to nothing."</p>
+    <p>Ethan thought about it honestly.</p>
+        <p class="dialogue">"I found ways to not feel alone."</p>
+    <p>he said.</p>
+    <p class="dialogue">"Even when I technically am."</p>
+    <p>She seemed to want to ask more. But Diana stirred slightly between them and the moment shifted.</p>
+        <p class="dialogue">"She looks better."</p>
+    <p>Chloe said softly.</p>
+        <p class="dialogue">"She does."</p>
+    <p>Ethan agreed.</p>
+    <p>They sat with that quietly — the way people do when something good has happened that neither of them caused exactly, but both were part of.</p>
+    <hr>
+    <p class="scene-label">6:40 PM</p>
+    <p>Ethan's mom arrived back still slightly damp from the rain, a container of food from the place down the street in one hand.</p>
+    <p>She stopped in the doorway of room four and looked at the scene — her son in the chair with the completed vitals chart, Diana resting with better color than she'd had at noon, and Chloe Hopper sitting cross-legged on the end of the bed doing homework on her phone.</p>
+        <p class="dialogue">"Well."</p>
+    <p>his mom said.</p>
+    <p>Ethan handed her the chart.</p>
+    <p>She scanned it quickly, checked Diana's pulse herself with the automatic efficiency of someone who'd done it ten thousand times, and let out a slow breath of relief.</p>
+        <p class="dialogue">"Good."</p>
+    <p>she said.</p>
+    <p class="dialogue">"This is good."</p>
+    <p>She looked at Ethan properly.</p>
+    <p class="dialogue">"You did good."</p>
+    <p>He shrugged, the same way he always did when she said that.</p>
+    <p>Chloe was watching him.</p>
+    <p>Diana had woken up again and was looking between Ethan's mother and her daughter with the quiet satisfaction of someone whose plan had worked out slightly better than expected — though nobody had asked her to have a plan.</p>
+        <p class="dialogue">"Your son."</p>
+    <p>Diana said to Ethan's mom,</p>
+    <p class="dialogue">"has very good bedside manner."</p>
+        <p class="dialogue">"He gets it from me."</p>
+    <p>his mom said, already updating the chart.</p>
+    <p class="dialogue">"And the humility apparently."</p>
+    <p>Ethan stared at a point on the wall.</p>
+    <p>Chloe, for the first time since she'd arrived, smiled.</p>
+    <p>Not the performed version. Not the one that worked on the basketball team and made freshmen whisper. Just a small, real one that she didn't seem to notice she was doing.</p>
+    <p>Ethan noticed.</p>
+    <p>He looked away before she could see him notice.</p>
+    <p>Outside, the rain kept falling.</p>
+    <p>And somewhere in his jacket pocket, his phone was quiet — just.a.nobody00 still offline, still unknown, still the other half of something he couldn't name.</p>
+    <p>He picked up his bag.</p>
+        <p class="dialogue">"I should go."</p>
+    <p>he said.</p>
+    <p>Outside, the rain kept falling against the clinic windows, softer now but steady enough to turn the streets silver under the streetlights.</p>
+    <p>Ethan adjusted the strap of his bag.</p>
+    <p class="dialogue">"I'll see you tomorrow, Mom."</p>
+        <p>His mother glanced up from the chart.</p>
+    <p class="dialogue">"Text me when you get home."</p>
+    <p class="dialogue">"I will."</p>
+    <p>He started toward the door again.</p>
+    <p>Then Diana spoke, her voice slightly sleepy from the medication.</p>
+    <p class="dialogue">"Actually… Ethan?"</p>
+    <p>He paused.</p>
+        <p class="dialogue">"It's late."</p>
+    <p>she said, glancing toward the dark window.</p>
+    <p class="dialogue">"Would you mind walking my daughter home? It's not too far."</p>
+    <p class="dialogue">"Mom—"</p>
+    <p>Chloe looked immediately embarrassed.</p>
+        <p class="dialogue">"What?"</p>
+    <p>Diana said lightly.</p>
+    <p class="dialogue">"Humor your exhausted mother."</p>
+    <p class="dialogue">"I'm seventeen, not seven."</p>
+    <p class="dialogue">"And yet somehow I still worry."</p>
+        <p>Chloe sighed and rubbed a hand over her face.</p>
+    <p class="dialogue">"You're impossible."</p>
+        <p class="dialogue">"Doctor's orders."</p>
+    <p>Diana added weakly, pointing vaguely toward Ethan's mother.</p>
+        <p>Ethan's mom didn't even look up from the chart.</p>
+    <p class="dialogue">"I refuse involvement in this conversation."</p>
+    <p>That earned the smallest laugh from Chloe.</p>
+        <p>Diana looked back at Ethan.</p>
+    <p class="dialogue">"Only if you don't mind."</p>
+    <p>He hesitated for half a second.</p>
+        <p class="dialogue">"Sure."</p>
+    <p>he said.</p>
+    <p class="dialogue">"I don't mind."</p>
+    <p>Chloe grabbed her bag from the floor.</p>
+        <p class="dialogue">"You really don't have to."</p>
+    <p>she told him quietly as they stepped into the hallway.</p>
+        <p class="dialogue">"It's fine."</p>
+    <p>Ethan said.</p>
+    <p class="dialogue">"I was walking that way anyway."</p>
+    <p class="dialogue">"You don't even know where I live."</p>
+    <p>He blinked once.</p>
+    <p class="dialogue">"...Good point."</p>
+    <p>For the first time all evening, Chloe laughed properly.</p>
+    <p>Not loud. Not polished. Just real.</p>
+        <p class="dialogue">"I promise I'm not secretly leading you into the woods."</p>
+    <p>she said.</p>
+    <p class="dialogue">"That's reassuring."</p>
+    <p>They walked out together into the cold evening rain.</p>
+    <p>The clinic lights glowed behind them, warm against the dark street.</p>
+    <p>For a minute they walked in silence beneath the same umbrella Chloe had pulled from her bag.</p>
+    <p>Then she glanced sideways at him.</p>
+        <p class="dialogue">"So."</p>
+    <p>she said,</p>
+    <p class="dialogue">"you really thought we were in the same class for months and just never said anything?"</p>
+    <p>Ethan shoved his hands into his pockets.</p>
+    <p class="dialogue">"You looked busy."</p>
+    <p class="dialogue">"That's your excuse?"</p>
+    <p class="dialogue">"You also looked surrounded by people approximately one hundred percent of the time."</p>
+    <p class="dialogue">"Fair."</p>
+    <p>A small pause settled between them — comfortable this time.</p>
+        <p class="dialogue">"You know."</p>
+    <p>Chloe said after a moment,</p>
+    <p class="dialogue">"my mom already likes you more than most people I know."</p>
+    <p class="dialogue">"Your mom met me unconscious-adjacent in a clinic room. That's probably cheating."</p>
+    <p>Chloe smiled again, softer now.</p>
+    <p class="dialogue">"Still counts."</p>
+    <p>And somehow, walking through rain under weak streetlights with a girl who had finally stopped looking past him, Ethan felt like the world had shifted very slightly off its axis.</p>
+    <p>Not dramatically.</p>
+    <p>Just enough to notice.</p>
+
+  </article>
+
+  <div class="ch-end fade-in delay-2">
+    <p class="ch-end-text">— End of Chapter 3 —</p>
+    <div class="ch-nav">
+      <a href="chapter2.html" class="ch-nav-btn">← Previous</a>
+      <a href="index.html" class="ch-nav-toc">All Chapters</a>
+      <a href="#" class="ch-nav-btn disabled">Next →</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const starfield = document.getElementById('starfield');
+for (let i = 0; i < 60; i++) {
+  const s = document.createElement('div');
+  s.className = 'star-dot';
+  const size = Math.random() < 0.7 ? 1 : 2;
+  s.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*4}s;--delay:${Math.random()*5}s;--op:${0.2+Math.random()*0.5};`;
+  starfield.appendChild(s);
+}
+const progressFill = document.getElementById('progressFill');
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  progressFill.style.width = Math.min(pct, 100) + '%';
+});
+const cursor = document.getElementById('cursor'), cursorRing = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cursor.style.left = mx + 'px'; cursor.style.top = my + 'px'; });
+function animRing() { rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12; cursorRing.style.left = rx + 'px'; cursorRing.style.top = ry + 'px'; requestAnimationFrame(animRing); }
+animRing();
+document.querySelectorAll('a, button, .ch-nav-btn').forEach(el => {
+  el.addEventListener('mouseenter', () => { cursor.style.transform = 'translate(-50%,-50%) scale(2)'; cursorRing.style.transform = 'translate(-50%,-50%) scale(1.5)'; cursorRing.style.borderColor = 'rgba(249,115,22,0.7)'; });
+  el.addEventListener('mouseleave', () => { cursor.style.transform = 'translate(-50%,-50%) scale(1)'; cursorRing.style.transform = 'translate(-50%,-50%) scale(1)'; cursorRing.style.borderColor = 'rgba(249,115,22,0.4)'; });
+});
+</script>
+</body>
+</html>
