@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 5 — The Tag | Luminae</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Cinzel+Decorative:wght@400;700&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0d0a1a; --parchment: #fdf8f0; --cream: #f5ede0;
+    --gold: #c9933a; --gold-light: #e8c97a; --gold-glow: #f0d898;
+    --violet: #6b3fa0; --violet-dark: #3d1f6e; --violet-light: #a67dd0;
+    --rose: #c45a7a; --midnight: #0f0820; --mist: #c8bfe0; --star: #f8f0e3;
+    --accent: #f97316; --accent-glow: rgba(249,115,22,0.4);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--midnight); color: var(--star); font-family: 'Raleway', sans-serif; font-weight: 300; overflow-x: hidden; min-height: 100vh; }
+  .starfield { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .star-dot { position: absolute; border-radius: 50%; background: white; animation: twinkle var(--d, 3s) ease-in-out infinite; animation-delay: var(--delay, 0s); opacity: 0; }
+  @keyframes twinkle { 0%, 100% { opacity: 0; transform: scale(0.5); } 50% { opacity: var(--op, 0.7); transform: scale(1); } }
+  .top-nav { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; padding: 1rem 3rem; background: linear-gradient(to bottom, rgba(15,8,32,0.98), rgba(15,8,32,0.9)); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(236,72,153,0.2); }
+  .logo { font-family: 'Cinzel Decorative', cursive; font-size: 1.1rem; color: var(--accent); letter-spacing: 0.08em; text-shadow: 0 0 20px var(--accent-glow); text-decoration: none; }
+  .nav-chapter-info { font-size: 0.7rem; color: var(--mist); letter-spacing: 0.1em; text-transform: uppercase; }
+  .toc-link { color: var(--accent); text-decoration: none; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.3s; }
+  .toc-link:hover { color: #ec4899; }
+  .reader-page { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; padding: 4rem 2rem 3rem; }
+  .ch-header { text-align: center; margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid rgba(236,72,153,0.2); }
+  .ch-number { font-size: 0.65rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.2rem; display: block; }
+  .ch-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 300; line-height: 1.15; color: var(--star); margin-bottom: 0.8rem; }
+  .ch-title em { font-style: italic; color: #ec4899; text-shadow: 0 0 30px rgba(236,72,153,0.4); }
+  .ch-divider { display: flex; align-items: center; gap: 0.8rem; margin: 1.5rem auto 0; max-width: 160px; }
+  .ch-divider-line { flex: 1; height: 1px; background: linear-gradient(to right, transparent, rgba(236,72,153,0.5), transparent); }
+  .ch-divider-glyph { color: var(--accent); font-size: 0.8rem; }
+  .ch-content { font-family: 'Cormorant Garamond', serif; font-size: 1.18rem; color: var(--mist); line-height: 2; font-weight: 400; }
+  .ch-content p { margin-bottom: 1.5rem; }
+  .ch-content p.first::first-letter { font-family: 'Cinzel Decorative', cursive; font-size: 3.8rem; float: left; line-height: 1; margin: 0.05em 0.12em -0.1em 0; color: var(--accent); text-shadow: 0 0 20px var(--accent-glow); }
+  .ch-content em { color: #ec4899; font-style: italic; }
+  .ch-content hr { border: none; text-align: center; margin: 2.5rem 0; }
+  .ch-content hr::after { content: '✦ ✦ ✦'; color: var(--accent); font-size: 0.7rem; letter-spacing: 0.5em; }
+  .scene-label { font-family: 'Raleway', sans-serif; font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(200,191,224,0.35); text-align: center; margin: 2.5rem 0 1.5rem; font-style: italic; }
+
+  
+  .ch-content .dialogue { color: var(--star); }
+  .ch-content .thought { color: #06b6d4; font-style: italic; }
+  /* ═══ Chat Bubbles ═══ */
+  .chat-container {
+    position: relative;
+    margin: 2rem 0;
+    padding: 1.5rem 1.2rem;
+    background: rgba(0,0,0,0.25);
+    border: 1px solid rgba(249,115,22,0.12);
+    border-radius: 16px;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.03);
+  }
+  .chat-container::before {
+    content: '💬';
+    position: absolute;
+    top: -10px;
+    left: 20px;
+    font-size: 0.7rem;
+    background: var(--midnight);
+    padding: 0 0.5rem;
+    color: rgba(249,115,22,0.6);
+  }
+  .chat-bubble {
+    font-family: 'Raleway', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 400;
+    line-height: 1.6;
+    padding: 0.7rem 1rem;
+    border-radius: 14px;
+    margin-bottom: 0.5rem;
+    max-width: 80%;
+    word-wrap: break-word;
+    animation: bubbleIn 0.3s ease forwards;
+  }
+  @keyframes bubbleIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  .chat-received {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: var(--mist);
+    border-bottom-left-radius: 4px;
+    margin-right: auto;
+  }
+  .chat-sent {
+    background: linear-gradient(135deg, rgba(249,115,22,0.15), rgba(236,72,153,0.1));
+    border: 1px solid rgba(249,115,22,0.2);
+    color: var(--star);
+    border-bottom-right-radius: 4px;
+    margin-left: auto;
+    text-align: right;
+  }
+  .chat-typing {
+    font-family: 'Raleway', sans-serif;
+    font-size: 0.75rem;
+    color: rgba(200,191,224,0.4);
+    font-style: italic;
+    padding: 0.3rem 0;
+    margin-bottom: 0.3rem;
+    letter-spacing: 0.05em;
+  }
+
+  .ch-end { text-align: center; padding: 3rem 0 0; margin-top: 3rem; border-top: 1px solid rgba(236,72,153,0.2); }
+  .ch-end-text { font-family: 'Cormorant Garamond', serif; font-size: 0.85rem; font-style: italic; color: rgba(200,191,224,0.4); letter-spacing: 0.1em; margin-bottom: 2rem; }
+  .ch-nav { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
+  .ch-nav-btn { display: inline-flex; align-items: center; gap: 0.6rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(236,72,153,0.3); color: var(--star); padding: 0.8rem 1.8rem; font-family: 'Raleway', sans-serif; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; transition: all 0.3s; border-radius: 2px; }
+  .ch-nav-btn:hover { background: rgba(236,72,153,0.15); border-color: rgba(249,115,22,0.5); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.4); }
+  .ch-nav-btn.disabled { opacity: 0.3; pointer-events: none; }
+  .ch-nav-toc { color: var(--accent); text-decoration: none; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.3s; }
+  .ch-nav-toc:hover { color: #ec4899; }
+  .progress-wrap { position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 100; background: rgba(0,0,0,0.3); }
+  .progress-fill { height: 100%; width: 0; background: linear-gradient(to right, #ec4899, #f97316); transition: width 0.1s; }
+  .fade-in { opacity: 0; transform: translateY(20px); animation: fadeUp 0.8s ease forwards; }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+  .delay-1 { animation-delay: 0.15s; }
+  .delay-2 { animation-delay: 0.3s; }
+  body { cursor: none; }
+  .cursor { position:fixed; width:8px; height:8px; background:#f97316; border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:transform 0.1s, background 0.3s; box-shadow:0 0 12px rgba(249,115,22,0.6); }
+  .cursor-ring { position:fixed; width:32px; height:32px; border:1px solid rgba(249,115,22,0.4); border-radius:50%; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:all 0.18s ease; }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="progress-wrap"><div class="progress-fill" id="progressFill"></div></div>
+<div class="starfield" id="starfield"></div>
+
+<nav class="top-nav">
+  <a href="../index.html" class="logo">Luminae</a>
+  <span class="nav-chapter-info">Chapter 5 of 5</span>
+  <a href="index.html" class="toc-link">☰ Chapters</a>
+</nav>
+
+<div class="reader-page">
+
+  <header class="ch-header fade-in">
+    <span class="ch-number">✦ Chapter 5 ✦</span>
+    <h1 class="ch-title">The <em>Tag</em></h1>
+    <div class="ch-divider">
+      <div class="ch-divider-line"></div>
+      <span class="ch-divider-glyph">✦</span>
+      <div class="ch-divider-line"></div>
+    </div>
+  </header>
+
+  <article class="ch-content fade-in delay-1">
+    <p class="scene-label">7:43 AM — Westwood High</p>
+    <p>The rain had finally stopped.</p>
+    <p>Not completely.</p>
+    <p>Just enough that the sky looked exhausted instead of angry.</p>
+    <p>Students flooded through the front entrance carrying backpacks, coffees, unfinished homework, and varying levels of regret about being awake.</p>
+    <p>Ethan Parker walked through the crowd the same way he always did.</p>
+    <p>Quietly.</p>
+    <p>Headphones around his neck.</p>
+    <p>Phone in one hand.</p>
+    <p>Scrolling reels.</p>
+    <p>A dog trying to fit into a shoebox.</p>
+    <p>Someone attempting a backflip and immediately regretting it.</p>
+    <p>A cooking video he watched for twelve seconds before realizing he wasn't actually paying attention.</p>
+    <p>Then—</p>
+    <p>His phone buzzed.</p>
+    <p>Instagram notification.</p>
+    <p>Ethan glanced down.</p>
+    <p>Then stopped walking.</p>
+    <p>For a second he genuinely thought he'd read it wrong.</p>
+    <p>chloeh_ mentioned you in her story.</p>
+    <p>He blinked.</p>
+    <p>Looked again.</p>
+    <p>Still there.</p>
+    <p>His thumb tapped the notification.</p>
+    <p>The story opened.</p>
+    <p>A picture of a slice of honey almond cake.</p>
+    <p>Warm lighting.</p>
+    <p>Mabel's table.</p>
+    <p>The exact cake from yesterday.</p>
+    <p>Caption:</p>
+    <p>still thinking about this.</p>
+    <p>Tagged beneath it:</p>
+    <p>@ethan_p</p>
+    <p>Ethan stared.</p>
+    <p>People flowed around him in the hallway.</p>
+    <p>Someone bumped his shoulder.</p>
+    <p>He barely noticed.</p>
+    <p>Because Chloe Hopper had just voluntarily tagged him in an Instagram story.</p>
+    <p>His phone vibrated again.</p>
+    <p>And again.</p>
+    <p>And again.</p>
+    <p>Messages were already appearing.</p>
+    <p>bro???</p>
+    <p>WAIT YOU KNOW CHLOE HOPPER???</p>
+    <p>since when???</p>
+    <p>ETHAN???</p>
+    <p>One particularly dramatic message simply said:</p>
+    <p>WHAT.</p>
+    <p>Ethan rubbed a hand over his face.</p>
+    <p>He opened the story again.</p>
+    <p>Looked at the mention.</p>
+    <p>Looked at the repost button.</p>
+    <p>Closed it.</p>
+    <p>Opened it again.</p>
+    <p>Closed it.</p>
+    <p>Because reposting it felt weird.</p>
+    <p>But not reposting it felt weirder.</p>
+    <p>Eventually he sighed.</p>
+    <p>Pressed the button.</p>
+    <p>Added nothing.</p>
+    <p>No caption.</p>
+    <p>No emoji.</p>
+    <p>Just reposted it.</p>
+    <p>Immediately regretted it.</p>
+    <p>Then kept walking.</p>
+    <hr>
+    <p>By the time he reached Classroom 214 he already knew what was waiting for him.</p>
+    <p>The hallway outside buzzed louder than usual.</p>
+    <p>And unfortunately—</p>
+    <p>Several people were looking directly at him.</p>
+    <p>Not through him.</p>
+    <p>At him.</p>
+    <p>Which was significantly worse.</p>
+    <p class="dialogue">"...that's him."</p>
+    <p class="dialogue">"No way."</p>
+    <p class="dialogue">"Seriously?"</p>
+    <p class="dialogue">"I've literally never heard him talk."</p>
+    <p class="dialogue">"He's in our class, right?"</p>
+    <p class="dialogue">"I think so?"</p>
+    <p class="dialogue">"You THINK so?"</p>
+    <p>Ethan closed his eyes briefly.</p>
+    <p>Wonderful.</p>
+    <p>Someone near the door actually frowned while looking at him.</p>
+    <p class="dialogue">"Damn."</p>
+    <p class="dialogue">"What?"</p>
+    <p class="dialogue">"I genuinely forgot he was in our class."</p>
+    <p>The guy sounded apologetic about it.</p>
+    <p>Which somehow made it worse.</p>
+    <p>Ethan walked inside.</p>
+    <p>The room was already full.</p>
+    <p>Conversations everywhere.</p>
+    <p>Phones out.</p>
+    <p>People pretending they weren't staring.</p>
+    <p>He headed automatically toward his usual seat by the windows.</p>
+    <p>Then stopped.</p>
+    <p>Because someone was sitting there.</p>
+    <p>Chloe.</p>
+    <p>She looked up from her phone.</p>
+    <p class="dialogue">"Morning."</p>
+    <p>A few nearby conversations immediately died.</p>
+    <p>Ethan glanced around.</p>
+    <p>Half the class suddenly seemed fascinated by their notebooks.</p>
+    <p class="dialogue">"Morning."</p>
+    <p>Chloe tapped the empty seat beside her.</p>
+    <p class="dialogue">"Claire's sick."</p>
+    <p class="dialogue">"...Okay?"</p>
+    <p class="dialogue">"You can sit there."</p>
+    <p>The entire row went silent.</p>
+    <p>A basketball player across the room stared.</p>
+    <p class="dialogue">"Wait."</p>
+    <p>He looked between them.</p>
+    <p class="dialogue">"You guys know each other?"</p>
+    <p>Chloe didn't even look up.</p>
+    <p class="dialogue">"Since yesterday."</p>
+    <p>The room somehow became even quieter.</p>
+    <p>Ethan sat down.</p>
+    <p>The basketball player looked deeply offended by this information.</p>
+    <hr>
+    <p>Mr. Bennett arrived three minutes later carrying coffee and disappointment.</p>
+    <p class="dialogue">"Good morning, emotionally unstable people."</p>
+    <p class="dialogue">"Morning, Mr. Bennett."</p>
+    <p class="dialogue">"That sounded unconvincing."</p>
+    <p>He dropped his notes onto the desk.</p>
+    <p>The lesson began.</p>
+    <p>For once Ethan thought maybe everyone would move on.</p>
+    <p>Maybe.</p>
+    <p>Then every five minutes somebody looked back at him.</p>
+    <p>Or Chloe.</p>
+    <p>Or both.</p>
+    <p>Like they were trying to solve a conspiracy.</p>
+    <p>It was exhausting.</p>
+    <p>Chloe seemed to find it hilarious.</p>
+    <p>Halfway through class Mr. Bennett wrote a particularly ugly question across the board.</p>
+    <p>Several students immediately gave up.</p>
+    <p>One actually sighed dramatically.</p>
+    <p>"Come on," Bennett said.</p>
+    <p class="dialogue">"It's not that hard."</p>
+    <p>Nobody moved.</p>
+    <p>Ethan glanced at the board.</p>
+    <p>Found the answer almost immediately.</p>
+    <p>Years of sitting quietly and actually listening during class occasionally paid off.</p>
+    <p>Before he could say anything—</p>
+    <p>Chloe leaned slightly toward him.</p>
+    <p class="dialogue">"So what's the answer?"</p>
+    <p>He looked at her.</p>
+    <p class="dialogue">"You serious?"</p>
+    <p class="dialogue">"Very."</p>
+    <p>He explained it quietly.</p>
+    <p>Thirty seconds.</p>
+    <p>Maybe less.</p>
+    <p>Chloe listened.</p>
+    <p>Nodded once.</p>
+    <p>Then stood up.</p>
+    <p>The entire class turned.</p>
+    <p>Including Mr. Bennett.</p>
+    <p class="dialogue">"Chloe?"</p>
+    <p>She answered.</p>
+    <p>Correctly.</p>
+    <p>Not partly correct.</p>
+    <p>Not lucky.</p>
+    <p>Completely correct.</p>
+    <p>The room froze.</p>
+    <p>Mr. Bennett blinked.</p>
+    <p>Actually blinked.</p>
+    <p class="dialogue">"...Well."</p>
+    <p>He looked genuinely impressed.</p>
+    <p class="dialogue">"That is exactly right."</p>
+    <p>Several students turned around immediately.</p>
+    <p>One whispered:</p>
+    <p class="dialogue">"Since when?"</p>
+    <p>Another whispered:</p>
+    <p class="dialogue">"What happened yesterday?"</p>
+    <p>The basketball player looked personally betrayed.</p>
+    <p>Chloe sat back down.</p>
+    <p>Calm.</p>
+    <p>Like nothing unusual had happened.</p>
+    <p>Ethan shook his head slightly.</p>
+    <p class="dialogue">"You could've just let me answer."</p>
+    <p>She smiled.</p>
+    <p class="dialogue">"Where's the fun in that?"</p>
+    <hr>
+    <p>The bell rang.</p>
+    <p>Students poured into the hallway.</p>
+    <p>Mr. Bennett was still staring suspiciously at Chloe as if he'd witnessed academic fraud.</p>
+    <p>As Ethan packed his bag, Chloe nudged his shoulder lightly.</p>
+    <p class="dialogue">"Thanks."</p>
+    <p class="dialogue">"It's nothing."</p>
+    <p class="dialogue">"No."</p>
+    <p>She zipped up her bag.</p>
+    <p class="dialogue">"That would've taken me ten minutes."</p>
+    <p class="dialogue">"It took you thirty seconds."</p>
+    <p class="dialogue">"Because you explained it."</p>
+    <p>Ethan shrugged.</p>
+    <p>She looked at him for a second.</p>
+    <p>Thinking.</p>
+    <p>Then:</p>
+    <p class="dialogue">"I'm buying you lunch."</p>
+    <p class="dialogue">"What?"</p>
+    <p class="dialogue">"Lunch."</p>
+    <p class="dialogue">"You don't owe me lunch."</p>
+    <p class="dialogue">"I do."</p>
+    <p class="dialogue">"You absolutely don't."</p>
+    <p class="dialogue">"I already decided."</p>
+    <p class="dialogue">"That's concerning."</p>
+    <p class="dialogue">"Good."</p>
+    <p>And before he could argue further—</p>
+    <p>She walked away.</p>
+    <p>Leaving him standing there.</p>
+    <p>Again.</p>
+    <hr>
+    <p class="scene-label">12:17 PM — Cafeteria</p>
+    <p>This was a terrible idea.</p>
+    <p>Ethan knew it immediately.</p>
+    <p>Because Chloe's table was impossible to miss.</p>
+    <p>Not because they were loud.</p>
+    <p>Not because they demanded attention.</p>
+    <p>Because attention arrived automatically.</p>
+    <p>Five girls.</p>
+    <p>All attractive.</p>
+    <p>All popular.</p>
+    <p>All people Ethan usually observed from approximately three social universes away.</p>
+    <p>And now—</p>
+    <p>He was walking toward them.</p>
+    <p>Several nearby tables noticed instantly.</p>
+    <p>A guy actually stopped eating.</p>
+    <p>Just stopped.</p>
+    <p>Fork halfway to his mouth.</p>
+    <p>Watching.</p>
+    <p>Wonderful.</p>
+    <p>Chloe waved him over.</p>
+    <p class="dialogue">"Over here."</p>
+    <p>Too late to escape now.</p>
+    <p>He sat down.</p>
+    <p>The table looked at him.</p>
+    <p>Not hostile.</p>
+    <p>Just curious.</p>
+    <p>Very curious.</p>
+    <p>There were four girls sitting with Chloe.</p>
+    <p>Claire's seat was empty.</p>
+    <p>A girl with dark brown hair and sharp green eyes pointed at him immediately.</p>
+    <p class="dialogue">"OH."</p>
+    <p class="dialogue">"There he is."</p>
+    <p>Ethan sighed.</p>
+    <p class="dialogue">"There who is?"</p>
+    <p class="dialogue">"The mystery boy."</p>
+    <p class="dialogue">"I hate that title already."</p>
+    <p>The girls laughed.</p>
+    <p>Chloe rolled her eyes.</p>
+    <p class="dialogue">"Ethan, this is Ava."</p>
+    <p>Ava grinned.</p>
+    <p class="dialogue">"The famous Ethan."</p>
+    <p class="dialogue">"I'm not famous."</p>
+    <p class="dialogue">"You got reposted by Chloe Hopper."</p>
+    <p class="dialogue">"That's not how fame works."</p>
+    <p class="dialogue">"It absolutely is at this school."</p>
+    <p>The girl beside Ava laughed.</p>
+    <p>She had curly black hair and a calm expression.</p>
+    <p class="dialogue">"Ignore her. She's been waiting all morning to meet you."</p>
+    <p class="dialogue">"I have not."</p>
+    <p class="dialogue">"You literally have."</p>
+    <p class="dialogue">"I was curious."</p>
+    <p class="dialogue">"That's the same thing."</p>
+    <p>Ethan was already regretting sitting down.</p>
+    <p>Chloe looked far too entertained.</p>
+    <p>Ava pointed between them.</p>
+    <p class="dialogue">"Okay, explain."</p>
+    <p class="dialogue">"No."</p>
+    <p class="dialogue">"Chloe."</p>
+    <p class="dialogue">"No."</p>
+    <p class="dialogue">"Ethan."</p>
+    <p class="dialogue">"Definitely no."</p>
+    <p>Ava groaned dramatically.</p>
+    <p class="dialogue">"You people are impossible."</p>
+    <p>"Thank you," Ethan said.</p>
+    <p class="dialogue">"That wasn't a compliment."</p>
+    <p class="dialogue">"It is now."</p>
+    <p>That earned another round of laughter.</p>
+    <p>For the next few minutes conversation drifted naturally.</p>
+    <p>Movies.</p>
+    <p>Teachers.</p>
+    <p>A disastrous chemistry experiment.</p>
+    <p>Someone's terrible ex-boyfriend.</p>
+    <p>Ava somehow managed to tell three different stories without taking a breath.</p>
+    <p>Ethan mostly listened.</p>
+    <p>Which, surprisingly, seemed to make everyone more comfortable.</p>
+    <p>Because nobody had to compete for attention.</p>
+    <p>They could just talk.</p>
+    <p>At one point Ava mentioned Claire.</p>
+    <p class="dialogue">"She's probably asleep right now."</p>
+    <p>"She texted me during third period," Chloe said.</p>
+    <p class="dialogue">"Still sick?"</p>
+    <p class="dialogue">"Yeah."</p>
+    <p>Ava nodded.</p>
+    <p class="dialogue">"Good. She deserves it."</p>
+    <p>The table stared at her.</p>
+    <p class="dialogue">"What?"</p>
+    <p class="dialogue">"You don't deserve being sick."</p>
+    <p class="dialogue">"Oh."</p>
+    <p>Ava pointed her fork.</p>
+    <p class="dialogue">"That's what I meant."</p>
+    <p>Chloe laughed.</p>
+    <p>For a moment Ethan found himself watching her.</p>
+    <p>Head tilted slightly.</p>
+    <p>Completely relaxed.</p>
+    <p>Different from the Chloe everyone else saw.</p>
+    <p>And Ethan suddenly understood something.</p>
+    <p>People always assumed Chloe loved attention.</p>
+    <p>But sitting here—</p>
+    <p>Watching closely—</p>
+    <p>It wasn't attention she liked.</p>
+    <p>It was people.</p>
+    <p>There was a difference.</p>
+    <p>A big one.</p>
+    <p>Eventually Ava looked at Ethan.</p>
+    <p class="dialogue">"You're way different than I expected."</p>
+    <p>He sighed.</p>
+    <p class="dialogue">"You too?"</p>
+    <p class="dialogue">"What does that mean?"</p>
+    <p class="dialogue">"Everyone keeps saying that."</p>
+    <p>Chloe smirked.</p>
+    <p class="dialogue">"Maybe that's because nobody paid attention before."</p>
+    <p>The table went quiet for half a second.</p>
+    <p>Not awkward.</p>
+    <p>Just true.</p>
+    <p>Ethan looked down at his food.</p>
+    <p>Didn't really know what to do with that.</p>
+    <p>Across from him Chloe smiled slightly.</p>
+    <p>The real smile.</p>
+    <p>The one from Mabel's.</p>
+    <p>The one from the clinic.</p>
+    <p>Not the hallway version.</p>
+    <p>And for some reason—</p>
+    <p>That one always felt different.</p>
+    <p>Around them the cafeteria remained loud.</p>
+    <p>Hundreds of students.</p>
+    <p>Endless conversations.</p>
+    <p>But for the first time in a very long time—</p>
+    <p>Ethan Parker wasn't sitting alone.</p>
+    <p>And apparently half the school couldn't stop talking about it.</p>
+  </article>
+
+  <div class="ch-end fade-in delay-2">
+    <p class="ch-end-text">— End of Chapter 5 —</p>
+    <div class="ch-nav">
+      <a href="chapter4.html" class="ch-nav-btn">← Previous</a>
+      <a href="index.html" class="ch-nav-toc">All Chapters</a>
+      <a href="#" class="ch-nav-btn disabled">Next →</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const starfield = document.getElementById('starfield');
+for (let i = 0; i < 60; i++) {
+  const s = document.createElement('div');
+  s.className = 'star-dot';
+  const size = Math.random() < 0.7 ? 1 : 2;
+  s.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*4}s;--delay:${Math.random()*5}s;--op:${0.2+Math.random()*0.5};`;
+  starfield.appendChild(s);
+}
+const progressFill = document.getElementById('progressFill');
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  progressFill.style.width = Math.min(pct, 100) + '%';
+});
+const cursor = document.getElementById('cursor'), cursorRing = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cursor.style.left = mx + 'px'; cursor.style.top = my + 'px'; });
+function animRing() { rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12; cursorRing.style.left = rx + 'px'; cursorRing.style.top = ry + 'px'; requestAnimationFrame(animRing); }
+animRing();
+document.querySelectorAll('a, button, .ch-nav-btn').forEach(el => {
+  el.addEventListener('mouseenter', () => { cursor.style.transform = 'translate(-50%,-50%) scale(2)'; cursorRing.style.transform = 'translate(-50%,-50%) scale(1.5)'; cursorRing.style.borderColor = 'rgba(249,115,22,0.7)'; });
+  el.addEventListener('mouseleave', () => { cursor.style.transform = 'translate(-50%,-50%) scale(1)'; cursorRing.style.transform = 'translate(-50%,-50%) scale(1)'; cursorRing.style.borderColor = 'rgba(249,115,22,0.4)'; });
+});
+</script>
+</body>
+</html>
